@@ -1,0 +1,103 @@
+﻿@model IEnumerable<SupportU.Application.DTOs.CategoriaDTO>
+@{
+    ViewData["Title"] = "Gestión de Categorías";
+}
+
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Gestión de Categorías</h2>
+            <a asp-controller="Categoria" asp-action="Create" class="btn btn-create">
+                <i class="bi bi-plus-circle"></i> Nueva Categoría
+            </a>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>SLA</th>
+                        <th>Criterio Asignación</th>
+                        <th>Activa</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Descripcion</td>
+                            <td>@item.SlaNombre</td>
+                            <td>@item.CriterioAsignacion</td>
+                            <td>
+                                @if (item.Activa)
+                                {
+                                    <span class="badge bg-success">Activa</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactiva</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-controller="Categoria" asp-action="Edit" asp-route-id="@item.CategoriaId" class="btn btn-sm btn-edit" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                <button type="button"
+                                        class="btn btn-sm btn-delete js-delete-category"
+                                        data-id="@item.CategoriaId"
+                                        title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+
+                                @**@
+                                <form id="delete-form-@item.CategoriaId" asp-controller="Categoria" asp-action="DeleteConfirmed" asp-route-id="@item.CategoriaId" method="post" class="d-none">
+                                    @Html.AntiForgeryToken()
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        (function () {
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.js-delete-category');
+                if (!btn) return;
+
+                var id = btn.getAttribute('data-id');
+                if (!id) return;
+
+                Swal.fire({
+                    title: '¿Eliminar esta categoría?',
+                    text: 'Esta acción marcará la categoría como inactiva.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Eliminar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#d33'
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        var form = document.getElementById('delete-form-' + id);
+                        if (form) {
+                            form.submit();
+                        } else {
+                            console.warn('Form de eliminación no encontrado para id', id);
+                        }
+                    }
+                });
+            }, false);
+        })();
+    </script>
+}
+

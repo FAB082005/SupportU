@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SupportU.Application.DTOs.TecnicoDTO>
+@{
+    ViewData["Title"] = "Gestión de Técnicos";
+}
+
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Gestión de Técnicos</h2>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Carga de Trabajo</th>
+                        <th>Estado</th>
+                        <th>Calificación</th>
+                        <th>Nombre Usuario</th>
+                        <th>Email Usuario</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.CargaTrabajo</td>
+                            <td>
+                                @if (item.Estado == "Disponible")
+                                {
+                                    <span class="badge bg-success">Disponible</span>
+                                }
+                                else if (item.Estado == "Ocupado")
+                                {
+                                    <span class="badge bg-warning text-dark">Ocupado</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">@item.Estado</span>
+                                }
+                            </td>
+                            <td>@item.CalificacionPromedio</td>
+                            <td>@item.NombreUsuario</td>
+                            <td>@item.EmailUsuario</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

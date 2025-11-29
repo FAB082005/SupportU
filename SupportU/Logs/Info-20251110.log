@@ -1,0 +1,79 @@
+2025-11-10 19:24:50.130 -06:00 [INF] Create POST called for Ticket. Titulo=Prueba create , CategoriaId=2
+2025-11-10 19:25:26.029 -06:00 [INF] Create POST called for Ticket. Titulo=Prueba create , CategoriaId=2
+2025-11-10 19:25:43.321 -06:00 [INF] Create POST called for Ticket. Titulo=Prueba create , CategoriaId=2
+2025-11-10 19:25:46.770 -06:00 [INF] Create POST called for Ticket. Titulo=Prueba create , CategoriaId=2
+2025-11-10 19:27:25.429 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:28.646 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:31.013 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:32.064 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:32.829 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:33.562 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:34.295 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:42.195 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:27:43.339 -06:00 [INF] Create POST called for Ticket. Titulo=kjh, CategoriaId=1
+2025-11-10 19:28:15.094 -06:00 [INF] Create POST called for Categoria. Nombre=nuevaa, SlaId=3, Criterio=mejor_calificado
+2025-11-10 19:28:15.099 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=nuevaa
+2025-11-10 19:34:39.288 -06:00 [INF] Create POST called for Ticket. Titulo=mjnhbgv, CategoriaId=1
+2025-11-10 19:34:41.857 -06:00 [INF] Create POST called for Ticket. Titulo=mjnhbgv, CategoriaId=1
+2025-11-10 19:38:43.082 -06:00 [INF] Create POST called for Ticket. Titulo=mjnhbgv, CategoriaId=1
+2025-11-10 19:40:08.318 -06:00 [INF] Create POST called for Ticket. Titulo=kk, CategoriaId=1
+2025-11-10 19:41:48.713 -06:00 [INF] Create POST called for Ticket. Titulo=kk, CategoriaId=1
+2025-11-10 20:22:13.063 -06:00 [INF] Create POST called for Ticket. Titulo=Prueba create , CategoriaId=1
+2025-11-10 20:52:28.746 -06:00 [INF] Create POST called for Categoria. Nombre=pruebaaa, SlaId=2, Criterio=tiempo_restante_sla
+2025-11-10 20:52:28.829 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=pruebaaa
+2025-11-10 20:52:53.707 -06:00 [INF] Create POST called for Categoria. Nombre=pruebaaa, SlaId=2, Criterio=tiempo_restante_sla
+2025-11-10 20:52:53.708 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=pruebaaa
+2025-11-10 20:53:31.414 -06:00 [INF] Create POST called for Ticket. Titulo=pruebaaa, CategoriaId=1
+2025-11-10 20:53:53.286 -06:00 [INF] Create POST called for Ticket. Titulo=pruebaaa, CategoriaId=1
+2025-11-10 20:54:03.674 -06:00 [INF] Create POST called for Ticket. Titulo=pruebaaa, CategoriaId=1
+2025-11-10 20:54:04.318 -06:00 [INF] Create POST called for Ticket. Titulo=pruebaaa, CategoriaId=1
+2025-11-10 20:54:06.073 -06:00 [INF] Create POST called for Ticket. Titulo=pruebaaa, CategoriaId=1
+2025-11-10 20:54:08.001 -06:00 [INF] Create POST called for Ticket. Titulo=pruebaaa, CategoriaId=1
+2025-11-10 21:34:22.916 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:34:22.962 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:34:22.964 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:34:22.967 -06:00 [INF] Descripcion length: 8
+2025-11-10 21:38:03.414 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:38:03.465 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:38:03.467 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:38:03.469 -06:00 [INF] Descripcion length: 3
+2025-11-10 21:39:06.086 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:39:06.089 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:39:06.090 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:39:06.091 -06:00 [INF] Descripcion length: 3
+2025-11-10 21:39:06.886 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:39:06.887 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:39:06.888 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:39:06.889 -06:00 [INF] Descripcion length: 3
+2025-11-10 21:44:01.932 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:44:01.994 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:44:01.999 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:44:02.003 -06:00 [INF] Descripcion length: 7
+2025-11-10 21:48:23.592 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:48:42.228 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:48:43.361 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:49:07.733 -06:00 [INF] Descripcion length: 3
+2025-11-10 21:53:59.736 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 21:54:00.258 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 21:54:00.799 -06:00 [INF] CategoriaId: 1
+2025-11-10 21:54:01.402 -06:00 [INF] Descripcion length: 4
+2025-11-10 22:06:57.987 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 22:06:58.499 -06:00 [INF] Titulo: pruebaaa
+2025-11-10 22:06:58.989 -06:00 [INF] CategoriaId: 1
+2025-11-10 22:06:59.511 -06:00 [INF] Descripcion length: 3
+2025-11-10 22:07:01.156 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-10 22:07:13.742 -06:00 [INF] Llamando a _serviceTicket.AddAsync...
+2025-11-10 22:07:14.084 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=pruebaaa
+2025-11-10 22:07:14.404 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=10
+2025-11-10 22:07:14.405 -06:00 [INF] ?? Ticket creado exitosamente con ID: 10
+2025-11-10 23:37:51.927 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-10 23:37:51.951 -06:00 [INF] Titulo: Prueba create con tecnico 
+2025-11-10 23:37:51.955 -06:00 [INF] CategoriaId: 1
+2025-11-10 23:37:51.966 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-10 23:37:51.973 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-10 23:37:51.978 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-10 23:37:51.983 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-10 23:37:51.987 -06:00 [INF] Llamando a _serviceTicket.AddAsync...
+2025-11-10 23:37:52.409 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=Prueba create con tecnico
+2025-11-10 23:37:52.904 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=11
+2025-11-10 23:37:52.908 -06:00 [INF] ?? Ticket creado exitosamente con ID: 11

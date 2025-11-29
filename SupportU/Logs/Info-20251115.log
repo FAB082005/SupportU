@@ -1,0 +1,10 @@
+2025-11-15 12:23:18.148 -06:00 [INF] Create POST called for Categoria. Nombre=NATIVU Tamarindo, SlaId=2, Criterio=tiempo_restante_sla
+2025-11-15 12:23:18.179 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=NATIVU Tamarindo
+2025-11-15 12:23:20.579 -06:00 [INF] Create POST called for Categoria. Nombre=NATIVU Tamarindo, SlaId=2, Criterio=tiempo_restante_sla
+2025-11-15 12:23:20.580 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=NATIVU Tamarindo
+2025-11-15 12:23:21.712 -06:00 [INF] Create POST called for Categoria. Nombre=NATIVU Tamarindo, SlaId=2, Criterio=tiempo_restante_sla
+2025-11-15 12:23:21.713 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=NATIVU Tamarindo
+2025-11-15 12:37:43.296 -06:00 [INF] Create POST called for Categoria. Nombre=ghhf, SlaId=2, Criterio=menor_carga
+2025-11-15 12:37:43.325 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=ghhf
+2025-11-15 12:37:43.346 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=1004
+2025-11-15 12:37:43.347 -06:00 [INF] Categoria created successfully. NewId=1004

@@ -1,0 +1,51 @@
+﻿@model SupportU.Application.DTOs.UsuarioDTO
+@{
+    ViewData["Title"] = Model.Activo ? "Inactivar Usuario" : "Reactivar Usuario";
+}
+
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <h2 class="mb-3">@ViewData["Title"]</h2>
+                        <dl class="row mb-4">
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8">@Model.Email</dd>
+                            <dt class="col-sm-4">Nombre</dt>
+                            <dd class="col-sm-8">@Model.Nombre @Model.Apellidos</dd>
+                            <dt class="col-sm-4">Rol</dt>
+                            <dd class="col-sm-8">@Model.Rol</dd>
+                            <dt class="col-sm-4">Activo</dt>
+                            <dd class="col-sm-8">@Model.Activo</dd>
+                        </dl>
+
+                        @if (Model.Activo)
+                        {
+                            <form asp-action="Delete" asp-route-id="@Model.UsuarioId" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="estado" value="1" /> @* 1 => inactivar *@
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <button type="submit" class="btn btn-danger">Inactivar</button>
+                                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Delete" asp-route-id="@Model.UsuarioId" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="estado" value="0" /> @* 0 => reactivar *@
+                                <div class="d-flex gap-2 justify-content-end">
+                                    <button type="submit" class="btn btn-success">Reactivar</button>
+                                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

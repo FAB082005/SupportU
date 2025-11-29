@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SupportU.Application.DTOs.SlaDTO>
+@{
+    ViewData["Title"] = "Gestión de SLA";
+}
+
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Gestión de SLA</h2>
+            <a asp-action="Create" class="btn btn-create"><i class="bi bi-plus-circle"></i> Nuevo SLA</a>
+        </div>
+
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tiempo Respuesta (min)</th>
+                        <th>Tiempo Resolución (min)</th>
+                        <th>Activo</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.TiempoRespuestaMinutos</td>
+                            <td>@item.TiempoResolucionMinutos</td>
+                            <td>
+                                @if (item.Activo)
+                                {
+                                    <span class="badge bg-success">Activo</span>
+                                }
+                                else
+                                {
+
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.SlaId" class="btn btn-sm btn-edit"><i class="bi bi-pencil-square"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.SlaId" class="btn btn-sm btn-delete"><i class="bi bi-power"></i></a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

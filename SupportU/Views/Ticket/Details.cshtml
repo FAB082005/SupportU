@@ -1,0 +1,337 @@
+﻿@model SupportU.Application.DTOs.TicketDTO
+@{
+    ViewData["Title"] = "Detalle del Ticket";
+
+    var diasResolucion = Model.FechaCierre.HasValue
+        ? (Model.FechaCierre.Value - Model.FechaCreacion).Days
+        : (DateTime.Now - Model.FechaCreacion).Days;
+
+    var tiempoRespuestaMinutos = Model.Categoria.Sla.TiempoRespuestaMinutos;
+    var tiempoResolucionMinutos = Model.Categoria.Sla.TiempoResolucionMinutos;
+
+    var fechaLimiteRespuesta = Model.FechaCreacion.AddMinutes(tiempoRespuestaMinutos);
+    var fechaLimiteResolucion = Model.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
+}
+
+<style>
+    .collapse-toggle {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-block;
+        font-size: 0.9rem;
+        color: #6c757d;
+        width: 18px;
+        text-align: center;
+    }
+
+        .collapse-toggle.collapsed::before {
+            content: '▸';
+        }
+
+        .collapse-toggle:not(.collapsed)::before {
+            content: '▾';
+        }
+
+    .historial-item {
+        transition: background-color 0.2s ease;
+    }
+
+        .historial-item:hover {
+            background-color: #f8f9fa;
+        }
+
+    .image-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+
+        .image-gallery img {
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+
+            .image-gallery img:hover {
+                transform: scale(1.05);
+            }
+</style>
+
+<div class="container mt-4" style="padding-top: 80px;">
+    <div class="text-center mb-4">
+        <h1 class="display-6 fw-bold text-dark">Detalle del Ticket #@Model.TicketId</h1>
+        <p class="text-muted">Información completa del ticket</p>
+    </div>
+
+    <!-- ========== BOTONES DE ACCIÓN (NUEVO) ========== -->
+    <div class="text-center mb-4">
+        <div class="btn-group" role="group">
+            <a asp-action="Edit" asp-route-id="@Model.TicketId" class="btn btn-warning">
+                <i class="bi bi-pencil-square me-2"></i>Editar Ticket
+            </a>
+            <a asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-2"></i>Regresar al Listado
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Información Básica del Ticket -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 text-dark">Información Básica</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">Título:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Titulo)</dd>
+
+                        <dt class="col-sm-4 text-muted">Descripción:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
+
+                        <dt class="col-sm-4 text-muted">Fecha Creación:</dt>
+                        <dd class="col-sm-8">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4 text-muted">Estado:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-primary">@Html.DisplayFor(model => model.Estado)</span>
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Prioridad:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-secondary">@Html.DisplayFor(model => model.Prioridad)</span>
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Usuario Solicitante:</dt>
+                        <dd class="col-sm-8">
+                            @Model.UsuarioSolicitante.Nombre @Model.UsuarioSolicitante.Apellidos
+                        </dd>
+
+                        <dt class="col-sm-4 text-muted">Categoría:</dt>
+                        <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria.Nombre)</dd>
+
+                        @if (Model.TecnicoAsignado != null)
+                        {
+                            <dt class="col-sm-4 text-muted">Técnico Asignado:</dt>
+                            <dd class="col-sm-8">
+                                @Model.TecnicoAsignado.Usuario.Nombre @Model.TecnicoAsignado.Usuario.Apellidos
+                            </dd>
+                        }
+
+                        @if (Model.FechaCierre.HasValue)
+                        {
+                            <dt class="col-sm-4 text-muted">Fecha Cierre:</dt>
+                            <dd class="col-sm-8">@Model.FechaCierre.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                            <dt class="col-sm-4 text-muted">Días de Resolución:</dt>
+                            <dd class="col-sm-8">@diasResolucion días</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <!-- SLA y Cumplimiento -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 text-dark">SLA y Cumplimiento</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-muted">SLA Respuesta:</dt>
+                        <dd class="col-sm-8">@fechaLimiteRespuesta.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4 text-muted">SLA Resolución:</dt>
+                        <dd class="col-sm-8">@fechaLimiteResolucion.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        @if (Model.CumplimientoRespuesta.HasValue)
+                        {
+                            <dt class="col-sm-4 text-muted">Cumplimiento Respuesta:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-@(Model.CumplimientoRespuesta.Value ? "success" : "danger")">
+                                    @(Model.CumplimientoRespuesta.Value ? "Cumplido" : "Incumplido")
+                                </span>
+                            </dd>
+                        }
+
+                        @if (Model.CumplimientoResolucion.HasValue)
+                        {
+                            <dt class="col-sm-4 text-muted">Cumplimiento Resolución:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-@(Model.CumplimientoResolucion.Value ? "success" : "danger")">
+                                    @(Model.CumplimientoResolucion.Value ? "Cumplido" : "Incumplido")
+                                </span>
+                            </dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Historial de Estados -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom">
+                    <h5 class="mb-0 text-dark">Historial de Estados</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.HistorialEstado.Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var historial in Model.HistorialEstado.OrderByDescending(h => h.FechaCambio))
+                            {
+                                var imagenesDelHistorial = Model.Imagen.Where(img => img.HistorialEstadoId == historial.HistorialId).ToList();
+                                var collapseId = $"collapse-historial-{historial.HistorialId}";
+
+                                <div class="list-group-item px-0 historial-item">
+                                    <div class="d-flex w-100 justify-content-between align-items-center mb-2">
+                                        <div class="d-flex align-items-center">
+                                            @if (imagenesDelHistorial.Any())
+                                            {
+                                                <span class="collapse-toggle collapsed me-2"
+                                                      data-bs-toggle="collapse"
+                                                      data-bs-target="#@collapseId"
+                                                      aria-expanded="false"
+                                                      aria-controls="@collapseId">
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="me-2" style="width: 18px; display: inline-block;"></span>
+                                            }
+
+                                            <h6 class="mb-0">
+                                                <span class="text-muted">@(historial.EstadoAnterior ?? "Inicial")</span>
+                                                <span class="mx-2">→</span>
+                                                <strong class="text-dark">@historial.EstadoNuevo</strong>
+                                            </h6>
+                                        </div>
+                                        <small class="text-muted">@historial.FechaCambio.ToString("dd/MM/yyyy HH:mm")</small>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(historial.Observaciones))
+                                    {
+                                        <p class="mb-2 text-secondary ms-4">@historial.Observaciones</p>
+                                    }
+
+                                    <small class="text-muted ms-4 d-block">
+                                        Por: @historial.Usuario.Nombre @historial.Usuario.Apellidos
+                                    </small>
+
+                                    @if (imagenesDelHistorial.Any())
+                                    {
+                                        <div class="collapse ms-4" id="@collapseId">
+                                            <div class="image-gallery">
+                                                @foreach (var imagen in imagenesDelHistorial)
+                                                {
+                                                    <div>
+                                                        <img src="@imagen.RutaArchivo"
+                                                             alt="@imagen.NombreArchivo"
+                                                             class="img-thumbnail"
+                                                             style="max-width: 150px; max-height: 150px; object-fit: cover;"
+                                                             data-bs-toggle="tooltip"
+                                                             title="@imagen.NombreArchivo" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No hay historial de cambios registrados.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Valoración -->
+            @if (Model.Valoracion != null)
+            {
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0 text-dark">Valoración del Servicio</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong class="text-muted">Puntaje:</strong>
+                            <div class="mt-2">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span class="@(i <= Model.Valoracion.Puntaje ? "text-warning" : "text-muted") fs-5">★</span>
+                                }
+                                <span class="badge bg-primary ms-2">@Model.Valoracion.Puntaje/5</span>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.Valoracion.Comentario))
+                        {
+                            <div class="mb-0">
+                                <strong class="text-muted">Comentario:</strong>
+                                <p class="mt-2 mb-0">@Model.Valoracion.Comentario</p>
+                            </div>
+                        }
+
+                        <small class="text-muted d-block mt-3">
+                            Valorado el: @Model.Valoracion.FechaValoracion.ToString("dd/MM/yyyy")
+                        </small>
+                    </div>
+                </div>
+            }
+
+            <!-- Imágenes Iniciales del Ticket -->
+            @{
+                var imagenesGenerales = Model.Imagen.Where(img => img.HistorialEstadoId == null).ToList();
+            }
+            @if (imagenesGenerales.Any())
+            {
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0 text-dark">Imágenes Iniciales del Ticket</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            @foreach (var imagen in imagenesGenerales)
+                            {
+                                <div class="col-6 col-md-4">
+                                    <img src="@imagen.RutaArchivo"
+                                         alt="@imagen.NombreArchivo"
+                                         class="img-fluid rounded shadow-sm"
+                                         style="object-fit: cover; width: 100%; height: 150px;" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Botones de acción al final (repetidos para conveniencia) -->
+            <div class="text-center mb-5">
+                <div class="btn-group" role="group">
+                    <a asp-action="Edit" asp-route-id="@Model.TicketId" class="btn btn-warning">
+                        <i class="bi bi-pencil-square me-2"></i>Editar Ticket
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left me-2"></i>Regresar al Listado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.collapse-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+            });
+        });
+
+        const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltips.map(el => new bootstrap.Tooltip(el));
+    </script>
+}

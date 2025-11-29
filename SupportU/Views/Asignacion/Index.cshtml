@@ -1,0 +1,274 @@
+﻿@using SupportU.Application.DTOs
+@model IEnumerable<SupportU.Application.DTOs.AsignacionDTO>
+@{
+    ViewData["Title"] = "Vista de Asignaciones - Todos los Técnicos";
+
+    int offsetSemanas = ViewBag.OffsetSemanas ?? 0;
+    var inicioSemana = (DateTime)ViewBag.InicioSemana;
+    var finSemana = (DateTime)ViewBag.FinSemana;
+    var hoy = DateTime.Now.Date;
+
+    var asignacionesPorFecha = Model.GroupBy(a => a.FechaAsignacion.Date)
+                                    .ToDictionary(g => g.Key, g => g.ToList());
+
+    var diasSemana = new[] { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" };
+
+    var coloresCategorias = new Dictionary<string, string>
+    {
+        { "Hardware", "primary" },
+        { "Soporte a Usuario Final", "warning" },
+        { "Infraestructura de Red", "info" },
+        { "Plataformas Académicas", "success" }
+    };
+
+    var coloresTecnicos = new Dictionary<int, string>
+    {
+        { 1, "danger" },
+        { 2, "success" },
+        { 3, "info" }
+    };
+}
+
+@functions {
+    string ObtenerColorUrgencia(int minutos)
+    {
+        if (minutos == 0) return "dark";
+        if (minutos <= 120) return "danger";
+        if (minutos <= 360) return "warning";
+        return "success";
+    }
+
+    string ObtenerColorCategoria(string categoria, Dictionary<string, string> colores)
+    {
+        return colores.ContainsKey(categoria) ? colores[categoria] : "secondary";
+    }
+
+    string ObtenerColorTecnico(int tecnicoId, Dictionary<int, string> colores)
+    {
+        return colores.ContainsKey(tecnicoId) ? colores[tecnicoId] : "secondary";
+    }
+}
+
+<div class="container-fluid py-4" style="padding-top: 80px;">
+    <!-- Encabezado -->
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="mb-3">
+                <i class="bi bi-calendar-week"></i> Vista de Asignaciones - Todos los Técnicos
+            </h2>
+            <p class="text-muted">
+                Agenda semanal de todos los tickets asignados
+            </p>
+        </div>
+    </div>
+
+    <!-- Navegación de Semana -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="@Url.Action("Index", new { offsetSemanas = offsetSemanas - 1 })"
+                           class="btn btn-outline-primary">
+                            <i class="bi bi-chevron-left"></i> Semana Anterior
+                        </a>
+
+                        <h4 class="mb-0">
+                            @inicioSemana.ToString("dd/MM/yyyy") - @finSemana.ToString("dd/MM/yyyy")
+                            @if (offsetSemanas == 0)
+                            {
+                                <span class="badge bg-primary ms-2">Semana Actual</span>
+                            }
+                        </h4>
+
+                        <a href="@Url.Action("Index", new { offsetSemanas = offsetSemanas + 1 })"
+                           class="btn btn-outline-primary">
+                            Siguiente Semana <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </div>
+
+                    @if (offsetSemanas != 0)
+                    {
+                        <div class="text-center mt-2">
+                            <a href="@Url.Action("Index")" class="btn btn-sm btn-link">
+                                Volver a Semana Actual
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agenda Semanal -->
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            @for (int dia = 0; dia < 7; dia++)
+                            {
+                                var fecha = inicioSemana.AddDays(dia);
+                                var esHoy = fecha.Date == hoy;
+
+                                <th class="text-center @(esHoy ? "table-primary" : "")" style="width: 14.28%;">
+                                    <div class="fw-bold">@diasSemana[dia]</div>
+                                    <div class="text-muted small">@fecha.ToString("dd/MM")</div>
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="height: 500px; vertical-align: top;">
+                            @for (int dia = 0; dia < 7; dia++)
+                            {
+                                var fecha = inicioSemana.AddDays(dia);
+                                var esHoy = fecha.Date == hoy;
+                                var asignacionesDelDia = asignacionesPorFecha.ContainsKey(fecha)
+                                ? asignacionesPorFecha[fecha]
+                                : new List<AsignacionDTO>();
+
+                                <td class="p-2 @(esHoy ? "table-primary" : "")" style="vertical-align: top;">
+                                    <div style="max-height: 480px; overflow-y: auto;">
+                                        @if (asignacionesDelDia.Any())
+                                        {
+                                            @foreach (var asignacion in asignacionesDelDia.OrderBy(a => a.TiempoRestanteSLAMinutos))
+                                            {
+                                                var colorUrgencia = ObtenerColorUrgencia(asignacion.TiempoRestanteSLAMinutos);
+                                                var colorCategoria = ObtenerColorCategoria(asignacion.Ticket.Categoria.Nombre, coloresCategorias);
+                                                var colorTecnico = ObtenerColorTecnico(asignacion.TecnicoId, coloresTecnicos);
+
+                                                <div class="card mb-2 border-start border-@colorUrgencia border-3 shadow-sm">
+                                                    <div class="card-body p-2">
+                                                        <!-- Header -->
+                                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                                            <span class="badge bg-dark small">#@asignacion.TicketId</span>
+                                                            <small class="text-muted">@asignacion.FechaAsignacion.ToString("HH:mm")</small>
+                                                        </div>
+
+                                                        <!-- Título -->
+                                                        <p class="mb-1 small fw-bold" style="font-size: 0.85rem;">
+                                                            @(asignacion.Ticket.Titulo.Length > 40
+                                                                                                            ? asignacion.Ticket.Titulo.Substring(0, 37) + "..."
+                                                                                                            : asignacion.Ticket.Titulo)
+                                            </p>
+
+                                                        <!-- Badge de Técnico -->
+                                                        <div class="mb-1">
+                                                            <span class="badge bg-@colorTecnico" style="font-size: 0.7rem;">
+                                                                <i class="bi bi-person"></i> @asignacion.Tecnico.Usuario.Nombre @asignacion.Tecnico.Usuario.Apellidos
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- Badges -->
+                                                        <div class="mb-1">
+                                                            <span class="badge bg-@colorCategoria" style="font-size: 0.7rem;">
+                                                                @asignacion.Ticket.Categoria.Nombre
+                                                            </span>
+                                                @{
+                                                                var estadoBadge = asignacion.Ticket.Estado switch
+                                                                {
+                                                                    "Pendiente" => "warning",
+                                                                    "Asignado" => "info",
+                                                                    "En Proceso" => "primary",
+                                                                    "Resuelto" => "success",
+                                                                    "Cerrado" => "dark",
+                                                                    _ => "secondary"
+                                                                };
+                                                            }
+                                                            <span class="badge bg-@estadoBadge" style="font-size: 0.7rem;">
+                                                                @asignacion.Ticket.Estado
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- SLA -->
+                                                        @if (asignacion.Ticket.Estado != "Cerrado")
+                                                        {
+                                                            <div class="mb-1">
+                                                                <div class="progress" style="height: 6px;">
+                                                                    <div class="progress-bar bg-@colorUrgencia"
+                                                                         style="width: @asignacion.PorcentajeSLAUsado%">
+                                                                    </div>
+                                                                </div>
+                                                                <small class="text-muted" style="font-size: 0.7rem;">
+                                                                    SLA: @asignacion.TiempoRestanteTexto
+                                                                </small>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="text-muted" style="font-size: 0.7rem;">
+                                                                <i class="bi bi-check-circle-fill text-success"></i> Cerrado
+                                                            </small>
+                                                        }
+
+                                                        <!-- Botón -->
+                                                        <a href="@Url.Action("Details", "Ticket", new { id = asignacion.TicketId })"
+                                                           class="btn btn-sm btn-outline-primary w-100 mt-1"
+                                                           style="font-size: 0.75rem; padding: 0.25rem;">
+                                                            Ver Detalle
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="text-center text-muted py-3">
+                                                <small>Sin asignaciones</small>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table > tbody > tr > td {
+            border-right: 2px solid #dee2e6;
+        }
+
+            .table > tbody > tr > td:last-child {
+                border-right: 1px solid #dee2e6;
+            }
+
+        .card {
+            transition: all 0.2s;
+        }
+
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+            }
+
+        .table-primary {
+            background-color: rgba(13, 110, 253, 0.1) !important;
+        }
+
+        div[style*="overflow-y: auto"]::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        div[style*="overflow-y: auto"]::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+            div[style*="overflow-y: auto"]::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+    </style>
+}

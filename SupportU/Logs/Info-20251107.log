@@ -1,0 +1,41 @@
+2025-11-07 20:34:49.108 -06:00 [INF] Create POST called for Categoria. Nombre=redes, SlaId=1, Criterio=tiempo_restante_sla
+2025-11-07 20:34:49.166 -06:00 [INF] ServiceCategoria.AddAsync called. Nombre=redes, SlaId=1, Criterio=tiempo_restante_sla
+2025-11-07 20:34:49.171 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=redes
+2025-11-07 20:35:02.008 -06:00 [INF] Create POST called for Categoria. Nombre=redes, SlaId=1, Criterio=tiempo_restante_sla
+2025-11-07 20:35:02.010 -06:00 [INF] ServiceCategoria.AddAsync called. Nombre=redes, SlaId=1, Criterio=tiempo_restante_sla
+2025-11-07 20:35:02.014 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=redes
+2025-11-07 20:37:39.070 -06:00 [INF] Create POST called for Categoria. Nombre=Redes , SlaId=1, Criterio=menor_carga
+2025-11-07 20:37:39.114 -06:00 [INF] ServiceCategoria.AddAsync called. Nombre=Redes , SlaId=1, Criterio=menor_carga
+2025-11-07 20:37:39.118 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=Redes 
+2025-11-07 20:41:57.979 -06:00 [INF] Create POST called for Categoria. Nombre=redes, SlaId=1, Criterio=mejor_calificado
+2025-11-07 20:41:58.013 -06:00 [INF] ServiceCategoria.AddAsync called. Nombre=redes, SlaId=1, Criterio=mejor_calificado
+2025-11-07 20:41:58.018 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=redes
+2025-11-07 20:46:05.288 -06:00 [INF] Create POST called for Categoria. Nombre=Redes, SlaId=1, Criterio=prioridad_puntaje
+2025-11-07 20:46:05.328 -06:00 [INF] ServiceCategoria.AddAsync called. Nombre=Redes, SlaId=1, Criterio=prioridad_puntaje
+2025-11-07 20:46:05.332 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=Redes
+2025-11-07 20:57:24.638 -06:00 [INF] Create POST called for Categoria. Nombre=Redes, SlaId=1, Criterio=mejor_calificado
+2025-11-07 20:57:24.678 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=Redes
+2025-11-07 20:57:24.859 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=3
+2025-11-07 20:57:24.860 -06:00 [INF] Categoria created successfully. NewId=3
+2025-11-07 20:57:56.789 -06:00 [INF] Edit POST called for CategoriaId=3, Nombre=Redes
+2025-11-07 20:57:56.858 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-11-07 20:58:04.256 -06:00 [INF] Edit POST called for CategoriaId=3, Nombre=Redes
+2025-11-07 20:58:04.264 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-11-07 21:05:22.347 -06:00 [INF] Create POST called for Categoria. Nombre=SDSDSSDS, SlaId=2, Criterio=mejor_calificado
+2025-11-07 21:05:22.385 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=SDSDSSDS
+2025-11-07 21:05:22.564 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=4
+2025-11-07 21:05:22.565 -06:00 [INF] Categoria created successfully. NewId=4
+2025-11-07 21:06:50.644 -06:00 [INF] Edit POST called for CategoriaId=4, Nombre=AAAA
+2025-11-07 21:06:50.804 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=4
+2025-11-07 21:06:50.888 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=4
+2025-11-07 21:06:50.889 -06:00 [INF] Categoria updated successfully. Id=4
+2025-11-07 21:25:38.414 -06:00 [INF] Edit POST called for CategoriaId=4, Nombre=AAAAll
+2025-11-07 21:25:38.579 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=4
+2025-11-07 21:25:38.658 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=4
+2025-11-07 21:25:38.659 -06:00 [INF] Categoria updated successfully. Id=4
+2025-11-07 21:29:11.184 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=4
+2025-11-07 21:30:27.901 -06:00 [INF] Edit POST called for CategoriaId=4, Nombre=AAAAll
+2025-11-07 21:30:28.063 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=4
+2025-11-07 21:30:28.145 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=4
+2025-11-07 21:30:28.146 -06:00 [INF] Categoria updated successfully. Id=4
+2025-11-07 21:30:31.606 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=4

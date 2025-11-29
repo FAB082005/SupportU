@@ -1,0 +1,260 @@
+2025-11-12 00:32:06.623 -06:00 [INF] Edit POST called for TicketId=1, Titulo=Monitor no enciende despu?s de apag?n cambio
+2025-11-12 00:32:06.768 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=1
+2025-11-12 00:33:38.708 -06:00 [INF] Edit POST called for TicketId=17, Titulo=prueba con historial 2 en estado pendiente cambio
+2025-11-12 00:33:38.787 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=17
+2025-11-12 00:33:39.185 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=17
+2025-11-12 00:33:39.188 -06:00 [INF] Ticket updated successfully. Id=17
+2025-11-12 00:36:09.482 -06:00 [INF] Edit POST called for TicketId=17, Titulo=prueba con historial 2 en estado pendiente cambio
+2025-11-12 00:36:09.550 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=17
+2025-11-12 00:36:09.635 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=17
+2025-11-12 00:36:09.638 -06:00 [INF] Ticket updated successfully. Id=17
+2025-11-12 00:46:03.784 -06:00 [INF] === EDIT TICKET POST INICIADO ===
+2025-11-12 00:46:03.790 -06:00 [INF] TicketId: 17
+2025-11-12 00:46:03.795 -06:00 [INF] Titulo: prueba con historial 2 en estado pendiente cambio
+2025-11-12 00:46:03.797 -06:00 [INF] EtiquetaId: 10
+2025-11-12 00:46:03.797 -06:00 [INF] CategoriaId: 3
+2025-11-12 00:46:03.798 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 00:46:03.798 -06:00 [INF] T?cnico seleccionado: 3
+2025-11-12 00:46:03.799 -06:00 [INF] ? ModelState v?lido, procediendo a actualizar...
+2025-11-12 00:46:03.800 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 3
+2025-11-12 00:46:03.800 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=3, Estado=Resuelto, CategoriaId=3
+2025-11-12 00:46:03.833 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=17
+2025-11-12 00:46:04.077 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=17
+2025-11-12 00:46:04.078 -06:00 [INF] ?? Ticket actualizado exitosamente. Id=17
+2025-11-12 00:46:25.436 -06:00 [INF] === EDIT TICKET POST INICIADO ===
+2025-11-12 00:46:25.440 -06:00 [INF] TicketId: 17
+2025-11-12 00:46:25.445 -06:00 [INF] Titulo: prueba con historial 2 en estado pendiente cambio
+2025-11-12 00:46:25.445 -06:00 [INF] EtiquetaId: 5
+2025-11-12 00:46:25.447 -06:00 [INF] CategoriaId: 1
+2025-11-12 00:46:25.448 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 00:46:25.449 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-12 00:46:25.449 -06:00 [INF] ? ModelState v?lido, procediendo a actualizar...
+2025-11-12 00:46:25.452 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 2
+2025-11-12 00:46:25.453 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=2, Estado=Resuelto, CategoriaId=1
+2025-11-12 00:46:25.469 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=17
+2025-11-12 00:46:25.533 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=17
+2025-11-12 00:46:25.536 -06:00 [INF] ?? Ticket actualizado exitosamente. Id=17
+2025-11-12 00:46:55.271 -06:00 [INF] === EDIT TICKET POST INICIADO ===
+2025-11-12 00:46:55.272 -06:00 [INF] TicketId: 16
+2025-11-12 00:46:55.273 -06:00 [INF] Titulo: prueba con historial
+2025-11-12 00:46:55.276 -06:00 [INF] EtiquetaId: 5
+2025-11-12 00:46:55.277 -06:00 [INF] CategoriaId: 1
+2025-11-12 00:46:55.278 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 00:46:55.282 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-12 00:46:55.283 -06:00 [INF] ? ModelState v?lido, procediendo a actualizar...
+2025-11-12 00:46:55.285 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 2
+2025-11-12 00:46:55.287 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=2, Estado=Asignado, CategoriaId=1
+2025-11-12 00:46:55.291 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=16
+2025-11-12 00:46:55.315 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=16
+2025-11-12 00:46:55.317 -06:00 [INF] ?? Ticket actualizado exitosamente. Id=16
+2025-11-12 00:47:35.752 -06:00 [INF] === EDIT TICKET POST INICIADO ===
+2025-11-12 00:47:35.753 -06:00 [INF] TicketId: 16
+2025-11-12 00:47:35.753 -06:00 [INF] Titulo: prueba con historial
+2025-11-12 00:47:35.755 -06:00 [INF] EtiquetaId: 5
+2025-11-12 00:47:35.756 -06:00 [INF] CategoriaId: 1
+2025-11-12 00:47:35.757 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 00:47:35.758 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-12 00:47:35.760 -06:00 [INF] ? ModelState v?lido, procediendo a actualizar...
+2025-11-12 00:47:35.760 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 2
+2025-11-12 00:47:35.761 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=2, Estado=Asignado, CategoriaId=1
+2025-11-12 00:47:35.794 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=16
+2025-11-12 00:47:35.840 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=16
+2025-11-12 00:47:35.841 -06:00 [INF] ?? Ticket actualizado exitosamente. Id=16
+2025-11-12 01:04:49.207 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-12 01:04:49.218 -06:00 [INF] Titulo: prueba con historial 2 en estado pendiente
+2025-11-12 01:04:49.219 -06:00 [INF] EtiquetaId: 14
+2025-11-12 01:04:49.224 -06:00 [INF] CategoriaId: 4
+2025-11-12 01:04:49.226 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 01:04:49.227 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-12 01:04:49.228 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-12 01:04:49.230 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 2
+2025-11-12 01:04:49.231 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=2, Estado=Asignado
+2025-11-12 01:04:49.424 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba con historial 2 en estado pendiente
+2025-11-12 01:04:49.662 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=18
+2025-11-12 01:04:49.667 -06:00 [INF] ?? Ticket creado exitosamente con ID: 18
+2025-11-12 01:05:47.497 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-12 01:05:47.498 -06:00 [INF] Titulo: Prueba create 
+2025-11-12 01:05:47.499 -06:00 [INF] EtiquetaId: 14
+2025-11-12 01:05:47.499 -06:00 [INF] CategoriaId: 4
+2025-11-12 01:05:47.500 -06:00 [INF] M?todo de asignaci?n: Automatico
+2025-11-12 01:05:47.500 -06:00 [INF] T?cnico seleccionado: null
+2025-11-12 01:05:47.501 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-12 01:05:47.502 -06:00 [INF] ? Asignaci?n AUTOM?TICA - T?cnico ser? asignado despu?s
+2025-11-12 01:05:47.503 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=null, Estado=Pendiente
+2025-11-12 01:05:47.513 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=Prueba create
+2025-11-12 01:05:47.532 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=19
+2025-11-12 01:05:47.534 -06:00 [INF] ?? Ticket creado exitosamente con ID: 19
+2025-11-12 01:15:28.505 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-12 01:15:28.515 -06:00 [INF] Titulo: nhf bf
+2025-11-12 01:15:28.516 -06:00 [INF] EtiquetaId: 6
+2025-11-12 01:15:28.521 -06:00 [INF] CategoriaId: 2
+2025-11-12 01:15:28.522 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 01:15:28.522 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-12 01:15:28.523 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-12 01:15:28.524 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 2
+2025-11-12 01:15:28.667 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=nhf bf
+2025-11-12 01:15:28.919 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=20
+2025-11-12 01:15:28.922 -06:00 [INF] ?? Ticket creado exitosamente con ID: 20
+2025-11-12 01:15:29.010 -06:00 [INF] ?? HistorialEstados Create GET - TicketId recibido: 20
+2025-11-12 01:15:29.012 -06:00 [INF] ? Buscando ticket con ID: 20
+2025-11-12 01:15:29.183 -06:00 [INF] ? Ticket encontrado: nhf bf
+2025-11-12 01:15:29.190 -06:00 [INF] ? ViewBag configurado correctamente
+2025-11-12 01:39:58.984 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-12 01:39:58.994 -06:00 [INF] Titulo: nhf bf
+2025-11-12 01:39:58.996 -06:00 [INF] EtiquetaId: 12
+2025-11-12 01:39:58.999 -06:00 [INF] CategoriaId: 3
+2025-11-12 01:39:58.999 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-12 01:39:59.000 -06:00 [INF] T?cnico seleccionado: 3
+2025-11-12 01:39:59.000 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-12 01:39:59.001 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 3
+2025-11-12 01:39:59.002 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=3, Estado=Asignado
+2025-11-12 01:39:59.136 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=nhf bf
+2025-11-12 01:39:59.339 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=21
+2025-11-12 01:39:59.342 -06:00 [INF] ?? Ticket creado exitosamente con ID: 21
+2025-11-12 01:59:56.640 -06:00 [INF] === EDIT TICKET POST INICIADO ===
+2025-11-12 01:59:56.656 -06:00 [INF] TicketId: 21
+2025-11-12 01:59:56.657 -06:00 [INF] Agregar historial: true
+2025-11-12 01:59:56.660 -06:00 [INF] ? ModelState v?lido, procediendo a actualizar...
+2025-11-12 01:59:56.925 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 3
+2025-11-12 01:59:56.932 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=21
+2025-11-12 01:59:57.602 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=21
+2025-11-12 01:59:57.604 -06:00 [INF] ?? Ticket actualizado exitosamente. Id=21
+2025-11-12 01:59:57.612 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=21, EstadoNuevo=Asignado
+2025-11-12 01:59:57.726 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=40
+2025-11-12 01:59:57.727 -06:00 [INF] ? Historial de estados creado para Ticket #21
+2025-11-12 02:00:42.876 -06:00 [INF] === EDIT TICKET POST INICIADO ===
+2025-11-12 02:00:42.877 -06:00 [INF] TicketId: 21
+2025-11-12 02:00:42.878 -06:00 [INF] Agregar historial: true
+2025-11-12 02:00:42.878 -06:00 [INF] ? ModelState v?lido, procediendo a actualizar...
+2025-11-12 02:00:43.149 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 3
+2025-11-12 02:00:43.154 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=21
+2025-11-12 02:00:43.245 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=21
+2025-11-12 02:00:43.247 -06:00 [INF] ?? Ticket actualizado exitosamente. Id=21
+2025-11-12 02:00:43.249 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=21, EstadoNuevo=En Proceso
+2025-11-12 02:00:43.298 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=41
+2025-11-12 02:00:43.299 -06:00 [INF] ? Historial de estados creado para Ticket #21
+2025-11-12 02:35:24.099 -06:00 [INF] Creando ticket: nhf bf, M?todo: Manual
+2025-11-12 02:35:24.107 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 02:35:24.239 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=nhf bf
+2025-11-12 02:35:24.433 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=22
+2025-11-12 02:35:24.436 -06:00 [INF] Ticket creado con ID: 22
+2025-11-12 02:36:15.974 -06:00 [INF] Editando ticket ID: 22, Agregar historial: true
+2025-11-12 02:36:16.003 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 02:36:16.008 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=22
+2025-11-12 02:36:16.104 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=22
+2025-11-12 02:36:16.108 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=22, EstadoNuevo=En Proceso
+2025-11-12 02:36:16.151 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=42
+2025-11-12 02:36:16.153 -06:00 [INF] Historial de estados creado para Ticket #22
+2025-11-12 02:36:16.154 -06:00 [INF] Ticket actualizado. Id=22
+2025-11-12 02:42:46.026 -06:00 [INF] Editando ticket ID: 22, Agregar historial: true
+2025-11-12 02:42:46.115 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 02:42:46.126 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=22
+2025-11-12 02:42:46.502 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=22
+2025-11-12 02:42:46.507 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=22, EstadoNuevo=Resuelto
+2025-11-12 02:42:46.565 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=43
+2025-11-12 02:42:46.566 -06:00 [INF] Historial de estados creado para Ticket #22
+2025-11-12 02:42:46.567 -06:00 [INF] Ticket actualizado. Id=22
+2025-11-12 02:45:41.518 -06:00 [INF] Editando ticket ID: 22, Agregar historial: true
+2025-11-12 02:45:41.624 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 02:45:41.635 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=22
+2025-11-12 02:46:48.168 -06:00 [INF] Editando ticket ID: 22, Agregar historial: true
+2025-11-12 02:46:48.196 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 02:46:48.199 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=22
+2025-11-12 03:15:05.535 -06:00 [INF] Editando ticket ID: 22, Agregar historial: true
+2025-11-12 03:15:05.616 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 03:15:05.634 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=22
+2025-11-12 03:15:05.912 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=22
+2025-11-12 03:15:05.919 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=22, EstadoNuevo=Cerrado
+2025-11-12 03:15:06.023 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=44
+2025-11-12 03:15:06.025 -06:00 [INF] Historial de estados creado para Ticket #22
+2025-11-12 03:15:06.027 -06:00 [INF] Ticket actualizado. Id=22
+2025-11-12 11:00:18.078 -06:00 [INF] Editando ticket ID: 22, Agregar historial: false
+2025-11-12 11:00:34.508 -06:00 [INF] Editando ticket ID: 22, Agregar historial: false
+2025-11-12 11:01:46.635 -06:00 [INF] Editando ticket ID: 22, Agregar historial: false
+2025-11-12 11:02:04.359 -06:00 [INF] Editando ticket ID: 22, Agregar historial: false
+2025-11-12 11:02:30.244 -06:00 [INF] Editando ticket ID: 22, Agregar historial: false
+2025-11-12 11:05:05.048 -06:00 [INF] Editando ticket ID: 20, Agregar historial: true
+2025-11-12 11:05:05.174 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 11:05:05.217 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=20
+2025-11-12 11:05:05.622 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=20
+2025-11-12 11:05:05.637 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=20, EstadoNuevo=En Proceso
+2025-11-12 11:05:05.895 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=45
+2025-11-12 11:05:05.898 -06:00 [INF] Historial de estados creado para Ticket #20
+2025-11-12 11:05:05.902 -06:00 [INF] Ticket actualizado. Id=20
+2025-11-12 11:07:18.210 -06:00 [INF] Editando ticket ID: 20, Agregar historial: false
+2025-11-12 11:07:35.647 -06:00 [INF] Editando ticket ID: 20, Agregar historial: false
+2025-11-12 11:22:06.450 -06:00 [INF] Editando ticket ID: 17, Agregar historial: false
+2025-11-12 11:22:23.607 -06:00 [INF] Editando ticket ID: 17, Agregar historial: false
+2025-11-12 11:24:28.636 -06:00 [INF] Creando ticket: nuevo ticket, M?todo: Automatico
+2025-11-12 11:24:28.642 -06:00 [INF] Asignaci?n autom?tica - T?cnico ser? asignado despu?s
+2025-11-12 11:24:28.914 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=nuevo ticket
+2025-11-12 11:24:29.406 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=23
+2025-11-12 11:24:29.408 -06:00 [INF] Ticket creado con ID: 23
+2025-11-12 11:25:28.721 -06:00 [INF] Editando ticket ID: 23, Agregar historial: true
+2025-11-12 11:25:28.794 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 11:25:28.833 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=23
+2025-11-12 11:25:28.881 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=23
+2025-11-12 11:25:28.900 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=23, EstadoNuevo=Asignado
+2025-11-12 11:25:29.110 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=46
+2025-11-12 11:25:29.113 -06:00 [INF] Historial de estados creado para Ticket #23
+2025-11-12 11:25:29.116 -06:00 [INF] Ticket actualizado. Id=23
+2025-11-12 12:57:46.319 -06:00 [INF] Creando ticket: Error con el monitor, no enciende , M?todo: Manual
+2025-11-12 12:57:46.329 -06:00 [INF] Asignaci?n manual al t?cnico ID: 3
+2025-11-12 12:57:46.438 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=Error con el monitor, no enciende
+2025-11-12 12:57:46.637 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=24
+2025-11-12 12:57:46.639 -06:00 [INF] Ticket creado con ID: 24
+2025-11-12 12:59:27.994 -06:00 [INF] Editando ticket ID: 24, Agregar historial: true
+2025-11-12 12:59:28.018 -06:00 [INF] Asignaci?n manual al t?cnico ID: 3
+2025-11-12 12:59:28.031 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=24
+2025-11-12 12:59:28.041 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=24
+2025-11-12 12:59:28.045 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=24, EstadoNuevo=En Proceso
+2025-11-12 12:59:28.071 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=47
+2025-11-12 12:59:28.073 -06:00 [INF] Historial de estados creado para Ticket #24
+2025-11-12 12:59:28.073 -06:00 [INF] Ticket actualizado. Id=24
+2025-11-12 13:00:16.383 -06:00 [INF] Editando ticket ID: 24, Agregar historial: true
+2025-11-12 13:00:16.403 -06:00 [INF] Asignaci?n manual al t?cnico ID: 3
+2025-11-12 13:00:16.406 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=24
+2025-11-12 13:00:16.414 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=24
+2025-11-12 13:00:16.416 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=24, EstadoNuevo=Resuelto
+2025-11-12 13:00:16.421 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=48
+2025-11-12 13:00:16.422 -06:00 [INF] Historial de estados creado para Ticket #24
+2025-11-12 13:00:16.423 -06:00 [INF] Ticket actualizado. Id=24
+2025-11-12 13:01:45.622 -06:00 [INF] Creando ticket: error en el router, M?todo: Automatico
+2025-11-12 13:01:45.623 -06:00 [INF] Asignaci?n autom?tica - T?cnico ser? asignado despu?s
+2025-11-12 13:01:45.638 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=error en el router
+2025-11-12 13:01:45.652 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=25
+2025-11-12 13:01:45.653 -06:00 [INF] Ticket creado con ID: 25
+2025-11-12 13:03:05.101 -06:00 [INF] Editando ticket ID: 25, Agregar historial: true
+2025-11-12 13:03:05.124 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 13:03:05.128 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=25
+2025-11-12 13:03:05.136 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=25
+2025-11-12 13:03:05.139 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=25, EstadoNuevo=Asignado
+2025-11-12 13:03:05.145 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=49
+2025-11-12 13:03:05.146 -06:00 [INF] Historial de estados creado para Ticket #25
+2025-11-12 13:03:05.146 -06:00 [INF] Ticket actualizado. Id=25
+2025-11-12 13:14:24.035 -06:00 [INF] Creando ticket: Error de conexion a internet, M?todo: Manual
+2025-11-12 13:14:24.107 -06:00 [INF] Asignaci?n manual al t?cnico ID: 1
+2025-11-12 13:14:24.221 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=Error de conexion a internet
+2025-11-12 13:14:24.415 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=10
+2025-11-12 13:14:24.416 -06:00 [INF] Ticket creado con ID: 10
+2025-11-12 13:15:22.326 -06:00 [INF] Editando ticket ID: 10, Agregar historial: true
+2025-11-12 13:15:22.357 -06:00 [INF] Asignaci?n manual al t?cnico ID: 1
+2025-11-12 13:15:22.372 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-11-12 13:15:22.387 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-11-12 13:15:22.391 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=En Proceso
+2025-11-12 13:15:22.416 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=38
+2025-11-12 13:15:22.418 -06:00 [INF] Historial de estados creado para Ticket #10
+2025-11-12 13:15:22.419 -06:00 [INF] Ticket actualizado. Id=10
+2025-11-12 13:16:13.301 -06:00 [INF] Creando ticket: Problema con monitor, M?todo: Automatico
+2025-11-12 13:16:13.302 -06:00 [INF] Asignaci?n autom?tica - T?cnico ser? asignado despu?s
+2025-11-12 13:16:13.316 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=Problema con monitor
+2025-11-12 13:16:13.327 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=11
+2025-11-12 13:16:13.328 -06:00 [INF] Ticket creado con ID: 11
+2025-11-12 13:16:57.435 -06:00 [INF] Editando ticket ID: 11, Agregar historial: true
+2025-11-12 13:16:57.466 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-12 13:16:57.470 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-11-12 13:16:57.478 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-11-12 13:16:57.480 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=11, EstadoNuevo=Asignado
+2025-11-12 13:16:57.485 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=39
+2025-11-12 13:16:57.486 -06:00 [INF] Historial de estados creado para Ticket #11
+2025-11-12 13:16:57.486 -06:00 [INF] Ticket actualizado. Id=11

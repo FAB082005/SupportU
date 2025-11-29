@@ -1,0 +1,43 @@
+﻿@model SupportU.Application.DTOs.SlaDTO
+@{
+    ViewData["Title"] = Model.Activo ? "Inactivar SLA" : "Reactivar SLA";
+}
+
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="mb-3">@ViewData["Title"]</h2>
+                <dl class="row mb-4">
+                    <dt class="col-sm-4">Nombre</dt>
+                    <dd class="col-sm-8">@Model.Nombre</dd>
+                    <dt class="col-sm-4">Activo</dt>
+                    <dd class="col-sm-8">@Model.Activo</dd>
+                </dl>
+
+                @if (Model.Activo)
+                {
+                    <form asp-action="Delete" asp-route-id="@Model.SlaId" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="estado" value="1" /> @* 1 => inactivar *@
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button type="submit" class="btn btn-danger">Inactivar</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="Delete" asp-route-id="@Model.SlaId" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="estado" value="0" /> @* 0 => reactivar *@
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button type="submit" class="btn btn-success">Reactivar</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</section>

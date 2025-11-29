@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Bienvenido a SupportU";
+}
+
+<section id="hero" class="hero section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="zoom-in" data-aos-delay="200">
+                <div class="hero-content text-center">
+                    <div class="hero-badge" data-aos="fade-down" data-aos-delay="300">
+                        <i class="bi bi-star-fill"></i>
+                        <span>Plataforma de Soporte</span>
+                    </div>
+                    <h1 class="hero-title" data-aos="fade-up" data-aos-delay="400">Bienvenido a SupportU</h1>
+                    <p class="hero-description" data-aos="fade-up" data-aos-delay="500">
+                        Tu plataforma de soporte y gestión de tickets
+                    </p>
+
+                    <div class="hero-actions" data-aos="fade-up" data-aos-delay="600">
+                        <a asp-controller="Perfiles" asp-action="Index" class="btn-primary">Perfiles</a>
+                        <a asp-controller="Home" asp-action="Privacy" class="btn-outline">Política de Privacidad</a>
+                    </div>
+
+                    <div class="hero-metrics" data-aos="fade-up" data-aos-delay="700">
+                        <div class="metric-item">
+                            <div class="metric-icon"><i class="bi bi-people"></i></div>
+                            <div class="metric-content">
+                                <span class="metric-number">100+</span>
+                                <span class="metric-label">Usuarios Activos</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon"><i class="bi bi-ticket"></i></div>
+                            <div class="metric-content">
+                                <span class="metric-number">500+</span>
+                                <span class="metric-label">Tickets Resueltos</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-icon"><i class="bi bi-globe"></i></div>
+                            <div class="metric-content">
+                                <span class="metric-number">Costa Rica</span>
+                                <span class="metric-label">Cobertura</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    @if (TempData["NotificationMessage"] != null)
+    {
+        <text>
+            <script>
+                @Html.Raw(TempData["NotificationMessage"].ToString())
+            </script>
+        </text>
+    }
+}

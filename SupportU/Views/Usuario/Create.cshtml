@@ -1,0 +1,185 @@
+﻿@model SupportU.Application.DTOs.UsuarioDTO
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="container" data-aos="fade-up">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="hero-badge mb-3"><i class="bi bi-person-plus-fill"></i> <span>Gestión de Usuarios</span></div>
+                <h1 class="hero-title mb-2">Nuevo Usuario</h1>
+                <p class="hero-description mb-4">Registra un usuario para SupportU. Todos los campos son obligatorios salvo indicado.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+
+                        @* Mostrar errores del servidor *@
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" id="serverErrors">
+                                <ul class="mb-0">
+                                    @foreach (var entry in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                    {
+                                        <li>@entry.ErrorMessage</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        <form asp-action="Create" method="post" id="frmCreateUsuario" novalidate>
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden" asp-for="UsuarioId" />
+                            <input type="hidden" asp-for="FechaCreacion" value="@(Model?.FechaCreacion == default ? DateTime.UtcNow.ToString("o") : Model.FechaCreacion.ToString("o"))" />
+                            <input type="hidden" name="Rol" value="Cliente" />
+                            <input type="hidden" name="Activo" value="true" />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Correo</label>
+                                <input name="Email" id="Email" class="form-control" value="@Model?.Email" autocomplete="email" />
+                                <div class="text-danger small mt-1" id="errEmail" style="display:none"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Nombre</label>
+                                    <input name="Nombre" id="Nombre" class="form-control" value="@Model?.Nombre" autocomplete="given-name" />
+                                    <div class="text-danger small mt-1" id="errNombre" style="display:none"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Apellidos</label>
+                                    <input name="Apellidos" id="Apellidos" class="form-control" value="@Model?.Apellidos" autocomplete="family-name" />
+                                    <div class="text-danger small mt-1" id="errApellidos" style="display:none"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 position-relative">
+                                <label class="form-label fw-bold">Contraseña</label>
+                                <div class="input-group">
+                                    <input name="PasswordHash" id="PasswordHash" type="password" class="form-control" autocomplete="new-password" />
+                                    <button class="btn btn-outline-secondary" type="button" id="btnTogglePassword" title="Mostrar contraseña">
+                                        <i id="iconToggle" class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="text-danger small mt-1" id="errPasswordHash" style="display:none"></div>
+                                <div class="form-text">Introduce una contraseña.</div>
+                            </div>
+
+                            <div class="d-flex gap-2 justify-content-end">
+                                <button type="submit" id="btnGuardar" class="btn btn-primary btn-lg">Guardar</button>
+                                <a asp-controller="Login" asp-action="Index" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        (function () {
+            // Email regex seguro para Razor
+            function isEmailValid(email) {
+                if (typeof email !== 'string') return false;
+                var s = email.trim();
+                if (!s) return false;
+                var re = new RegExp('^[^\\s\\u0040]+\\u0040[^\\s\\u0040]+\\.[^\\s\\u0040]+$');
+                return re.test(s);
+            }
+
+            function showErr(id, msg) {
+                var el = $('#' + id);
+                if (!msg) el.hide().text('');
+                else el.show().text(msg);
+            }
+
+            function validateField(name, value) {
+                if (name === 'Email') {
+                    if (!value || !value.trim()) return "El correo es obligatorio";
+                    if (!isEmailValid(value.trim())) return "Formato de correo inválido";
+                    return null;
+                }
+                if (name === 'Nombre') {
+                    if (!value || !value.trim()) return "El nombre es obligatorio";
+                    return null;
+                }
+                if (name === 'Apellidos') {
+                    if (!value || !value.trim()) return "Los apellidos son obligatorios";
+                    return null;
+                }
+                if (name === 'PasswordHash') {
+                    if (!value || !value.trim()) return "La contraseña es obligatoria";
+                    return null;
+                }
+                return null;
+            }
+
+            var fields = ['Email', 'Nombre', 'Apellidos', 'PasswordHash'];
+            fields.forEach(function (f) {
+                $('#' + f).on('input blur change', function () {
+                    var val = $(this).val();
+                    var err = validateField(f, val);
+                    showErr('err' + f, err);
+                });
+            });
+
+            // Toggle ver contraseña
+            $('#btnTogglePassword').on('click', function () {
+                var $pwd = $('#PasswordHash');
+                var $icon = $('#iconToggle');
+                if ($pwd.attr('type') === 'password') {
+                    $pwd.attr('type', 'text');
+                    $icon.removeClass('bi-eye').addClass('bi-eye-slash');
+                    $(this).attr('title', 'Ocultar contraseña');
+                } else {
+                    $pwd.attr('type', 'password');
+                    $icon.removeClass('bi-eye-slash').addClass('bi-eye');
+                    $(this).attr('title', 'Mostrar contraseña');
+                }
+            });
+
+            $('#frmCreateUsuario').on('submit', function (e) {
+                var hasError = false;
+                fields.forEach(function (f) {
+                    var val = $('#' + f).val();
+                    var err = validateField(f, val);
+                    showErr('err' + f, err);
+                    if (err) hasError = true;
+                });
+
+                if (hasError) {
+                    e.preventDefault();
+                    var first = $('.text-danger:visible').first();
+                    if (first.length) {
+                        var related = first.prev('input, textarea');
+                        if (related.length) related.focus();
+                    }
+                    return false;
+                }
+                return true;
+            });
+
+            // Mapear errores del servidor a campos visibles si existen
+            $(function () {
+                var msgs = $('#serverErrors ul li').map(function () { return $(this).text(); }).get();
+                if (msgs.length === 0) return;
+                msgs.forEach(function (msg) {
+                    var lower = msg.toLowerCase();
+                    if (lower.includes('correo') || lower.includes('email')) showErr('errEmail', msg);
+                    else if (lower.includes('nombre')) showErr('errNombre', msg);
+                    else if (lower.includes('apellidos')) showErr('errApellidos', msg);
+                    else if (lower.includes('contraseña') || lower.includes('password')) showErr('errPasswordHash', msg);
+                });
+            });
+        })();
+    </script>
+}

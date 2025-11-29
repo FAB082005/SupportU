@@ -1,0 +1,79 @@
+﻿@model IEnumerable<SupportU.Application.DTOs.TicketDTO>
+@{
+    ViewData["Title"] = "Listado de Tickets";
+}
+<style>
+    .ticket-card {
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+        .ticket-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            border-color: #0d6efd;
+        }
+</style>
+<div class="container mt-4" style="padding-top: 80px;">
+    <div class="text-center mb-4">
+        <h1 class="display-6 fw-bold text-dark">Listado de Tickets</h1>
+        <p class="text-muted">Gestiona y visualiza tus tickets</p>
+    </div>
+    <!-- Botón Crear Ticket -->
+    <div class="mb-4 text-end">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Crear Ticket
+        </a>
+    </div>
+    <section>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card ticket-card shadow-sm h-100">
+                        <div class="card-header bg-white border-bottom">
+                            <h6 class="mb-0 text-dark">
+                                Ticket #@item.TicketId
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">@Html.DisplayFor(modelItem => item.Titulo)</h5>
+                            <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                @(item.Descripcion.Length > 80 ? item.Descripcion.Substring(0, 80) + "..." : item.Descripcion)
+                            </p>
+                            <hr />
+                            <div class="mb-3">
+                                <span class="badge bg-primary me-2">
+                                    @Html.DisplayFor(modelItem => item.Estado)
+                                </span>
+                                <span class="badge bg-secondary">
+                                    @Html.DisplayFor(modelItem => item.Prioridad)
+                                </span>
+                            </div>
+                            <p class="mb-1 text-muted small">
+                                <strong>Categoría ID:</strong> @item.CategoriaId
+                            </p>
+                            <p class="mb-0 text-muted small">
+                                <strong>Fecha:</strong> @item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <a class="btn btn-outline-primary btn-sm w-100"
+                               asp-action="Details"
+                               asp-route-id="@item.TicketId">
+                                Ver Detalle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning border mt-4" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            No hay tickets disponibles para tu perfil.
+        </div>
+    }
+</div>

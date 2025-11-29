@@ -1,0 +1,104 @@
+2025-11-11 00:55:01.060 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-11 00:55:01.072 -06:00 [INF] Titulo: pruebaaa
+2025-11-11 00:55:01.072 -06:00 [INF] EtiquetaId: 10
+2025-11-11 00:55:01.077 -06:00 [INF] CategoriaId: 3
+2025-11-11 00:55:01.079 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-11 00:55:01.082 -06:00 [INF] T?cnico seleccionado: 3
+2025-11-11 00:55:01.083 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-11 00:55:01.084 -06:00 [INF] Asignaci?n manual al t?cnico ID: 3
+2025-11-11 00:55:01.087 -06:00 [INF] Llamando a _serviceTicket.AddAsync...
+2025-11-11 00:55:01.298 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=pruebaaa
+2025-11-11 00:55:01.718 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=12
+2025-11-11 00:55:01.721 -06:00 [INF] ?? Ticket creado exitosamente con ID: 12
+2025-11-11 01:14:03.467 -06:00 [INF] Edit POST called for TicketId=11, Titulo=Prueba create con tecnicooo
+2025-11-11 01:14:03.519 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-11-11 01:14:03.740 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-11-11 01:14:03.741 -06:00 [INF] Ticket updated successfully. Id=11
+2025-11-11 01:14:21.988 -06:00 [INF] Edit POST called for TicketId=11, Titulo=Prueba create con tecnicooo
+2025-11-11 01:14:22.018 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-11-11 01:14:22.059 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-11-11 01:14:22.062 -06:00 [INF] Ticket updated successfully. Id=11
+2025-11-11 01:16:53.101 -06:00 [INF] Edit POST called for TicketId=11, Titulo=Prueba create con tecnicooo 22
+2025-11-11 01:16:53.151 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-11-11 01:16:53.410 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-11-11 01:16:53.413 -06:00 [INF] Ticket updated successfully. Id=11
+2025-11-11 01:19:31.077 -06:00 [INF] Edit POST called for TicketId=11, Titulo=Prueba create con tecnicooo 22
+2025-11-11 01:19:31.111 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-11-11 01:19:31.153 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-11-11 01:19:31.155 -06:00 [INF] Ticket updated successfully. Id=11
+2025-11-11 22:07:27.900 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-11 22:07:27.924 -06:00 [INF] Titulo: PRUEBA CON TECNICO ASIGNADO
+2025-11-11 22:07:27.929 -06:00 [INF] EtiquetaId: 6
+2025-11-11 22:07:27.940 -06:00 [INF] CategoriaId: 2
+2025-11-11 22:07:27.943 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-11 22:07:27.950 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-11 22:07:27.954 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-11 22:07:27.958 -06:00 [INF] Asignaci?n manual al t?cnico ID: 2
+2025-11-11 22:07:27.961 -06:00 [INF] Llamando a _serviceTicket.AddAsync...
+2025-11-11 22:07:28.306 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=PRUEBA CON TECNICO ASIGNADO
+2025-11-11 22:07:28.822 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=13
+2025-11-11 22:07:28.826 -06:00 [INF] ?? Ticket creado exitosamente con ID: 13
+2025-11-11 22:17:31.828 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-11 22:17:31.856 -06:00 [INF] Titulo: nuebva prueba
+2025-11-11 22:17:31.868 -06:00 [INF] EtiquetaId: 8
+2025-11-11 22:17:31.881 -06:00 [INF] CategoriaId: 2
+2025-11-11 22:17:31.884 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-11 22:17:31.893 -06:00 [INF] T?cnico seleccionado: 2
+2025-11-11 22:17:31.903 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-11 22:17:31.909 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 2
+2025-11-11 22:17:31.912 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=2, Estado=Asignado
+2025-11-11 22:17:32.256 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=nuebva prueba
+2025-11-11 22:17:32.862 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=14
+2025-11-11 22:17:32.867 -06:00 [INF] ?? Ticket creado exitosamente con ID: 14
+2025-11-11 22:18:13.934 -06:00 [INF] Edit POST called for TicketId=14, Titulo=nuebva prueba
+2025-11-11 22:18:14.012 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=14
+2025-11-11 22:18:14.348 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=14
+2025-11-11 22:18:14.351 -06:00 [INF] Ticket updated successfully. Id=14
+2025-11-11 22:19:43.563 -06:00 [INF] Create POST called for Categoria. Nombre=pruebaaa, SlaId=1, Criterio=mejor_calificado
+2025-11-11 22:19:43.580 -06:00 [INF] RepositoryCategoria.AddAsync called. Nombre=pruebaaa
+2025-11-11 22:19:43.660 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=5
+2025-11-11 22:19:43.663 -06:00 [INF] Categoria created successfully. NewId=5
+2025-11-11 22:21:02.236 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-11 22:21:02.240 -06:00 [INF] Titulo: kmjfv
+2025-11-11 22:21:02.243 -06:00 [INF] EtiquetaId: 14
+2025-11-11 22:21:02.248 -06:00 [INF] CategoriaId: 4
+2025-11-11 22:21:02.250 -06:00 [INF] M?todo de asignaci?n: Automatico
+2025-11-11 22:21:02.253 -06:00 [INF] T?cnico seleccionado: null
+2025-11-11 22:21:02.258 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-11 22:21:02.261 -06:00 [INF] ? Asignaci?n AUTOM?TICA - T?cnico ser? asignado despu?s
+2025-11-11 22:21:02.265 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=null, Estado=Pendiente
+2025-11-11 22:21:02.294 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=kmjfv
+2025-11-11 22:21:02.323 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=15
+2025-11-11 22:21:02.327 -06:00 [INF] ?? Ticket creado exitosamente con ID: 15
+2025-11-11 22:21:48.369 -06:00 [INF] Edit POST called for TicketId=15, Titulo=kmjfv
+2025-11-11 22:21:48.432 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=15
+2025-11-11 22:21:48.487 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=15
+2025-11-11 22:21:48.492 -06:00 [INF] Ticket updated successfully. Id=15
+2025-11-11 23:33:10.601 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-11 23:33:10.623 -06:00 [INF] Titulo: prueba con historial
+2025-11-11 23:33:10.626 -06:00 [INF] EtiquetaId: 4
+2025-11-11 23:33:10.638 -06:00 [INF] CategoriaId: 1
+2025-11-11 23:33:10.644 -06:00 [INF] M?todo de asignaci?n: Manual
+2025-11-11 23:33:10.647 -06:00 [INF] T?cnico seleccionado: 3
+2025-11-11 23:33:10.650 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-11 23:33:10.654 -06:00 [INF] ? Asignaci?n MANUAL al t?cnico ID: 3
+2025-11-11 23:33:10.657 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=3, Estado=Asignado
+2025-11-11 23:33:11.030 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba con historial
+2025-11-11 23:33:11.707 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=16
+2025-11-11 23:33:11.717 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=16, EstadoNuevo=Asignado
+2025-11-11 23:33:11.848 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=38
+2025-11-11 23:33:11.852 -06:00 [INF] ?? Ticket creado exitosamente con ID: 16
+2025-11-11 23:34:30.314 -06:00 [INF] === CREATE TICKET POST INICIADO ===
+2025-11-11 23:34:30.318 -06:00 [INF] Titulo: prueba con historial 2 en estado pendiente
+2025-11-11 23:34:30.320 -06:00 [INF] EtiquetaId: 3
+2025-11-11 23:34:30.322 -06:00 [INF] CategoriaId: 1
+2025-11-11 23:34:30.324 -06:00 [INF] M?todo de asignaci?n: Automatico
+2025-11-11 23:34:30.326 -06:00 [INF] T?cnico seleccionado: null
+2025-11-11 23:34:30.329 -06:00 [INF] ? ModelState v?lido, procediendo a guardar...
+2025-11-11 23:34:30.331 -06:00 [INF] ? Asignaci?n AUTOM?TICA - T?cnico ser? asignado despu?s
+2025-11-11 23:34:30.334 -06:00 [INF] ?? Enviando a servicio: TecnicoAsignadoId=null, Estado=Pendiente
+2025-11-11 23:34:30.368 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba con historial 2 en estado pendiente
+2025-11-11 23:34:30.405 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=17
+2025-11-11 23:34:30.408 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=Pendiente
+2025-11-11 23:34:30.425 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=39
+2025-11-11 23:34:30.429 -06:00 [INF] ?? Ticket creado exitosamente con ID: 17

@@ -1,0 +1,41 @@
+﻿@model SupportU.Application.DTOs.SlaDTO
+@{
+    ViewData["Title"] = "Editar SLA";
+}
+
+<section class="section mt-5">
+    <div class="container">
+        <h2>Editar SLA</h2>
+        <form asp-action="Edit" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="SlaId" />
+            <div class="mb-3">
+                <label asp-for="Nombre" class="form-label fw-bold">Nombre</label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TiempoRespuestaMinutos" class="form-label fw-bold">Tiempo Respuesta (min)</label>
+                <input asp-for="TiempoRespuestaMinutos" class="form-control" />
+                <span asp-validation-for="TiempoRespuestaMinutos" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="TiempoResolucionMinutos" class="form-label fw-bold">Tiempo Resolución (min)</label>
+                <input asp-for="TiempoResolucionMinutos" class="form-control" />
+                <span asp-validation-for="TiempoResolucionMinutos" class="text-danger"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input asp-for="Activo" class="form-check-input" />
+                <label asp-for="Activo" class="form-check-label">Activo</label>
+            </div>
+            <div class="d-flex gap-2 justify-content-end">
+                <button type="submit" class="btn btn-success">Actualizar</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
