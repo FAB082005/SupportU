@@ -2,7 +2,7 @@
 using SupportU.Application.Services.Interfaces;
 using SupportU.Application.DTOs;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Identity; 
+using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
 
 namespace SupportU.Web.Controllers
@@ -70,7 +70,6 @@ namespace SupportU.Web.Controllers
                 return View(dto);
             }
 
-            // Hashear contraseña (una sola vez, antes de persistir)
             var hasher = new PasswordHasher<object>();
             dto.PasswordHash = hasher.HashPassword(null, dto.PasswordHash);
 
@@ -168,8 +167,8 @@ namespace SupportU.Web.Controllers
 
             if (!string.IsNullOrEmpty(estadoForm))
             {
-                if (estadoForm == "1") desiredActivo = false; // inactivar
-                else if (estadoForm == "0") desiredActivo = true; // reactivar
+                if (estadoForm == "1") desiredActivo = false;
+                else if (estadoForm == "0") desiredActivo = true;
             }
 
             var dto = await _service.FindByIdAsync(id);

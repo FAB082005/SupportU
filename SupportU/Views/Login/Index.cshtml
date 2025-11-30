@@ -56,7 +56,6 @@
         </div>
     </div>
 </section>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
@@ -65,11 +64,31 @@
         <script>
             (function () {
                 try {
-                    @Html.Raw(TempData["ToastMessage"].ToString());
+            @Html.Raw(TempData["ToastMessage"].ToString());
                 } catch (e) {
                     console.error('Error ejecutando ToastMessage', e);
                 }
             })();
         </script>
     }
+
+    @if (TempData.Peek("ForgotLogs") != null)
+    {
+        <script>
+            (function () {
+                try {
+            @Html.Raw(TempData.Peek("ForgotLogs").ToString());
+                } catch (e) {
+                    console.error('Error ejecutando ForgotLogs', e);
+                }
+            })();
+        </script>
+    }
+    @if (TempData.Peek("LoginLogs") != null)
+    {
+        <script>
+            @Html.Raw(TempData.Peek("LoginLogs").ToString());
+        </script>
+    }
+
 }

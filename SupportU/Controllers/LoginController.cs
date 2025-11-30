@@ -64,6 +64,7 @@ namespace SupportU.Web.Controllers
             var hasher = new PasswordHasher<object>();
             var result = hasher.VerifyHashedPassword(null, stored, model.Password ?? string.Empty);
 
+
             if (result == PasswordVerificationResult.Success)
             {
                 await SignIn(usuario, model.RememberMe);
@@ -78,6 +79,7 @@ namespace SupportU.Web.Controllers
             TempData["ToastMessage"] = "toastr.error('Contraseña incorrecta','Error de acceso');";
             return View("Index", model);
         }
+
 
         private async Task SignIn(UsuarioDTO usuario, bool rememberMe)
         {
@@ -109,5 +111,46 @@ namespace SupportU.Web.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Login");
         }
+
+        // GET: /Login/ForgotPassword
+        public IActionResult ForgotPassword()
+        {
+            return View(new UsuarioDTO());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(UsuarioDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email))
+            {
+                ModelState.AddModelError(nameof(model.Email), "El correo es obligatorio");
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.PasswordHash))
+            {
+                ModelState.AddModelError(nameof(model.PasswordHash), "La nueva contraseña es obligatoria");
+                return View(model);
+            }
+
+            var usuarios = await _serviceUsuario.ListAsync();
+            var usuario = usuarios.FirstOrDefault(u =>
+                string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (usuario == null)
+            {
+                ModelState.AddModelError(nameof(model.Email), "Correo no registrado");
+                return View(model);
+            }
+
+            usuario.PasswordHash = model.PasswordHash;
+
+            await _serviceUsuario.UpdateAsync(usuario);
+
+            TempData["ToastMessage"] = "toastr.success('Contraseña actualizada correctamente','Éxito');";
+            return RedirectToAction("Index", "Login");
+        }
+
     }
 }
