@@ -15,6 +15,7 @@ namespace SupportU.Application.Services.Interfaces
         Task<int> AddAsync(TicketDTO dto);
         Task UpdateAsync(TicketDTO dto);
         Task DeleteAsync(int id);
+
         
 
     }

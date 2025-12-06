@@ -1,0 +1,150 @@
+﻿@model List<SupportU.Application.DTOs.NotificacionDTO>
+@{
+    ViewData["Title"] = "Mis Notificaciones";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="bi bi-bell-fill text-primary me-2"></i>
+                    Mis Notificaciones
+                </h2>
+                <span class="badge bg-primary fs-6">
+                    @Model.Count(n => n.EsPendiente) pendientes
+                </span>
+            </div>
+
+            <!-- LISTA DE NOTIFICACIONES -->
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-info-circle fs-1 d-block mb-3"></i>
+                    <h5>No tienes notificaciones</h5>
+                    <p class="text-muted mb-0">Cuando ocurran eventos importantes, aparecerán aquí</p>
+                </div>
+            }
+            else
+            {
+                <div class="list-group">
+                    @foreach (var notif in Model)
+                    {
+                        <div class="list-group-item @(notif.EsPendiente ? "border-start border-primary border-4" : "bg-light")"
+                             style="transition: all 0.3s;">
+
+                            <div class="d-flex w-100 justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <!-- TIPO DE NOTIFICACIÓN -->
+                                    <div class="mb-2">
+                                        @switch (notif.TipoNotificacion)
+                                        {
+                                            case "TicketCreado":
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-plus-circle me-1"></i>Ticket Creado
+                                                </span>
+                                                break;
+                                            case "TicketAsignado":
+                                                <span class="badge bg-primary">
+                                                    <i class="bi bi-person-check me-1"></i>Ticket Asignado
+                                                </span>
+                                                break;
+                                            case "CambioEstado":
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="bi bi-arrow-repeat me-1"></i>Cambio de Estado
+                                                </span>
+                                                break;
+                                            case "InicioSesion":
+                                                <span class="badge bg-info">
+                                                    <i class="bi bi-box-arrow-in-right me-1"></i>Inicio de Sesión
+                                                </span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-bell me-1"></i>Notificación
+                                                </span>
+                                                break;
+                                        }
+
+                                        @if (notif.EsPendiente)
+                                        {
+                                            <span class="badge bg-danger ms-2">NUEVA</span>
+                                        }
+                                    </div>
+
+                                    <!-- MENSAJE -->
+                                    <h6 class="mb-2 @(notif.EsPendiente ? "fw-bold" : "")">
+                                        @notif.Mensaje
+                                    </h6>
+
+                                    <!-- FECHA -->
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock me-1"></i>
+                                        @notif.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                                    </small>
+                                </div>
+
+                                <!-- BOTÓN MARCAR COMO LEÍDA -->
+                                @if (notif.EsPendiente)
+                                {
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-primary ms-3 btn-marcar-leida"
+                                            data-id="@notif.NotificacionId"
+                                            title="Marcar como leída">
+                                        <i class="bi bi-check2"></i>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // MARCAR COMO LEÍDA
+            $('.btn-marcar-leida').on('click', function() {
+                const btn = $(this);
+                const notifId = btn.data('id');
+                const listItem = btn.closest('.list-group-item');
+
+                $.ajax({
+                    url: '@Url.Action("MarcarLeida", "Notificaciones")',
+                    type: 'POST',
+                    data: {
+                        id: notifId,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Animación de transición
+                            listItem.fadeOut(300, function() {
+                                listItem.removeClass('border-start border-primary border-4');
+                                listItem.addClass('bg-light');
+                                listItem.find('.badge.bg-danger').remove();
+                                listItem.find('h6').removeClass('fw-bold');
+                                btn.remove();
+                                listItem.fadeIn(300);
+                            });
+
+                            toastr.success('Notificación marcada como leída');
+                        } else {
+                            toastr.error('No se pudo marcar la notificación');
+                        }
+                    },
+                    error: function() {
+                        toastr.error('Error al procesar la solicitud');
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+@* Token antiforgery para las peticiones AJAX *@
+@Html.AntiForgeryToken()

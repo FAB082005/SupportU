@@ -13,6 +13,6 @@ namespace SupportU.Application.Services.Interfaces
         Task<ICollection<AsignacionDTO>> ListAsync();
         Task<AsignacionDTO> FindByIdAsync(int id);
         Task<ICollection<AsignacionDTO>> ListByTecnicoSemanaAsync(int tecnicoId, DateTime inicioSemana, DateTime finSemana);
-
-    }
+		Task<int> AddAsync(AsignacionDTO dto);
+	}
 }

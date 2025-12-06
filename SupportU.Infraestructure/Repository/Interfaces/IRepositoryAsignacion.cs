@@ -9,7 +9,8 @@ namespace SupportU.Infraestructure.Repository.Interfaces
 {
     public interface IRepositoryAsignacion
     {
-        Task<ICollection<Asignacion>> ListAsync();
+		Task<int> AddAsync(Asignacion entity);
+		Task<ICollection<Asignacion>> ListAsync();
         Task<Asignacion> FindByIdAsync(int id);
         Task<ICollection<Asignacion>> ListByTecnicoSemanaAsync(int tecnicoId, DateTime inicioSemana, DateTime finSemana);
     }

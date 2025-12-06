@@ -14,7 +14,13 @@ namespace SupportU.Infraestructure.Repository.Implementations
             _context = context;
         }
 
-        public async Task<ICollection<Asignacion>> ListAsync()
+		public async Task<int> AddAsync(Asignacion entity)
+		{
+			await _context.Asignacion.AddAsync(entity);
+			await _context.SaveChangesAsync();
+			return entity.AsignacionId;
+		}
+		public async Task<ICollection<Asignacion>> ListAsync()
         {
             
             var collection = await _context.Set<Asignacion>()

@@ -10,9 +10,10 @@ namespace SupportU.Application.DTOs
         public string MetodoAsignacion { get; set; } = null!;
         public DateTime FechaAsignacion { get; set; }
         public int UsuarioAsignadorId { get; set; }
-
-        // Navegación
-        public virtual Tecnico Tecnico { get; set; } = null!;
+		public string? NombreTecnico { get; set; }
+		public string? TituloTicket { get; set; }
+		// Navegación
+		public virtual Tecnico Tecnico { get; set; } = null!;
         public virtual Ticket Ticket { get; set; } = null!;
         public virtual Usuario UsuarioAsignador { get; set; } = null!;
 

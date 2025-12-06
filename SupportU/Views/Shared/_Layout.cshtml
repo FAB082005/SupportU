@@ -26,7 +26,40 @@
     <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
-    @* Si alguna vista requiere estilos propios, habilita esta sección en el head *@
+    <style>
+        /* 🔔 ESTILOS PARA NOTIFICACIONES */
+        .notification-icon {
+            position: relative;
+            margin-right: 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #333;
+            transition: color 0.3s;
+        }
+
+            .notification-icon:hover {
+                color: #007bff;
+            }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            min-width: 18px;
+            text-align: center;
+        }
+
+            .notification-badge.zero {
+                display: none;
+            }
+    </style>
+
     @RenderSection("Styles", required: false)
 </head>
 <body class="index-page">
@@ -51,28 +84,53 @@
                         <li><a asp-controller="Asignacion" asp-action="Index">Asignación</a></li>
                     }
 
-                    @* Mantenimientos - solo Administrador *@
-                    @if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Administrador"))
-                    {
+                   
                         <li class="dropdown">
-                            <a href="#"><span>Mantenimientos</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                            <a href="#">
+                                <span>Mantenimientos</span>
+                                <i class="bi bi-chevron-down toggle-dropdown"></i>
+                            </a>
                             <ul>
-                                <li><a asp-controller="Usuario" asp-action="Index">Gestión de Usuarios</a></li>
-                                <li><a asp-controller="Tecnico" asp-action="Index">Técnicos</a></li>
-                                <li><a asp-controller="Categoria" asp-action="Index">Categorías</a></li>
-                                <li><a asp-controller="Especialidad" asp-action="Index">Especialidades</a></li>
-                                <li><a asp-controller="SLA" asp-action="Index">SLA</a></li>
-                                <li><a asp-controller="Etiqueta" asp-action="Index">Etiquetas</a></li>
+
+                                @* Solo Administrador *@
+                                @if (User.IsInRole("Administrador"))
+                                {
+                                    <li><a asp-controller="Usuario" asp-action="Index">Gestión de Usuarios</a></li>
+                                    <li><a asp-controller="Tecnico" asp-action="Index">Técnicos</a></li>
+                                    <li><a asp-controller="Categoria" asp-action="Index">Categorías</a></li>
+                                    <li><a asp-controller="Especialidad" asp-action="Index">Especialidades</a></li>
+                                    <li><a asp-controller="SLA" asp-action="Index">SLA</a></li>
+                                }
+
+                                @* Administrador y Técnico *@
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Técnico"))
+                                {
+                                    <li><a asp-controller="Etiqueta" asp-action="Index">Etiquetas</a></li>
+                                }
+
+                                @* Administrador, Técnico y Cliente *@
+                                @if (User.IsInRole("Administrador") || User.IsInRole("Técnico") || User.IsInRole("Cliente"))
+                                {
+                                    <li><a asp-controller="Ticket" asp-action="Index">Ticket</a></li>
+                                }
+
                             </ul>
                         </li>
-                    }
+
+                    
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
             <div class="d-flex align-items-center">
+                @* 🔔 ÍCONO DE NOTIFICACIONES *@
                 @if (User?.Identity?.IsAuthenticated == true)
                 {
+                    <a asp-controller="Notificaciones" asp-action="Index" class="notification-icon" id="notificationBell">
+                        <i class="bi bi-bell-fill"></i>
+                        <span class="notification-badge zero" id="notificationCount">0</span>
+                    </a>
+
                     <form asp-controller="Login" asp-action="Logout" method="post" class="m-0">
                         @Html.AntiForgeryToken()
                         <button type="submit" class="btn-getstarted">Cerrar Sesión</button>
@@ -145,6 +203,41 @@
     <script src="~/assets/vendor/aos/aos.js"></script>
     <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="~/assets/js/main.js"></script>
+
+    @* 🔔 SCRIPT PARA ACTUALIZAR CONTADOR DE NOTIFICACIONES *@
+    @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <script>
+            // Actualizar el contador de notificaciones cada 30 segundos
+            function actualizarContadorNotificaciones() {
+                $.ajax({
+                    url: '@Url.Action("GetCount", "Notificaciones")',
+                    type: 'GET',
+                    success: function(count) {
+                        const badge = $('#notificationCount');
+                        badge.text(count);
+
+                        if (count > 0) {
+                            badge.removeClass('zero');
+                        } else {
+                            badge.addClass('zero');
+                        }
+                    },
+                    error: function() {
+                        console.error('Error al obtener el contador de notificaciones');
+                    }
+                });
+            }
+
+            // Ejecutar al cargar la página
+            $(document).ready(function() {
+                actualizarContadorNotificaciones();
+
+                // Actualizar cada 30 segundos
+                setInterval(actualizarContadorNotificaciones, 30000);
+            });
+        </script>
+    }
 
     @* Ejecutar cualquier toast inyectado por el controller *@
     @if (TempData["ToastMessage"] != null)

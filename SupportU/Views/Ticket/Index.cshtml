@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.TicketDTO>
 @{
     ViewData["Title"] = "Listado de Tickets";
+    var rolUsuario = ViewBag.RolUsuario as string;
 }
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 <style>
     .ticket-card {
         border: 1px solid #e0e0e0;
@@ -13,18 +17,28 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             border-color: #0d6efd;
         }
+
+    .btn-asignar {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
 </style>
+
 <div class="container mt-4" style="padding-top: 80px;">
+    @Html.AntiForgeryToken()
+
     <div class="text-center mb-4">
         <h1 class="display-6 fw-bold text-dark">Listado de Tickets</h1>
         <p class="text-muted">Gestiona y visualiza tus tickets</p>
     </div>
-    <!-- Botón Crear Ticket -->
+
+    <!-- ✅ BOTÓN CREAR TICKET PARA TODOS -->
     <div class="mb-4 text-end">
         <a asp-action="Create" class="btn btn-success">
             <i class="bi bi-plus-circle"></i> Crear Ticket
         </a>
     </div>
+
     <section>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
             @foreach (var item in Model)
@@ -32,23 +46,17 @@
                 <div class="col">
                     <div class="card ticket-card shadow-sm h-100">
                         <div class="card-header bg-white border-bottom">
-                            <h6 class="mb-0 text-dark">
-                                Ticket #@item.TicketId
-                            </h6>
+                            <h6 class="mb-0 text-dark">Ticket #@item.TicketId</h6>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title text-dark">@Html.DisplayFor(modelItem => item.Titulo)</h5>
+                            <h5 class="card-title text-dark">@item.Titulo</h5>
                             <p class="card-text text-muted" style="font-size: 0.9rem;">
                                 @(item.Descripcion.Length > 80 ? item.Descripcion.Substring(0, 80) + "..." : item.Descripcion)
                             </p>
                             <hr />
                             <div class="mb-3">
-                                <span class="badge bg-primary me-2">
-                                    @Html.DisplayFor(modelItem => item.Estado)
-                                </span>
-                                <span class="badge bg-secondary">
-                                    @Html.DisplayFor(modelItem => item.Prioridad)
-                                </span>
+                                <span class="badge bg-primary me-2">@item.Estado</span>
+                                <span class="badge bg-secondary">@item.Prioridad</span>
                             </div>
                             <p class="mb-1 text-muted small">
                                 <strong>Categoría ID:</strong> @item.CategoriaId
@@ -56,6 +64,22 @@
                             <p class="mb-0 text-muted small">
                                 <strong>Fecha:</strong> @item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
                             </p>
+
+                            @* ✅ BOTONES DE ASIGNACIÓN SOLO PARA ADMIN Y TICKETS PENDIENTES *@
+                            @if (rolUsuario == "Administrador" && item.Estado == "Pendiente")
+                            {
+                                <hr />
+                                <div class="d-flex gap-2 mt-3">
+                                    <button class="btn btn-primary btn-asignar w-50"
+                                            onclick="asignarAutomatico(@item.TicketId)">
+                                        <i class="bi bi-magic"></i> Auto
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-asignar w-50"
+                                            onclick="asignarManual(@item.TicketId, @item.CategoriaId)">
+                                        <i class="bi bi-person-check"></i> Manual
+                                    </button>
+                                </div>
+                            }
                         </div>
                         <div class="card-footer bg-white border-top">
                             <a class="btn btn-outline-primary btn-sm w-100"
@@ -69,11 +93,204 @@
             }
         </div>
     </section>
+
     @if (!Model.Any())
     {
         <div class="alert alert-warning border mt-4" role="alert">
             <i class="bi bi-exclamation-triangle me-2"></i>
-            No hay tickets disponibles para tu perfil.
+            No hay tickets disponibles.
         </div>
     }
 </div>
+
+<!-- ✅ MODAL PARA ASIGNACIÓN MANUAL - MEJORADO -->
+<div class="modal fade" id="modalAsignacionManual" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-person-check me-2"></i>Seleccionar Técnico
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Seleccione el técnico más adecuado según su especialidad y carga de trabajo
+                </p>
+                <div id="listaTecnicos" class="list-group">
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <p class="mt-2 text-muted">Cargando técnicos...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let ticketActualId = 0;
+
+        // ✅ ASIGNACIÓN AUTOMÁTICA
+        function asignarAutomatico(ticketId) {
+            console.log('🎯 Iniciando asignación automática para ticket:', ticketId);
+
+            Swal.fire({
+                title: 'Asignando técnico...',
+                text: 'Por favor espere',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+
+            setTimeout(() => {
+                const token = document.querySelector('[name="__RequestVerificationToken"]')?.value;
+                console.log('🔑 Token encontrado:', token ? 'Sí' : 'No');
+
+                const url = '@Url.Action("AsignarAutomatico", "Ticket")';
+                console.log('🌐 URL:', url);
+
+                const body = JSON.stringify({ ticketId: ticketId });
+                console.log('📦 Body:', body);
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token || ''
+                    },
+                    body: body
+                })
+                .then(response => {
+                    console.log('📡 Respuesta recibida:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('✅ Data:', data);
+                    if (data.success) {
+                        Swal.fire({
+                            title: '¡Técnico asignado!',
+                            html: `Asignado a: <strong>${data.tecnico}</strong><br>Puede revisar el detalle para más información.`,
+                            icon: 'success',
+                            timer: 4000,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false
+                        });
+                        setTimeout(() => location.reload(), 2500);
+                    } else {
+                        console.error('❌ Error:', data.message);
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('💥 Error catch:', error);
+                    Swal.fire('Error', 'No se pudo asignar el técnico: ' + error.message, 'error');
+                });
+            }, 2000);
+        }
+
+        // ✅ ASIGNACIÓN MANUAL - MEJORADA CON MÁS INFORMACIÓN
+        function asignarManual(ticketId, categoriaId) {
+            ticketActualId = ticketId;
+
+            const modal = new bootstrap.Modal(document.getElementById('modalAsignacionManual'));
+            modal.show();
+
+            fetch(`@Url.Action("ObtenerTecnicosDisponibles", "Ticket")?categoriaId=${categoriaId}`)
+                .then(response => response.json())
+                .then(tecnicos => {
+                    const lista = document.getElementById('listaTecnicos');
+
+                    if (tecnicos.length === 0) {
+                        lista.innerHTML = '<p class="text-center text-warning">No hay técnicos disponibles</p>';
+                        return;
+                    }
+
+                    lista.innerHTML = tecnicos.map(t => `
+                        <div class="list-group-item list-group-item-action"
+                             onclick="confirmarAsignacionManual(${t.id}, '${t.nombre}')"
+                             style="cursor: pointer; transition: all 0.2s;">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h6 class="mb-1"><strong>${t.nombre}</strong></h6>
+                                    <small class="text-muted">
+                                        <i class="bi bi-envelope me-1"></i>${t.correo}
+                                    </small>
+                                    <br>
+                                    <small class="text-muted">
+                                        <i class="bi bi-tools me-1"></i><strong>Especialidades:</strong> ${t.especialidades}
+                                    </small>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <span class="badge bg-success mb-1">${t.estado}</span>
+                                    <br>
+                                    <span class="badge bg-info mb-1">${t.carga} tickets</span>
+                                    <br>
+                                    <small class="text-warning">
+                                        <i class="bi bi-star-fill"></i> ${t.calificacion.toFixed(2)}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('listaTecnicos').innerHTML =
+                        '<p class="text-center text-danger">Error al cargar técnicos</p>';
+                });
+        }
+
+        function confirmarAsignacionManual(tecnicoId, nombreTecnico) {
+            bootstrap.Modal.getInstance(document.getElementById('modalAsignacionManual')).hide();
+
+            Swal.fire({
+                title: 'Asignando técnico...',
+                text: 'Por favor espere',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+
+            setTimeout(() => {
+                fetch('@Url.Action("AsignarManual", "Ticket")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]')?.value || ''
+                    },
+                    body: JSON.stringify({ ticketId: ticketActualId, tecnicoId: tecnicoId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: '¡Técnico asignado!',
+                            html: `Asignado a: <strong>${nombreTecnico}</strong><br>Puede revisar el detalle para más información.`,
+                            icon: 'success',
+                            timer: 4000,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false
+                        });
+                        setTimeout(() => location.reload(), 2500);
+                    } else {
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'No se pudo asignar el técnico', 'error');
+                });
+            }, 2000);
+        }
+    </script>
+}

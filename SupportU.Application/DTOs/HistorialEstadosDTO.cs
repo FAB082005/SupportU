@@ -26,6 +26,6 @@ namespace SupportU.Application.DTOs
         public virtual Ticket Ticket { get; set; } = null!;
 
         public virtual Usuario Usuario { get; set; } = null!;
-        public virtual ICollection<Imagen> Imagenes { get; set; } = new List<Imagen>();
+        public virtual ICollection<ImagenDTO> Imagenes { get; set; } = new List<ImagenDTO>();
     }
 }

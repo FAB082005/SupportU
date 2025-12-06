@@ -1,0 +1,154 @@
+2025-11-30 01:10:51.190 -06:00 [INF] Creando ticket: prueba autoasignado, M?todo: Automatico
+2025-11-30 01:10:51.495 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba autoasignado
+2025-11-30 01:10:52.209 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=10
+2025-11-30 01:10:52.217 -06:00 [INF] Ticket creado con ID: 10
+2025-11-30 01:10:52.223 -06:00 [INF] Aplicando autotriage al ticket 10
+2025-11-30 01:10:52.232 -06:00 [INF] Iniciando autotriage para ticket 10
+2025-11-30 01:10:52.401 -06:00 [INF] T?cnico seleccionado: 3 con puntaje 1501
+2025-11-30 01:10:52.410 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-11-30 01:10:52.480 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-11-30 01:10:52.752 -06:00 [INF] Autotriage completado exitosamente para ticket 10
+2025-11-30 01:10:52.761 -06:00 [INF] Autotriage exitoso. T?cnico asignado: 3
+2025-11-30 01:12:21.231 -06:00 [INF] Creando ticket: kjhb, M?todo: Automatico
+2025-11-30 01:12:21.258 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=kjhb
+2025-11-30 01:12:21.273 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=11
+2025-11-30 01:12:21.275 -06:00 [INF] Ticket creado con ID: 11
+2025-11-30 01:12:21.276 -06:00 [INF] Aplicando autotriage al ticket 11
+2025-11-30 01:12:21.278 -06:00 [INF] Iniciando autotriage para ticket 11
+2025-11-30 01:12:21.339 -06:00 [INF] T?cnico seleccionado: 1 con puntaje 491
+2025-11-30 01:12:21.342 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-11-30 01:12:21.365 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-11-30 01:12:21.409 -06:00 [INF] Autotriage completado exitosamente para ticket 11
+2025-11-30 01:12:21.412 -06:00 [INF] Autotriage exitoso. T?cnico asignado: 1
+2025-11-30 03:06:53.847 -06:00 [INF] Creando ticket: njdvd prueba historial, M?todo: Automatico
+2025-11-30 03:06:54.049 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=njdvd prueba historial
+2025-11-30 03:06:54.437 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=12
+2025-11-30 03:06:54.442 -06:00 [INF] Ticket creado con ID: 12
+2025-11-30 03:06:54.446 -06:00 [INF] Iniciando autotriage para ticket 12
+2025-11-30 03:06:54.493 -06:00 [INF] T?cnico seleccionado: 3 con puntaje 531
+2025-11-30 03:06:54.497 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=12
+2025-11-30 03:06:54.543 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=12
+2025-11-30 03:06:54.676 -06:00 [INF] Autotriage completado exitosamente para ticket 12
+2025-11-30 03:59:56.979 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 0
+2025-11-30 04:01:21.770 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 0
+2025-11-30 04:10:17.887 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 0
+2025-11-30 04:18:02.012 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 0
+2025-11-30 04:57:31.166 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 0
+2025-11-30 04:57:42.253 -06:00 [INF] Creando ticket: njdvd prueba historial 2, M?todo: Automatico
+2025-11-30 04:57:42.434 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=njdvd prueba historial 2
+2025-11-30 04:57:42.904 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=13
+2025-11-30 04:57:42.906 -06:00 [INF] Ticket creado con ID: 13
+2025-11-30 04:57:42.913 -06:00 [INF] Iniciando autotriage para ticket 13
+2025-11-30 04:57:42.983 -06:00 [INF] T?cnico seleccionado: 1 con puntaje 521
+2025-11-30 04:57:42.990 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=13
+2025-11-30 04:57:43.045 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=13
+2025-11-30 04:57:43.241 -06:00 [INF] Autotriage completado exitosamente para ticket 13
+2025-11-30 16:09:57.177 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=FUFBF
+2025-11-30 16:09:57.500 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=14
+2025-11-30 16:10:11.216 -06:00 [INF] Iniciando autotriage para ticket 0
+2025-11-30 16:10:20.128 -06:00 [INF] Iniciando autotriage para ticket 0
+2025-11-30 16:14:43.239 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 3
+2025-11-30 16:14:46.732 -06:00 [INF] Asignaci?n manual iniciada. Ticket: 0, T?cnico: 0
+2025-11-30 16:14:51.354 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 16:14:51.363 -06:00 [INF] Iniciando autotriage para ticket 0
+2025-11-30 16:15:07.323 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 16:15:07.325 -06:00 [INF] Iniciando autotriage para ticket 0
+2025-11-30 16:15:11.166 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 3
+2025-11-30 16:15:14.297 -06:00 [INF] Asignaci?n manual iniciada. Ticket: 0, T?cnico: 0
+2025-11-30 16:15:18.683 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 16:15:18.684 -06:00 [INF] Iniciando autotriage para ticket 0
+2025-11-30 16:45:13.742 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 16:45:13.799 -06:00 [INF] ?? Iniciando autotriage para ticket 0
+2025-11-30 16:45:18.046 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 3
+2025-11-30 16:45:21.861 -06:00 [INF] Asignaci?n manual iniciada. Ticket: 0, T?cnico: 0
+2025-11-30 18:59:52.743 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 18:59:52.748 -06:00 [INF] ?? Iniciando autotriage para ticket 0
+2025-11-30 19:03:45.185 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 19:04:06.144 -06:00 [INF] ?? Iniciando autotriage para ticket 0
+2025-11-30 19:09:37.515 -06:00 [INF] Asignaci?n autom?tica iniciada para ticket 0
+2025-11-30 19:09:37.572 -06:00 [INF] ?? Iniciando autotriage para ticket 0
+2025-11-30 19:15:23.684 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-11-30 19:15:23.745 -06:00 [INF] ?? [CONTROLLER] ticketId recibido: 0 (tipo: Int32)
+2025-11-30 19:16:00.255 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-11-30 19:16:01.158 -06:00 [INF] ?? [CONTROLLER] ticketId recibido: 0 (tipo: Int32)
+2025-11-30 19:21:15.537 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-11-30 19:21:15.601 -06:00 [INF] ?? [CONTROLLER] ticketId recibido: 14
+2025-11-30 19:21:15.959 -06:00 [INF] ?? [CONTROLLER] Ticket existe en BD: S?
+2025-11-30 19:21:15.960 -06:00 [INF] ? [CONTROLLER] Ticket 14 encontrado. Estado: Pendiente
+2025-11-30 19:21:15.965 -06:00 [INF] ?? Iniciando autotriage para ticket 14
+2025-11-30 19:21:15.967 -06:00 [INF] ?? RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 14
+2025-11-30 19:21:16.085 -06:00 [INF] ?? Resultado: ENCONTRADO
+2025-11-30 19:21:16.087 -06:00 [INF] ?? Ticket 14: Estado=Pendiente, CategoriaId=3, UsuarioId=1
+2025-11-30 19:21:16.088 -06:00 [INF] ? Ticket encontrado: Estado=Pendiente
+2025-11-30 19:21:16.271 -06:00 [INF] ? Categor?a: Infraestructura de Red, SLA: 480min
+2025-11-30 19:21:16.275 -06:00 [INF] ? Especialidades requeridas: 2
+2025-11-30 19:21:16.438 -06:00 [INF] ?? Total de t?cnicos en BD: 3
+2025-11-30 19:21:16.440 -06:00 [INF] ?? T?cnicos disponibles con especialidad: 2
+2025-11-30 19:21:16.442 -06:00 [INF] ?? C?lculos: Prioridad=Media (2), TiempoSLA=288min
+2025-11-30 19:21:16.445 -06:00 [INF] ?? T?cnico seleccionado: 3 (Pedro) con puntaje 1672
+2025-11-30 19:21:16.448 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=14
+2025-11-30 19:21:16.616 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=14
+2025-11-30 19:21:16.617 -06:00 [INF] ? Ticket actualizado a estado Asignado
+2025-11-30 19:21:16.703 -06:00 [INF] ? Asignaci?n registrada en BD
+2025-11-30 19:21:16.782 -06:00 [INF] ? Carga de trabajo actualizada: 5
+2025-11-30 19:21:16.783 -06:00 [INF] ?? Autotriage completado exitosamente
+2025-11-30 19:21:42.263 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=vfvf
+2025-11-30 19:21:42.286 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=15
+2025-11-30 19:21:45.418 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 2
+2025-11-30 19:21:55.249 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 15, T?cnico: 1
+2025-11-30 19:21:55.271 -06:00 [INF] ?? RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 15
+2025-11-30 19:21:55.274 -06:00 [INF] ?? Resultado: ENCONTRADO
+2025-11-30 19:21:55.275 -06:00 [INF] ?? Ticket 15: Estado=Pendiente, CategoriaId=2, UsuarioId=1
+2025-11-30 19:21:55.276 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=15
+2025-11-30 19:21:55.285 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=15
+2025-11-30 19:21:55.323 -06:00 [INF] ? Ticket 15 asignado manualmente a t?cnico 1
+2025-11-30 19:22:10.148 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=vfvf
+2025-11-30 19:22:10.156 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=16
+2025-11-30 19:22:13.470 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 4
+2025-11-30 19:22:21.708 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 16, T?cnico: 2
+2025-11-30 19:22:21.744 -06:00 [INF] ?? RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 16
+2025-11-30 19:22:21.751 -06:00 [INF] ?? Resultado: ENCONTRADO
+2025-11-30 19:22:21.752 -06:00 [INF] ?? Ticket 16: Estado=Pendiente, CategoriaId=4, UsuarioId=1
+2025-11-30 19:22:21.753 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=16
+2025-11-30 19:22:21.769 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=16
+2025-11-30 19:22:21.782 -06:00 [INF] ? Ticket 16 asignado manualmente a t?cnico 2
+2025-11-30 20:58:39.766 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba pendiente
+2025-11-30 20:58:40.121 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=17
+2025-11-30 20:58:40.135 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=Pendiente
+2025-11-30 20:58:40.201 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=38
+2025-11-30 20:58:55.817 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-11-30 20:58:55.853 -06:00 [INF] ?? Iniciando autotriage para ticket 17
+2025-11-30 20:58:55.856 -06:00 [INF] ?? RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 17
+2025-11-30 20:58:55.871 -06:00 [INF] ?? Resultado: ENCONTRADO
+2025-11-30 20:58:55.872 -06:00 [INF] ?? Ticket 17: Estado=Pendiente, CategoriaId=3, UsuarioId=1
+2025-11-30 20:58:55.874 -06:00 [INF] ? Ticket encontrado: Estado=Pendiente
+2025-11-30 20:58:55.888 -06:00 [INF] ? Categor?a: Infraestructura de Red, SLA: 480min
+2025-11-30 20:58:55.894 -06:00 [INF] ? Especialidades requeridas: 2
+2025-11-30 20:58:55.921 -06:00 [INF] ?? Total de t?cnicos en BD: 3
+2025-11-30 20:58:55.923 -06:00 [INF] ?? T?cnicos disponibles con especialidad: 2
+2025-11-30 20:58:55.926 -06:00 [INF] ?? C?lculos: Prioridad=Alta (3), TiempoSLA=479min
+2025-11-30 20:58:55.928 -06:00 [INF] ?? T?cnico seleccionado: 1 (Ana) con puntaje 2471
+2025-11-30 20:58:55.931 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=17
+2025-11-30 20:58:55.969 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=17
+2025-11-30 20:58:55.970 -06:00 [INF] ? Ticket actualizado a estado Asignado
+2025-11-30 20:58:56.006 -06:00 [INF] ? Asignaci?n registrada en BD
+2025-11-30 20:58:56.085 -06:00 [INF] ? Carga de trabajo actualizada: 6
+2025-11-30 20:58:56.087 -06:00 [INF] ?? Autotriage completado exitosamente
+2025-11-30 20:58:56.088 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=Asignado
+2025-11-30 20:58:56.099 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=39
+2025-11-30 23:37:50.465 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 17
+2025-11-30 23:38:14.815 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso
+2025-11-30 23:38:15.248 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=40
+2025-11-30 23:39:57.358 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 17
+2025-11-30 23:40:13.396 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso
+2025-11-30 23:40:13.410 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=41
+2025-11-30 23:45:48.297 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso
+2025-11-30 23:45:48.341 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=42
+2025-11-30 23:47:48.000 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso
+2025-11-30 23:47:51.868 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=43
+2025-11-30 23:54:51.005 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso
+2025-11-30 23:54:51.055 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=44
+2025-11-30 23:55:23.473 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso
+2025-11-30 23:55:23.494 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=45
+2025-11-30 23:57:05.442 -06:00 [INF] CambiarEstadoPartial llamado con ticketId: 17
+2025-11-30 23:58:21.900 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=17, EstadoNuevo=En Proceso

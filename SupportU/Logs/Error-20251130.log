@@ -1,0 +1,382 @@
+2025-11-30 03:31:20.089 -06:00 [ERR] The partial view '_Error' was not found. Searched locations: ["/Views/HistorialEstado/_Error.cshtml","/Views/Shared/_Error.cshtml"]
+2025-11-30 03:31:20.631 -06:00 [ERR] 
+EventId    :1897-251130033120
+ErrorList  :The view '_Error' was not found. The following locations were searched:
+/Views/HistorialEstado/_Error.cshtml
+/Views/Shared/_Error.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:31:34.635 -06:00 [ERR] The partial view '_Error' was not found. Searched locations: ["/Views/HistorialEstado/_Error.cshtml","/Views/Shared/_Error.cshtml"]
+2025-11-30 03:31:34.692 -06:00 [ERR] 
+EventId    :1148-251130033134
+ErrorList  :The view '_Error' was not found. The following locations were searched:
+/Views/HistorialEstado/_Error.cshtml
+/Views/Shared/_Error.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:31:59.436 -06:00 [ERR] The partial view '_Error' was not found. Searched locations: ["/Views/HistorialEstado/_Error.cshtml","/Views/Shared/_Error.cshtml"]
+2025-11-30 03:31:59.519 -06:00 [ERR] 
+EventId    :2261-251130033159
+ErrorList  :The view '_Error' was not found. The following locations were searched:
+/Views/HistorialEstado/_Error.cshtml
+/Views/Shared/_Error.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:32:57.835 -06:00 [ERR] The partial view '_Error' was not found. Searched locations: ["/Views/HistorialEstado/_Error.cshtml","/Views/Shared/_Error.cshtml"]
+2025-11-30 03:32:57.921 -06:00 [ERR] 
+EventId    :1381-251130033257
+ErrorList  :The view '_Error' was not found. The following locations were searched:
+/Views/HistorialEstado/_Error.cshtml
+/Views/Shared/_Error.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:39:33.064 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstado/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 03:39:33.385 -06:00 [ERR] 
+EventId    :1584-251130033933
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstado/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:41:52.328 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstado/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 03:41:52.583 -06:00 [ERR] 
+EventId    :3312-251130034152
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstado/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:45:52.751 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstado/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 03:45:53.039 -06:00 [ERR] 
+EventId    :1300-251130034552
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstado/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 03:59:57.140 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstado/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 03:59:57.435 -06:00 [ERR] 
+EventId    :4861-251130035957
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstado/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 04:01:21.845 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstado/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 04:01:21.992 -06:00 [ERR] 
+EventId    :1476-251130040121
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstado/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 04:10:17.947 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstado/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 04:10:18.126 -06:00 [ERR] 
+EventId    :4709-251130041018
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstado/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 04:18:02.104 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstados/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 04:18:02.325 -06:00 [ERR] 
+EventId    :3338-251130041802
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstados/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 04:57:31.302 -06:00 [ERR] The partial view '_CambiarEstadoForm' was not found. Searched locations: ["/Views/HistorialEstados/_CambiarEstadoForm.cshtml","/Views/Shared/_CambiarEstadoForm.cshtml"]
+2025-11-30 04:57:31.679 -06:00 [ERR] 
+EventId    :3972-251130045731
+ErrorList  :The view '_CambiarEstadoForm' was not found. The following locations were searched:
+/Views/HistorialEstados/_CambiarEstadoForm.cshtml
+/Views/Shared/_CambiarEstadoForm.cshtml
+StackTrace :   at Microsoft.AspNetCore.Mvc.ViewEngines.ViewEngineResult.EnsureSuccessful(IEnumerable`1 originalLocations)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.PartialViewResultExecutor.ExecuteAsync(ActionContext context, PartialViewResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeResultAsync>g__Logged|22_0(ResourceInvoker invoker, IActionResult result)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-11-30 23:38:15.810 -06:00 [ERR] Error al cambiar estado del ticket 17
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ImagenDTO -> Imagen
+SupportU.Application.DTOs.ImagenDTO -> SupportU.Infraestructure.Models.Imagen
+   at lambda_method1071(Closure, Object, Imagen, ResolutionContext)
+   at SupportU.Application.Services.Implementations.ServiceImagen.AddAsync(ImagenDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceImagen.cs:line 23
+   at SupportU.Application.Services.Implementations.ServiceHistorialEstados.AddAsync(HistorialEstadosDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceHistorialEstados.cs:line 74
+   at SupportU.Web.Controllers.HistorialEstadosController.CambiarEstado(Int32 ticketId, String nuevoEstado, String observaciones, List`1 imagenes) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Controllers\HistorialEstadosController.cs:line 200
+2025-11-30 23:40:13.689 -06:00 [ERR] Error al cambiar estado del ticket 17
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ImagenDTO -> Imagen
+SupportU.Application.DTOs.ImagenDTO -> SupportU.Infraestructure.Models.Imagen
+   at lambda_method1071(Closure, Object, Imagen, ResolutionContext)
+   at SupportU.Application.Services.Implementations.ServiceImagen.AddAsync(ImagenDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceImagen.cs:line 23
+   at SupportU.Application.Services.Implementations.ServiceHistorialEstados.AddAsync(HistorialEstadosDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceHistorialEstados.cs:line 74
+   at SupportU.Web.Controllers.HistorialEstadosController.CambiarEstado(Int32 ticketId, String nuevoEstado, String observaciones, List`1 imagenes) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Controllers\HistorialEstadosController.cs:line 200
+2025-11-30 23:46:20.653 -06:00 [ERR] Error al cambiar estado del ticket 17
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ImagenDTO -> Imagen
+SupportU.Application.DTOs.ImagenDTO -> SupportU.Infraestructure.Models.Imagen
+   at lambda_method1071(Closure, Object, Imagen, ResolutionContext)
+   at SupportU.Application.Services.Implementations.ServiceImagen.AddAsync(ImagenDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceImagen.cs:line 23
+   at SupportU.Application.Services.Implementations.ServiceHistorialEstados.AddAsync(HistorialEstadosDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceHistorialEstados.cs:line 74
+   at SupportU.Web.Controllers.HistorialEstadosController.CambiarEstado(Int32 ticketId, String nuevoEstado, String observaciones, List`1 imagenes) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Controllers\HistorialEstadosController.cs:line 200
+2025-11-30 23:49:44.853 -06:00 [ERR] Error al cambiar estado del ticket 17
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ImagenDTO -> Imagen
+SupportU.Application.DTOs.ImagenDTO -> SupportU.Infraestructure.Models.Imagen
+   at lambda_method1071(Closure, Object, Imagen, ResolutionContext)
+   at SupportU.Application.Services.Implementations.ServiceImagen.AddAsync(ImagenDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceImagen.cs:line 23
+   at SupportU.Application.Services.Implementations.ServiceHistorialEstados.AddAsync(HistorialEstadosDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceHistorialEstados.cs:line 74
+   at SupportU.Web.Controllers.HistorialEstadosController.CambiarEstado(Int32 ticketId, String nuevoEstado, String observaciones, List`1 imagenes) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Controllers\HistorialEstadosController.cs:line 200
+2025-11-30 23:55:05.877 -06:00 [ERR] Error al cambiar estado del ticket 17
+AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+ImagenDTO -> Imagen
+SupportU.Application.DTOs.ImagenDTO -> SupportU.Infraestructure.Models.Imagen
+   at lambda_method1071(Closure, Object, Imagen, ResolutionContext)
+   at SupportU.Application.Services.Implementations.ServiceImagen.AddAsync(ImagenDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceImagen.cs:line 23
+   at SupportU.Application.Services.Implementations.ServiceHistorialEstados.AddAsync(HistorialEstadosDTO dto) in C:\Users\FaBrI\source\repos\SupportU\SupportU.Application\Services\Implementations\ServiceHistorialEstados.cs:line 74
+   at SupportU.Web.Controllers.HistorialEstadosController.CambiarEstado(Int32 ticketId, String nuevoEstado, String observaciones, List`1 imagenes) in C:\Users\FaBrI\source\repos\SupportU\SupportU\Controllers\HistorialEstadosController.cs:line 200

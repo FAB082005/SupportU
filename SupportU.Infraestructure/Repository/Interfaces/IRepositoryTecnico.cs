@@ -8,7 +8,8 @@ namespace SupportU.Infrastructure.Repository
         Task<Tecnico?> FindByUsuarioIdAsync(int usuarioId);
 
         Task<int> AddAsync(Tecnico entity);
-        Task UpdateAsync();
-        Task DeleteByUsuarioIdAsync(int usuarioId);
-    }
+		Task UpdateAsync(Tecnico entity);
+		Task DeleteByUsuarioIdAsync(int usuarioId);
+		Task<Tecnico?> FindByIdAsync(int tecnicoId);
+	}
 }

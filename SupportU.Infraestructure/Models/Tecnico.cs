@@ -15,6 +15,7 @@ public partial class Tecnico
 
     public decimal CalificacionPromedio { get; set; }
 
+
     public virtual ICollection<Asignacion> Asignacion { get; set; } = new List<Asignacion>();
 
     public virtual ICollection<Ticket> Ticket { get; set; } = new List<Ticket>();

@@ -19,7 +19,7 @@ namespace SupportU.Infraestructure.Repository.Implementations
         public async Task<List<Etiqueta>> ListAsync()
         {
             return await _context.Etiqueta
-                .Include(e => e.Categoria) // ⬅️ IMPORTANTE: Incluir la categoría
+                .Include(e => e.Categoria) // Incluir la categoría
                 .Where(e => e.Activa) // Solo etiquetas activas
                 .ToListAsync();
         }

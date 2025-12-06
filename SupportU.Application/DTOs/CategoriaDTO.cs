@@ -9,6 +9,8 @@
         public string CriterioAsignacion { get; set; } = string.Empty;
         public bool Activa { get; set; }
         public string? SlaNombre { get; set; }
-    }
+		public virtual SlaDTO? Sla { get; set; }
+		public virtual ICollection<CategoriaEspecialidadDTO> CategoriaEspecialidad { get; set; } = new List<CategoriaEspecialidadDTO>();
+	}
 }
 //////////////////////////////////

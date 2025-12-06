@@ -14,143 +14,166 @@ using SupportU.Infrastructure.Repository.Interfaces;
 
 namespace SupportU.Web.Controllers
 {
-    public class LoginController : Controller
-    {
-        private readonly IServiceUsuario _serviceUsuario;
-        private readonly IRepositoryUsuario _repoUsuario;
-        private readonly IConfiguration _config;
+	public class LoginController : Controller
+	{
+		private readonly IServiceUsuario _serviceUsuario;
+		private readonly IRepositoryUsuario _repoUsuario;
+		private readonly IServiceNotificacion _serviceNotificacion; // ✅ AGREGADO
+		private readonly IConfiguration _config;
 
-        public LoginController(IServiceUsuario serviceUsuario, IRepositoryUsuario repoUsuario, IConfiguration config)
-        {
-            _serviceUsuario = serviceUsuario ?? throw new ArgumentNullException(nameof(serviceUsuario));
-            _repoUsuario = repoUsuario ?? throw new ArgumentNullException(nameof(repoUsuario));
-            _config = config ?? throw new ArgumentNullException(nameof(config));
-        }
-
-
-        // GET: /Login
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        // POST: /Login
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Login model, string? returnUrl)
-        {
-            if (!ModelState.IsValid)
-            {
-                TempData["ToastMessage"] = "toastr.error('Corrige los datos del formulario','Error');";
-                return View("Index", model);
-            }
-
-            var usuarios = await _serviceUsuario.ListAsync();
-            var usuario = usuarios.FirstOrDefault(u =>
-                string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
-
-            if (usuario == null)
-            {
-                TempData["ToastMessage"] = "toastr.error('Correo no registrado','Error de acceso');";
-                return View("Index", model);
-            }
-            if (!usuario.Activo)
-            {
-                TempData["ToastMessage"] = "toastr.warning('Usuario inactivo. Contacte al administrador','Acceso denegado');";
-                return View("Index", model);
-            }
-
-            var stored = usuario.PasswordHash ?? string.Empty;
-            var hasher = new PasswordHasher<object>();
-            var result = hasher.VerifyHashedPassword(null, stored, model.Password ?? string.Empty);
+		public LoginController(
+			IServiceUsuario serviceUsuario,
+			IRepositoryUsuario repoUsuario,
+			IServiceNotificacion serviceNotificacion, // ✅ AGREGADO
+			IConfiguration config)
+		{
+			_serviceUsuario = serviceUsuario ?? throw new ArgumentNullException(nameof(serviceUsuario));
+			_repoUsuario = repoUsuario ?? throw new ArgumentNullException(nameof(repoUsuario));
+			_serviceNotificacion = serviceNotificacion ?? throw new ArgumentNullException(nameof(serviceNotificacion)); // ✅ AGREGADO
+			_config = config ?? throw new ArgumentNullException(nameof(config));
+		}
 
 
-            if (result == PasswordVerificationResult.Success)
-            {
-                await SignIn(usuario, model.RememberMe);
-                TempData["ToastMessage"] = $"toastr.success('Bienvenido {usuario.Nombre}','Conectado');";
+		// GET: /Login
+		public IActionResult Index()
+		{
+			return View();
+		}
 
-                if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    return Redirect(returnUrl);
+		// POST: /Login
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login(Login model, string? returnUrl)
+		{
+			if (!ModelState.IsValid)
+			{
+				TempData["ToastMessage"] = "toastr.error('Corrige los datos del formulario','Error');";
+				return View("Index", model);
+			}
 
-                return RedirectToAction("Index", "Home");
-            }
+			var usuarios = await _serviceUsuario.ListAsync();
+			var usuario = usuarios.FirstOrDefault(u =>
+				string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
 
-            TempData["ToastMessage"] = "toastr.error('Contraseña incorrecta','Error de acceso');";
-            return View("Index", model);
-        }
+			if (usuario == null)
+			{
+				TempData["ToastMessage"] = "toastr.error('Correo no registrado','Error de acceso');";
+				return View("Index", model);
+			}
+			if (!usuario.Activo)
+			{
+				TempData["ToastMessage"] = "toastr.warning('Usuario inactivo. Contacte al administrador','Acceso denegado');";
+				return View("Index", model);
+			}
 
-
-        private async Task SignIn(UsuarioDTO usuario, bool rememberMe)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString()),
-                new Claim(ClaimTypes.Name, usuario.Email ?? string.Empty),
-                new Claim(ClaimTypes.Role, usuario.Rol ?? "Cliente")
-            };
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            var props = new AuthenticationProperties
-            {
-                IsPersistent = rememberMe,
-                AllowRefresh = true,
-                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddHours(8) : (DateTimeOffset?)null
-            };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
-        }
-
-        // POST: /Login/Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Login");
-        }
-
-        // GET: /Login/ForgotPassword
-        public IActionResult ForgotPassword()
-        {
-            return View(new UsuarioDTO());
-        }
+			var stored = usuario.PasswordHash ?? string.Empty;
+			var hasher = new PasswordHasher<object>();
+			var result = hasher.VerifyHashedPassword(null, stored, model.Password ?? string.Empty);
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(UsuarioDTO model)
-        {
-            if (string.IsNullOrWhiteSpace(model.Email))
-            {
-                ModelState.AddModelError(nameof(model.Email), "El correo es obligatorio");
-                return View(model);
-            }
-            if (string.IsNullOrWhiteSpace(model.PasswordHash))
-            {
-                ModelState.AddModelError(nameof(model.PasswordHash), "La nueva contraseña es obligatoria");
-                return View(model);
-            }
+			if (result == PasswordVerificationResult.Success)
+			{
+				await SignIn(usuario, model.RememberMe);
 
-            var usuarios = await _serviceUsuario.ListAsync();
-            var usuario = usuarios.FirstOrDefault(u =>
-                string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
+				// ✅ NOTIFICACIÓN DE INICIO DE SESIÓN
+				try
+				{
+					await _serviceNotificacion.CreateNotificationAsync(
+						usuarioDestinatarioId: usuario.UsuarioId,
+						ticketId: null,
+						tipo: "InicioSesion",
+						mensaje: $"Iniciaste sesión el {DateTime.Now:dd/MM/yyyy} a las {DateTime.Now:HH:mm}"
+					);
+				}
+				catch (Exception ex)
+				{
+					// Log pero no detener el login
+					Console.WriteLine($"Error al crear notificación de inicio de sesión: {ex.Message}");
+				}
 
-            if (usuario == null)
-            {
-                ModelState.AddModelError(nameof(model.Email), "Correo no registrado");
-                return View(model);
-            }
+				TempData["ToastMessage"] = $"toastr.success('Bienvenido {usuario.Nombre}','Conectado');";
 
-            usuario.PasswordHash = model.PasswordHash;
+				if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+					return Redirect(returnUrl);
 
-            await _serviceUsuario.UpdateAsync(usuario);
+				return RedirectToAction("Index", "Home");
+			}
 
-            TempData["ToastMessage"] = "toastr.success('Contraseña actualizada correctamente','Éxito');";
-            return RedirectToAction("Index", "Login");
-        }
+			TempData["ToastMessage"] = "toastr.error('Contraseña incorrecta','Error de acceso');";
+			return View("Index", model);
+		}
 
-    }
+
+		private async Task SignIn(UsuarioDTO usuario, bool rememberMe)
+		{
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString()),
+				new Claim(ClaimTypes.Name, usuario.Email ?? string.Empty),
+				new Claim(ClaimTypes.Role, usuario.Rol ?? "Cliente")
+			};
+
+			var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+			var principal = new ClaimsPrincipal(identity);
+
+			var props = new AuthenticationProperties
+			{
+				IsPersistent = rememberMe,
+				AllowRefresh = true,
+				ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddHours(8) : (DateTimeOffset?)null
+			};
+
+			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
+		}
+
+		// POST: /Login/Logout
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+			return RedirectToAction("Index", "Login");
+		}
+
+		// GET: /Login/ForgotPassword
+		public IActionResult ForgotPassword()
+		{
+			return View(new UsuarioDTO());
+		}
+
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ForgotPassword(UsuarioDTO model)
+		{
+			if (string.IsNullOrWhiteSpace(model.Email))
+			{
+				ModelState.AddModelError(nameof(model.Email), "El correo es obligatorio");
+				return View(model);
+			}
+			if (string.IsNullOrWhiteSpace(model.PasswordHash))
+			{
+				ModelState.AddModelError(nameof(model.PasswordHash), "La nueva contraseña es obligatoria");
+				return View(model);
+			}
+
+			var usuarios = await _serviceUsuario.ListAsync();
+			var usuario = usuarios.FirstOrDefault(u =>
+				string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
+
+			if (usuario == null)
+			{
+				ModelState.AddModelError(nameof(model.Email), "Correo no registrado");
+				return View(model);
+			}
+
+			usuario.PasswordHash = model.PasswordHash;
+
+			await _serviceUsuario.UpdateAsync(usuario);
+
+			TempData["ToastMessage"] = "toastr.success('Contraseña actualizada correctamente','Éxito');";
+			return RedirectToAction("Index", "Login");
+		}
+
+	}
 }
