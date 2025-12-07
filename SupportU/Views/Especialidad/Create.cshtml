@@ -1,25 +1,35 @@
 ﻿@model SupportU.Application.DTOs.EspecialidadDTO
 @{
-    ViewData["Title"] = "Nueva Especialidad";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Especialidad_Create_Title");
 }
 
 <section class="section mt-5">
     <div class="container">
-        <h2>Nueva Especialidad</h2>
+        <h2>@t("Especialidad_Create_Header")</h2>
         <form asp-action="Create" method="post" novalidate>
             @Html.AntiForgeryToken()
+
             <div class="mb-3">
-                <label asp-for="Nombre" class="form-label fw-bold">Nombre</label>
+                <label asp-for="Nombre" class="form-label fw-bold">@t("Especialidad_Label_Nombre")</label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
+
             <div class="form-check mb-3">
                 <input asp-for="Activa" class="form-check-input" />
-                <label asp-for="Activa" class="form-check-label">Activa</label>
+                <label asp-for="Activa" class="form-check-label">@t("Especialidad_Label_Activa")</label>
             </div>
+
             <div class="d-flex gap-2 justify-content-end">
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">@t("Especialidad_Btn_Save")</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@t("Especialidad_Btn_Cancel")</a>
             </div>
         </form>
     </div>

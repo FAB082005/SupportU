@@ -3468,6 +3468,35 @@ section,
     gap: 1rem;
   }
 }
+/* Hover: cambio visual al pasar el cursor */
+.language-switch .lang-btn:hover {
+    background-color: #0d6efd; /* azul */
+    border-color: #0d6efd;
+    color: #fff;
+    transform: translateY(-1px);
+    transition: background-color .12s ease, transform .06s ease, color .12s ease;
+}
+
+/* Focus: cuando el botón queda enfocado (click o teclado) */
+.language-switch .lang-btn:focus,
+.language-switch .lang-btn:focus-visible {
+    outline: none;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(13,110,253,0.12);
+}
+
+/* Active: efecto mientras se mantiene pulsado */
+.language-switch .lang-btn:active {
+    transform: translateY(0);
+    opacity: 0.95;
+}
+
+/* Opcional: estilo por defecto más neutro */
+.language-switch .lang-btn {
+    transition: background-color .12s ease, color .12s ease, transform .06s ease;
+}
 
 /*--------------------------------------------------------------
 # Starter Section Section

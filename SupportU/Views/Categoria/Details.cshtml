@@ -1,31 +1,37 @@
 ﻿@model SupportU.Application.DTOs.CategoriaDTO
 @{
-    ViewData["Title"] = "Detalle Categoría";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var v) ? v : key;
+    };
+
+    ViewData["Title"] = t("Categoria_Details_Title");
 }
+
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="card shadow-sm" style="max-width:900px;">
         <div class="card-body">
             <h4 class="card-title">@Model.Nombre</h4>
-
             <dl class="row">
-                <dt class="col-sm-3">Descripción</dt>
+                <dt class="col-sm-3">@t("Label_Descripcion")</dt>
                 <dd class="col-sm-9">@Model.Descripcion</dd>
 
-                <dt class="col-sm-3">SLA</dt>
+                <dt class="col-sm-3">@t("Label_SLA")</dt>
                 <dd class="col-sm-9">@Model.SlaNombre (@Model.SlaId)</dd>
 
-                <dt class="col-sm-3">Criterio de asignación</dt>
+                <dt class="col-sm-3">@t("Label_CriterioAsignacion")</dt>
                 <dd class="col-sm-9">@Model.CriterioAsignacion</dd>
 
-                <dt class="col-sm-3">Activa</dt>
-                <dd class="col-sm-9">@(Model.Activa ? "Sí" : "No")</dd>
+                <dt class="col-sm-3">@t("Label_Activa")</dt>
+                <dd class="col-sm-9">@(Model.Activa ? t("Yes") : t("No"))</dd>
             </dl>
 
             <div class="d-flex justify-content-end gap-2">
                 <a asp-action="Edit" asp-route-id="@Model.CategoriaId" class="btn btn-primary">
-                    <i class="bi bi-pencil-square"></i> Editar
+                    <i class="bi bi-pencil-square"></i> @t("Btn_Edit")
                 </a>
-                <a asp-action="Index" class="btn btn-outline-secondary">Volver</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">@t("Btn_Back")</a>
             </div>
         </div>
     </div>

@@ -1,14 +1,22 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.CategoriaDTO>
 @{
-    ViewData["Title"] = "Gestión de Categorías";
+    // Helper local para traducciones (no cambia lógica ni markup)
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Categoria_Index_Title");
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Gestión de Categorías</h2>
-            <a asp-controller="Categoria" asp-action="Create" class="btn btn-create">
-                <i class="bi bi-plus-circle"></i> Nueva Categoría
+            <h2 class="mb-0">@t("Categoria_Management")</h2>
+            <a asp-controller="Categoria" asp-action="Create" class="btn btn-create" title="@t("Btn_NewCategory")">
+                <i class="bi bi-plus-circle"></i> @t("Btn_NewCategory")
             </a>
         </div>
 
@@ -16,12 +24,12 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>SLA</th>
-                        <th>Criterio Asignación</th>
-                        <th>Activa</th>
-                        <th class="text-center">Acciones</th>
+                        <th>@t("Label_Nombre")</th>
+                        <th>@t("Label_Descripcion")</th>
+                        <th>@t("Label_SLA")</th>
+                        <th>@t("Label_CriterioAsignacion")</th>
+                        <th>@t("Label_Activa")</th>
+                        <th class="text-center">@t("Label_Actions")</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,26 +43,26 @@
                             <td>
                                 @if (item.Activa)
                                 {
-                                    <span class="badge bg-success">Activa</span>
+                                    <span class="badge bg-success">@t("Status_Active")</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Inactiva</span>
+                                    <span class="badge bg-secondary">@t("Status_Inactive")</span>
                                 }
                             </td>
+
                             <td class="text-center">
-                                <a asp-controller="Categoria" asp-action="Edit" asp-route-id="@item.CategoriaId" class="btn btn-sm btn-edit" title="Editar">
+                                <a asp-controller="Categoria" asp-action="Edit" asp-route-id="@item.CategoriaId" class="btn btn-sm btn-edit" title="@t("Btn_Edit")">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
                                 <button type="button"
                                         class="btn btn-sm btn-delete js-delete-category"
                                         data-id="@item.CategoriaId"
-                                        title="Eliminar">
-                                    <i class="bi bi-trash"></i>
+                                        title="@t("Btn_Delete")">
+                                    <i class="bi bi-power"></i>
                                 </button>
 
-                                @**@
                                 <form id="delete-form-@item.CategoriaId" asp-controller="Categoria" asp-action="DeleteConfirmed" asp-route-id="@item.CategoriaId" method="post" class="d-none">
                                     @Html.AntiForgeryToken()
                                 </form>
@@ -66,11 +74,23 @@
         </div>
     </div>
 </section>
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
     <script>
         (function () {
+            // Exponer helper JS para usar traducciones en el Swal sin tocar la lógica del evento
+            window.__i18n = window.__i18n || {};
+            try {
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+            } catch (e) {
+                window.__i18n.translations = {};
+            }
+            window.__i18n.t = function (key, fallback) {
+                return (window.__i18n.translations && window.__i18n.translations[key]) ? window.__i18n.translations[key] : (fallback || key);
+            };
+
             document.addEventListener('click', function (e) {
                 var btn = e.target.closest('.js-delete-category');
                 if (!btn) return;
@@ -79,12 +99,12 @@
                 if (!id) return;
 
                 Swal.fire({
-                    title: '¿Eliminar esta categoría?',
-                    text: 'Esta acción marcará la categoría como inactiva.',
+                    title: window.__i18n.t('Swal_Delete_Title', '¿Eliminar esta categoría?'),
+                    text: window.__i18n.t('Swal_Delete_Text', 'Esta acción marcará la categoría como inactiva.'),
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Eliminar',
-                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: window.__i18n.t('Swal_Delete_Confirm', 'Eliminar'),
+                    cancelButtonText: window.__i18n.t('Swal_Delete_Cancel', 'Cancelar'),
                     confirmButtonColor: '#d33'
                 }).then(function (result) {
                     if (result.isConfirmed) {
@@ -100,4 +120,3 @@
         })();
     </script>
 }
-

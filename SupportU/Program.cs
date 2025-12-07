@@ -13,18 +13,40 @@ using SupportU.Infrastructure.Repository;
 using SupportU.Infraestructure.Repository.Interfaces;
 using SupportU.Infraestructure.Repository.Implementations;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Agregar localización (servicio)
+builder.Services.AddLocalization();
+
 builder.Services.AddSession(options =>
 {
-	options.IdleTimeout = TimeSpan.FromDays(1);
-	options.Cookie.HttpOnly = true;
-	options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromDays(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
+
+// --- CONFIGURACIÓN DE CULTURAS ---
+var supportedCultures = new[] { "es-CR", "en-US" };
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("es-CR");
+    options.SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+    options.SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList();
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new CookieRequestCultureProvider(),
+        new QueryStringRequestCultureProvider(),
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
+});
+// -----------------------------------
 
 //Configurar D.I.
 //Usuario
@@ -76,75 +98,80 @@ builder.Services.AddScoped<IServiceAutoTriage, ServiceAutotriage>();
 
 // ✅ CONFIGURAR AUTOMAPPER - UNA SOLA VEZ
 builder.Services.AddAutoMapper(
-	typeof(UsuariosProfile),
-	typeof(TecnicosProfiles),
-	typeof(CategoriasProfiles),
-	typeof(EspecialidadesProfiles),
-	typeof(SlasProfiles),
-	typeof(TicketProfile),
-	typeof(AsignacionProfile),
-	typeof(EtiquetaProfile),
-	typeof(HistorialEstadosProfile),
-	typeof(ImagenProfile),
-	typeof(NotificacionProfile)
+    typeof(UsuariosProfile),
+    typeof(TecnicosProfiles),
+    typeof(CategoriasProfiles),
+    typeof(EspecialidadesProfiles),
+    typeof(SlasProfiles),
+    typeof(TicketProfile),
+    typeof(AsignacionProfile),
+    typeof(EtiquetaProfile),
+    typeof(HistorialEstadosProfile),
+    typeof(ImagenProfile),
+    typeof(NotificacionProfile)
 );
 
 //Configurar Conexión a la Base de Datos SQL
 builder.Services.AddDbContext<SupportUContext>(options =>
 {
-	options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerDataBase"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerDataBase"));
 
-	if (builder.Environment.IsDevelopment())
-		options.EnableSensitiveDataLogging();
+    if (builder.Environment.IsDevelopment())
+        options.EnableSensitiveDataLogging();
 });
 
 // Configuración Serilog
 var logger = new LoggerConfiguration()
-	.MinimumLevel.Override("Microsoft", LogEventLevel.Error)
-	.Enrich.FromLogContext()
-	.WriteTo.Console(LogEventLevel.Information)
-	.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information)
-		.WriteTo.File(@"Logs\Info-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
-	.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug)
-		.WriteTo.File(@"Logs\Debug-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
-	.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning)
-		.WriteTo.File(@"Logs\Warning-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
-	.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error)
-		.WriteTo.File(@"Logs\Error-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
-	.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal)
-		.WriteTo.File(@"Logs\Fatal-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
-	.CreateLogger();
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(LogEventLevel.Information)
+    .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information)
+        .WriteTo.File(@"Logs\Info-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug)
+        .WriteTo.File(@"Logs\Debug-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning)
+        .WriteTo.File(@"Logs\Warning-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error)
+        .WriteTo.File(@"Logs\Error-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
+    .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal)
+        .WriteTo.File(@"Logs\Fatal-.log", shared: true, encoding: System.Text.Encoding.ASCII, rollingInterval: RollingInterval.Day))
+    .CreateLogger();
 
 builder.Host.UseSerilog(logger);
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie(options =>
-	{
-		options.LoginPath = "/Login/Index";
-		options.LogoutPath = "/Login/Logout";
-		options.Cookie.Name = "SupportU.Auth";
-		options.Cookie.HttpOnly = true;
-		options.ExpireTimeSpan = TimeSpan.FromHours(8);
-		options.SlidingExpiration = true;
-	});
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+        options.LogoutPath = "/Login/Logout";
+        options.Cookie.Name = "SupportU.Auth";
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+    });
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-	app.UseExceptionHandler("/Home/Error");
-	app.UseHsts();
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 else
 {
-	app.UseMiddleware<ErrorHandlingMiddleware>();
+    app.UseMiddleware<ErrorHandlingMiddleware>();
 }
 
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// --- IMPORTANT: RequestLocalization debe ejecutarse ANTES de UseRouting ---
+var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+app.UseRequestLocalization(locOptions.Value);
+// -----------------------------------------------------------------------
 
 app.UseRouting();
 
@@ -154,10 +181,11 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseAntiforgery();
+// Si tienes un middleware antiforgery personalizado, mantenlo; de lo contrario revisa su uso
+// app.UseAntiforgery(); // si lo usas, asegúrate de que exista
 
 app.MapControllerRoute(
-	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

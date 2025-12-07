@@ -1,14 +1,21 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.EspecialidadDTO>
 @{
-    ViewData["Title"] = "Gestión de Especialidades";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Especialidad_Index_Title");
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Gestión de Especialidades</h2>
-            <a asp-action="Create" class="btn btn-create">
-                <i class="bi bi-plus-circle"></i> Nueva Especialidad
+            <h2 class="mb-0">@t("Especialidad_Management")</h2>
+            <a asp-action="Create" class="btn btn-create" title="@t("Especialidad_Btn_New")">
+                <i class="bi bi-plus-circle"></i> @t("Especialidad_Btn_New")
             </a>
         </div>
 
@@ -16,9 +23,9 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Activa</th>
-                        <th class="text-center">Acciones</th>
+                        <th>@t("Especialidad_Label_Nombre")</th>
+                        <th>@t("Especialidad_Label_Activa")</th>
+                        <th class="text-center">@t("Especialidad_Label_Actions")</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,21 +36,32 @@
                             <td>
                                 @if (item.Activa)
                                 {
-                                    <span class="badge bg-success">Activa</span>
+                                    <span class="badge bg-success">@t("Especialidad_Status_Active")</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Inactiva</span>
+                                    <span class="badge bg-secondary">@t("Especialidad_Status_Inactive")</span>
                                 }
                             </td>
                             <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@item.EspecialidadId" class="btn btn-sm btn-edit">
+                                <a asp-action="Edit" asp-route-id="@item.EspecialidadId" class="btn btn-sm btn-edit" title="@t("Especialidad_Btn_Edit")">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a asp-action="Delete" asp-route-id="@item.EspecialidadId" class="btn btn-sm btn-delete">
-                                    <i class="bi bi-power"></i>
-                                </a>
 
+                                <!-- Botón inline para inactivar -->
+                                <button type="button"
+                                        class="btn btn-sm btn-delete js-delete-specialty"
+                                        data-id="@item.EspecialidadId"
+                                        data-estado="1"
+                                        title="@t("Especialidad_Btn_Inactivate")">
+                                    <i class="bi bi-power"></i>
+                                </button>
+
+                                <!-- Form oculto que será enviado por JS -->
+                                <form id="delete-form-@item.EspecialidadId" asp-action="DeleteConfirmed" asp-route-id="@item.EspecialidadId" method="post" class="d-none">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="estado" value="1" />
+                                </form>
                             </td>
                         </tr>
                     }
@@ -52,3 +70,50 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        (function () {
+            // Inyectar traducciones al cliente
+            try {
+                window.__i18n = window.__i18n || {};
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string,string>()));
+                window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
+            } catch (e) { window.__i18n = window.__i18n || { translations: {} }; }
+
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.js-delete-specialty');
+                if (!btn) return;
+
+                var id = btn.getAttribute('data-id');
+                if (!id) return;
+
+                var estado = btn.getAttribute('data-estado') || "1"; // 1 => inactivar
+
+                Swal.fire({
+                    title: window.__i18n.t('Especialidad_Swal_Inactivate_Title', '¿Inactivar esta especialidad?'),
+                    text: window.__i18n.t('Especialidad_Swal_Inactivate_Text', 'Esta acción marcará la especialidad como inactiva.'),
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: window.__i18n.t('Especialidad_Swal_Inactivate_Confirm', 'Inactivar'),
+                    cancelButtonText: window.__i18n.t('Especialidad_Swal_Inactivate_Cancel', 'Cancelar'),
+                    confirmButtonColor: '#d33'
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        var form = document.getElementById('delete-form-' + id);
+                        if (form) {
+                            var inputEstado = form.querySelector('input[name="estado"]');
+                            if (inputEstado) inputEstado.value = estado;
+                            form.submit();
+                        } else {
+                            console.warn('Form de eliminación no encontrado para id', id);
+                        }
+                    }
+                });
+            }, false);
+        })();
+    </script>
+}

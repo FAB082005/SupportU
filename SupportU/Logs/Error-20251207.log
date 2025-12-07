@@ -1,0 +1,264 @@
+2025-12-07 00:13:02.797 -06:00 [ERR] Failed executing DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[asignacion_id], [a].[fecha_asignacion], [a].[metodo_asignacion], [a].[tecnico_id], [a].[ticket_id], [a].[usuario_asignador_id], [t].[ticket_id], [t].[categoria_id], [t].[cumplimiento_resolucion], [t].[cumplimiento_respuesta], [t].[descripcion], [t].[estado], [t].[fecha_cierre], [t].[fecha_creacion], [t].[prioridad], [t].[tecnico_asignado_id], [t].[titulo], [t].[usuario_solicitante_id], [t].[fecha_primera_respuesta], [t].[fecha_resolucion], [c].[categoria_id], [c].[activa], [c].[criterio_asignacion], [c].[descripcion], [c].[nombre], [c].[sla_id], [s].[sla_id], [s].[activo], [s].[nombre], [s].[tiempo_resolucion_minutos], [s].[tiempo_respuesta_minutos], [u].[usuario_id], [t0].[tecnico_id], [u0].[usuario_id], [t1].[tecnico_id], [u1].[usuario_id], [u2].[usuario_id], [e].[etiqueta_id], [e].[activa], [e].[categoria_id], [e].[nombre], [u].[activo], [u].[apellidos], [u].[email], [u].[fecha_creacion], [u].[nombre], [u].[password_hash], [u].[rol], [u].[ultimo_inicio_sesion], [t0].[calificacion_promedio], [t0].[carga_trabajo], [t0].[estado], [t0].[usuario_id], [u0].[activo], [u0].[apellidos], [u0].[email], [u0].[fecha_creacion], [u0].[nombre], [u0].[password_hash], [u0].[rol], [u0].[ultimo_inicio_sesion], [t1].[calificacion_promedio], [t1].[carga_trabajo], [t1].[estado], [t1].[usuario_id], [u1].[activo], [u1].[apellidos], [u1].[email], [u1].[fecha_creacion], [u1].[nombre], [u1].[password_hash], [u1].[rol], [u1].[ultimo_inicio_sesion], [u2].[activo], [u2].[apellidos], [u2].[email], [u2].[fecha_creacion], [u2].[nombre], [u2].[password_hash], [u2].[rol], [u2].[ultimo_inicio_sesion]
+FROM [ASIGNACION] AS [a]
+INNER JOIN [TICKET] AS [t] ON [a].[ticket_id] = [t].[ticket_id]
+INNER JOIN [CATEGORIA] AS [c] ON [t].[categoria_id] = [c].[categoria_id]
+INNER JOIN [SLA] AS [s] ON [c].[sla_id] = [s].[sla_id]
+INNER JOIN [USUARIO] AS [u] ON [t].[usuario_solicitante_id] = [u].[usuario_id]
+LEFT JOIN [TECNICO] AS [t0] ON [t].[tecnico_asignado_id] = [t0].[tecnico_id]
+LEFT JOIN [USUARIO] AS [u0] ON [t0].[usuario_id] = [u0].[usuario_id]
+INNER JOIN [TECNICO] AS [t1] ON [a].[tecnico_id] = [t1].[tecnico_id]
+INNER JOIN [USUARIO] AS [u1] ON [t1].[usuario_id] = [u1].[usuario_id]
+INNER JOIN [USUARIO] AS [u2] ON [a].[usuario_asignador_id] = [u2].[usuario_id]
+LEFT JOIN [ETIQUETA] AS [e] ON [c].[categoria_id] = [e].[categoria_id]
+ORDER BY [a].[fecha_asignacion], [a].[asignacion_id], [t].[ticket_id], [c].[categoria_id], [s].[sla_id], [u].[usuario_id], [t0].[tecnico_id], [u0].[usuario_id], [t1].[tecnico_id], [u1].[usuario_id], [u2].[usuario_id]
+2025-12-07 00:13:02.886 -06:00 [ERR] An exception occurred while iterating over the results of a query for context type 'SupportU.Infraestructure.Data.SupportUContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:483f1854-a9af-4237-90bf-f4273a884292
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:483f1854-a9af-4237-90bf-f4273a884292
+Error Number:207,State:1,Class:16
+2025-12-07 00:13:03.177 -06:00 [ERR] 
+EventId    :2808-251207121303
+ErrorList  :Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+StackTrace :   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at SupportU.Infraestructure.Repository.Implementations.RepositoryAsignacion.ListAsync() in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU.Infraestructure\Repository\Implementations\RepositoryAsignacion.cs:line 26
+   at SupportU.Application.Services.Implementations.ServiceAsignacion.ListAsync() in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU.Application\Services\Implementations\ServiceAsignacion.cs:line 29
+   at SupportU.Web.Controllers.AsignacionController.Index(Int32 offsetSemanas) in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU\Controllers\AsignacionController.cs:line 34
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-12-07 00:13:27.642 -06:00 [ERR] Failed executing DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[asignacion_id], [a].[fecha_asignacion], [a].[metodo_asignacion], [a].[tecnico_id], [a].[ticket_id], [a].[usuario_asignador_id], [t].[ticket_id], [t].[categoria_id], [t].[cumplimiento_resolucion], [t].[cumplimiento_respuesta], [t].[descripcion], [t].[estado], [t].[fecha_cierre], [t].[fecha_creacion], [t].[prioridad], [t].[tecnico_asignado_id], [t].[titulo], [t].[usuario_solicitante_id], [t].[fecha_primera_respuesta], [t].[fecha_resolucion], [c].[categoria_id], [c].[activa], [c].[criterio_asignacion], [c].[descripcion], [c].[nombre], [c].[sla_id], [s].[sla_id], [s].[activo], [s].[nombre], [s].[tiempo_resolucion_minutos], [s].[tiempo_respuesta_minutos], [u].[usuario_id], [t0].[tecnico_id], [u0].[usuario_id], [t1].[tecnico_id], [u1].[usuario_id], [u2].[usuario_id], [e].[etiqueta_id], [e].[activa], [e].[categoria_id], [e].[nombre], [u].[activo], [u].[apellidos], [u].[email], [u].[fecha_creacion], [u].[nombre], [u].[password_hash], [u].[rol], [u].[ultimo_inicio_sesion], [t0].[calificacion_promedio], [t0].[carga_trabajo], [t0].[estado], [t0].[usuario_id], [u0].[activo], [u0].[apellidos], [u0].[email], [u0].[fecha_creacion], [u0].[nombre], [u0].[password_hash], [u0].[rol], [u0].[ultimo_inicio_sesion], [t1].[calificacion_promedio], [t1].[carga_trabajo], [t1].[estado], [t1].[usuario_id], [u1].[activo], [u1].[apellidos], [u1].[email], [u1].[fecha_creacion], [u1].[nombre], [u1].[password_hash], [u1].[rol], [u1].[ultimo_inicio_sesion], [u2].[activo], [u2].[apellidos], [u2].[email], [u2].[fecha_creacion], [u2].[nombre], [u2].[password_hash], [u2].[rol], [u2].[ultimo_inicio_sesion]
+FROM [ASIGNACION] AS [a]
+INNER JOIN [TICKET] AS [t] ON [a].[ticket_id] = [t].[ticket_id]
+INNER JOIN [CATEGORIA] AS [c] ON [t].[categoria_id] = [c].[categoria_id]
+INNER JOIN [SLA] AS [s] ON [c].[sla_id] = [s].[sla_id]
+INNER JOIN [USUARIO] AS [u] ON [t].[usuario_solicitante_id] = [u].[usuario_id]
+LEFT JOIN [TECNICO] AS [t0] ON [t].[tecnico_asignado_id] = [t0].[tecnico_id]
+LEFT JOIN [USUARIO] AS [u0] ON [t0].[usuario_id] = [u0].[usuario_id]
+INNER JOIN [TECNICO] AS [t1] ON [a].[tecnico_id] = [t1].[tecnico_id]
+INNER JOIN [USUARIO] AS [u1] ON [t1].[usuario_id] = [u1].[usuario_id]
+INNER JOIN [USUARIO] AS [u2] ON [a].[usuario_asignador_id] = [u2].[usuario_id]
+LEFT JOIN [ETIQUETA] AS [e] ON [c].[categoria_id] = [e].[categoria_id]
+ORDER BY [a].[fecha_asignacion], [a].[asignacion_id], [t].[ticket_id], [c].[categoria_id], [s].[sla_id], [u].[usuario_id], [t0].[tecnico_id], [u0].[usuario_id], [t1].[tecnico_id], [u1].[usuario_id], [u2].[usuario_id]
+2025-12-07 00:13:27.646 -06:00 [ERR] An exception occurred while iterating over the results of a query for context type 'SupportU.Infraestructure.Data.SupportUContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:483f1854-a9af-4237-90bf-f4273a884292
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:483f1854-a9af-4237-90bf-f4273a884292
+Error Number:207,State:1,Class:16
+2025-12-07 00:13:27.765 -06:00 [ERR] 
+EventId    :1808-251207121327
+ErrorList  :Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+StackTrace :   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at SupportU.Infraestructure.Repository.Implementations.RepositoryAsignacion.ListAsync() in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU.Infraestructure\Repository\Implementations\RepositoryAsignacion.cs:line 26
+   at SupportU.Application.Services.Implementations.ServiceAsignacion.ListAsync() in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU.Application\Services\Implementations\ServiceAsignacion.cs:line 29
+   at SupportU.Web.Controllers.AsignacionController.Index(Int32 offsetSemanas) in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU\Controllers\AsignacionController.cs:line 34
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+
+2025-12-07 01:00:55.834 -06:00 [ERR] Failed executing DbCommand (21ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [a].[asignacion_id], [a].[fecha_asignacion], [a].[metodo_asignacion], [a].[tecnico_id], [a].[ticket_id], [a].[usuario_asignador_id], [t].[ticket_id], [t].[categoria_id], [t].[cumplimiento_resolucion], [t].[cumplimiento_respuesta], [t].[descripcion], [t].[estado], [t].[fecha_cierre], [t].[fecha_creacion], [t].[prioridad], [t].[tecnico_asignado_id], [t].[titulo], [t].[usuario_solicitante_id], [t].[fecha_primera_respuesta], [t].[fecha_resolucion], [c].[categoria_id], [c].[activa], [c].[criterio_asignacion], [c].[descripcion], [c].[nombre], [c].[sla_id], [s].[sla_id], [s].[activo], [s].[nombre], [s].[tiempo_resolucion_minutos], [s].[tiempo_respuesta_minutos], [u].[usuario_id], [t0].[tecnico_id], [u0].[usuario_id], [t1].[tecnico_id], [u1].[usuario_id], [u2].[usuario_id], [e].[etiqueta_id], [e].[activa], [e].[categoria_id], [e].[nombre], [u].[activo], [u].[apellidos], [u].[email], [u].[fecha_creacion], [u].[nombre], [u].[password_hash], [u].[rol], [u].[ultimo_inicio_sesion], [t0].[calificacion_promedio], [t0].[carga_trabajo], [t0].[estado], [t0].[usuario_id], [u0].[activo], [u0].[apellidos], [u0].[email], [u0].[fecha_creacion], [u0].[nombre], [u0].[password_hash], [u0].[rol], [u0].[ultimo_inicio_sesion], [t1].[calificacion_promedio], [t1].[carga_trabajo], [t1].[estado], [t1].[usuario_id], [u1].[activo], [u1].[apellidos], [u1].[email], [u1].[fecha_creacion], [u1].[nombre], [u1].[password_hash], [u1].[rol], [u1].[ultimo_inicio_sesion], [u2].[activo], [u2].[apellidos], [u2].[email], [u2].[fecha_creacion], [u2].[nombre], [u2].[password_hash], [u2].[rol], [u2].[ultimo_inicio_sesion]
+FROM [ASIGNACION] AS [a]
+INNER JOIN [TICKET] AS [t] ON [a].[ticket_id] = [t].[ticket_id]
+INNER JOIN [CATEGORIA] AS [c] ON [t].[categoria_id] = [c].[categoria_id]
+INNER JOIN [SLA] AS [s] ON [c].[sla_id] = [s].[sla_id]
+INNER JOIN [USUARIO] AS [u] ON [t].[usuario_solicitante_id] = [u].[usuario_id]
+LEFT JOIN [TECNICO] AS [t0] ON [t].[tecnico_asignado_id] = [t0].[tecnico_id]
+LEFT JOIN [USUARIO] AS [u0] ON [t0].[usuario_id] = [u0].[usuario_id]
+INNER JOIN [TECNICO] AS [t1] ON [a].[tecnico_id] = [t1].[tecnico_id]
+INNER JOIN [USUARIO] AS [u1] ON [t1].[usuario_id] = [u1].[usuario_id]
+INNER JOIN [USUARIO] AS [u2] ON [a].[usuario_asignador_id] = [u2].[usuario_id]
+LEFT JOIN [ETIQUETA] AS [e] ON [c].[categoria_id] = [e].[categoria_id]
+ORDER BY [a].[fecha_asignacion], [a].[asignacion_id], [t].[ticket_id], [c].[categoria_id], [s].[sla_id], [u].[usuario_id], [t0].[tecnico_id], [u0].[usuario_id], [t1].[tecnico_id], [u1].[usuario_id], [u2].[usuario_id]
+2025-12-07 01:00:55.931 -06:00 [ERR] An exception occurred while iterating over the results of a query for context type 'SupportU.Infraestructure.Data.SupportUContext'.
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:a4350397-974b-487e-8208-50eef72392c9
+Error Number:207,State:1,Class:16
+Microsoft.Data.SqlClient.SqlException (0x80131904): Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+ClientConnectionId:a4350397-974b-487e-8208-50eef72392c9
+Error Number:207,State:1,Class:16
+2025-12-07 01:00:56.245 -06:00 [ERR] 
+EventId    :945-251207010056
+ErrorList  :Invalid column name 'fecha_primera_respuesta'.
+Invalid column name 'fecha_resolucion'.
+StackTrace :   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at SupportU.Infraestructure.Repository.Implementations.RepositoryAsignacion.ListAsync() in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU.Infraestructure\Repository\Implementations\RepositoryAsignacion.cs:line 26
+   at SupportU.Application.Services.Implementations.ServiceAsignacion.ListAsync() in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU.Application\Services\Implementations\ServiceAsignacion.cs:line 29
+   at SupportU.Web.Controllers.AsignacionController.Index(Int32 offsetSemanas) in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU\Controllers\AsignacionController.cs:line 34
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Session.SessionMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at SupportU.Web.Middleware.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Users\lopez\source\repos\SupportU\SupportU\SupportU\Middleware\ErrorHandlingMiddleware.cs:line 22
+

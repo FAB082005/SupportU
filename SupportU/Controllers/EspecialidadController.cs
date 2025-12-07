@@ -1,17 +1,21 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SupportU.Application.DTOs;
 using SupportU.Application.Services;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SupportU.Web.Controllers
 {
-    public class EspecialidadController : Controller
+    public class EspecialidadController : BaseController
     {
         private readonly IServiceEspecialidad _service;
+        private readonly ILogger<EspecialidadController> _logger;
 
-        public EspecialidadController(IServiceEspecialidad service)
+        public EspecialidadController(IServiceEspecialidad service, ILogger<EspecialidadController> logger)
         {
-            _service = service ?? throw new System.ArgumentNullException(nameof(service));
+            _service = service;
+            _logger = logger;
         }
 
         // GET: /Especialidad
@@ -83,27 +87,24 @@ namespace SupportU.Web.Controllers
             return View(dto);
         }
 
-        [HttpPost, ActionName("Delete")]
+        // POST: /Especialidad/DeleteConfirmed/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var estadoForm = Request.Form["estado"].FirstOrDefault();
             if (!string.IsNullOrEmpty(estadoForm))
             {
-                if (estadoForm == "1") // inactivar
+                var dto = await _service.FindByIdAsync(id);
+                if (dto != null)
                 {
-                    var dto = await _service.FindByIdAsync(id);
-                    if (dto != null)
+                    if (estadoForm == "1")
                     {
                         dto.Activa = false;
                         await _service.UpdateAsync(dto);
                         TempData["NotificationMessage"] = "Swal.fire('Éxito','Especialidad inactivada correctamente','success');";
                     }
-                }
-                else if (estadoForm == "0") // reactivar
-                {
-                    var dto = await _service.FindByIdAsync(id);
-                    if (dto != null)
+                    else if (estadoForm == "0")
                     {
                         dto.Activa = true;
                         await _service.UpdateAsync(dto);

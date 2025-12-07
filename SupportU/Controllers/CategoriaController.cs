@@ -5,7 +5,7 @@ using SupportU.Application.Services;
 
 namespace SupportU.Web.Controllers
 {
-    public class CategoriaController : Controller
+    public class CategoriaController : BaseController
     {
         private readonly IServiceCategoria _service;
         private readonly IServiceSla _serviceSla;
@@ -105,15 +105,22 @@ namespace SupportU.Web.Controllers
             var slas = await _serviceSla.ListAsync();
             ViewBag.Slas = new SelectList(slas, "SlaId", "Nombre", dto?.SlaId);
 
+            // Obtener traducciones desde ViewData (poblado por BaseController o layout fallback)
+            var translations = ViewData["Translations"] as Dictionary<string, string>
+                ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            string t(string key) => translations.TryGetValue(key, out var v) ? v : key;
+
             var assignmentTypes = new List<SelectListItem>
             {
-                new SelectListItem("Seleccionar...", "", true),
-                new SelectListItem("menor_carga", "menor_carga"),
-                new SelectListItem("mejor_calificado", "mejor_calificado"),
-                new SelectListItem("tiempo_restante_sla", "tiempo_restante_sla"),    // priorizar por SLA restante
-                new SelectListItem("prioridad_puntaje", "prioridad_puntaje"),        // combinación prioridad * factor tiempo
-                new SelectListItem("especialista_disponible", "especialista_disponible"), // asignar técnico con especialidad y disponibilidad
+                new SelectListItem(t("Select_Placeholder"), "", true),
+                new SelectListItem(t("Assignment_MenorCarga"), "menor_carga"),
+                new SelectListItem(t("Assignment_MejorCalificado"), "mejor_calificado"),
+                new SelectListItem(t("Assignment_TiempoRestanteSLA"), "tiempo_restante_sla"),
+                new SelectListItem(t("Assignment_PrioridadPuntaje"), "prioridad_puntaje"),
+                new SelectListItem(t("Assignment_EspecialistaDisponible"), "especialista_disponible")
             };
+
             ViewBag.AssignmentTypes = new SelectList(assignmentTypes, "Value", "Text", dto?.CriterioAsignacion);
         }
         public async Task<IActionResult> Delete(int id)

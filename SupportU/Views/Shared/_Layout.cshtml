@@ -1,4 +1,42 @@
-﻿<!DOCTYPE html>
+﻿@{
+    // Intentar obtener traducciones desde ViewData (si algún controlador las puso)
+    var translations = ViewData["Translations"] as Dictionary<string, string>;
+
+    // Si ViewData no tiene traducciones, cargar directamente el JSON desde disco
+    if (translations == null || translations.Count == 0)
+    {
+        try
+        {
+            var culture = System.Globalization.CultureInfo.CurrentUICulture.Name ?? "es-CR";
+            var jsonPath = System.IO.Path.Combine(AppContext.BaseDirectory, "locales", $"{culture}.json");
+
+            if (System.IO.File.Exists(jsonPath))
+            {
+                var json = System.IO.File.ReadAllText(jsonPath);
+                var parsed = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                translations = parsed != null
+                    ? new Dictionary<string, string>(parsed, StringComparer.OrdinalIgnoreCase)
+                    : new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            }
+            else
+            {
+                translations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            }
+        }
+        catch
+        {
+            translations = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        }
+    }
+
+    // Función local para obtener traducción con fallback a la clave
+    Func<string, string> t = key =>
+    {
+        if (string.IsNullOrWhiteSpace(key)) return string.Empty;
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+}
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -27,7 +65,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
     <style>
-        /* 🔔 ESTILOS PARA NOTIFICACIONES */
+        /* ESTILOS PARA NOTIFICACIONES */
         .notification-icon {
             position: relative;
             margin-right: 15px;
@@ -36,11 +74,7 @@
             color: #333;
             transition: color 0.3s;
         }
-
-            .notification-icon:hover {
-                color: #007bff;
-            }
-
+        .notification-icon:hover { color: #007bff; }
         .notification-badge {
             position: absolute;
             top: -8px;
@@ -54,16 +88,17 @@
             min-width: 18px;
             text-align: center;
         }
+        .notification-badge.zero { display: none; }
 
-            .notification-badge.zero {
-                display: none;
-            }
+        .logo img { height: 40px; }
+        .sitename { margin: 0; font-size: 1.1rem; font-weight: 600; }
+        .btn-getstarted { background: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; }
+        .btn-getstarted:hover { opacity: 0.95; }
     </style>
 
     @RenderSection("Styles", required: false)
 </head>
 <body class="index-page">
-
     <!-- Header -->
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="header-container container-fluid container-xl d-flex align-items-center justify-content-between">
@@ -75,70 +110,82 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a asp-controller="Home" asp-action="Index" class="active">Home</a></li>
-                    <li><a asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" class="active">@t("Nav_Home")</a></li>
+                    <li><a asp-controller="Home" asp-action="Privacy">@t("Nav_Privacy")</a></li>
 
                     @* Asignación fuera del dropdown - visible para Admin y Técnico *@
                     @if (User?.Identity?.IsAuthenticated == true && (User.IsInRole("Administrador") || User.IsInRole("Técnico")))
                     {
-                        <li><a asp-controller="Asignacion" asp-action="Index">Asignación</a></li>
+                        <li><a asp-controller="Asignacion" asp-action="Index">@t("Nav_Assignment")</a></li>
                     }
 
-                   
-                        <li class="dropdown">
-                            <a href="#">
-                                <span>Mantenimientos</span>
-                                <i class="bi bi-chevron-down toggle-dropdown"></i>
-                            </a>
-                            <ul>
+                    <li class="dropdown">
+                        <a href="#">
+                            <span>@t("Nav_Maintenance")</span>
+                            <i class="bi bi-chevron-down toggle-dropdown"></i>
+                        </a>
+                        <ul>
+                            @* Solo Administrador *@
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <li><a asp-controller="Usuario" asp-action="Index">@t("Nav_Users")</a></li>
+                                <li><a asp-controller="Tecnico" asp-action="Index">@t("Nav_Technicians")</a></li>
+                                <li><a asp-controller="Categoria" asp-action="Index">@t("Nav_Categories")</a></li>
+                                <li><a asp-controller="Especialidad" asp-action="Index">@t("Nav_Specialties")</a></li>
+                                <li><a asp-controller="SLA" asp-action="Index">@t("Nav_SLA")</a></li>
+                            }
 
-                                @* Solo Administrador *@
-                                @if (User.IsInRole("Administrador"))
-                                {
-                                    <li><a asp-controller="Usuario" asp-action="Index">Gestión de Usuarios</a></li>
-                                    <li><a asp-controller="Tecnico" asp-action="Index">Técnicos</a></li>
-                                    <li><a asp-controller="Categoria" asp-action="Index">Categorías</a></li>
-                                    <li><a asp-controller="Especialidad" asp-action="Index">Especialidades</a></li>
-                                    <li><a asp-controller="SLA" asp-action="Index">SLA</a></li>
-                                }
+                            @* Administrador y Técnico *@
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Técnico"))
+                            {
+                                <li><a asp-controller="Etiqueta" asp-action="Index">@t("Nav_Tags")</a></li>
+                            }
 
-                                @* Administrador y Técnico *@
-                                @if (User.IsInRole("Administrador") || User.IsInRole("Técnico"))
-                                {
-                                    <li><a asp-controller="Etiqueta" asp-action="Index">Etiquetas</a></li>
-                                }
-
-                                @* Administrador, Técnico y Cliente *@
-                                @if (User.IsInRole("Administrador") || User.IsInRole("Técnico") || User.IsInRole("Cliente"))
-                                {
-                                    <li><a asp-controller="Ticket" asp-action="Index">Ticket</a></li>
-                                }
-
-                            </ul>
-                        </li>
-
-                    
+                            @* Administrador, Técnico y Cliente *@
+                            @if (User.IsInRole("Administrador") || User.IsInRole("Técnico") || User.IsInRole("Cliente"))
+                            {
+                                <li><a asp-controller="Ticket" asp-action="Index">@t("Nav_Tickets")</a></li>
+                            }
+                        </ul>
+                    </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
             <div class="d-flex align-items-center">
-                @* 🔔 ÍCONO DE NOTIFICACIONES *@
+                @* SWITCH DE IDIOMA *@
+               <form asp-controller="Language" asp-action="Set" method="post" class="me-2 d-flex gap-1 language-switch" id="languageSwitchForm">
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                <button type="submit" name="culture" value="es-CR" class="btn btn-sm btn-outline-secondary lang-btn" data-lang="es-CR" onclick="localStorage.setItem('selectedLang','es-CR')">ES</button>
+                <button type="submit" name="culture" value="en-US" class="btn btn-sm btn-outline-secondary lang-btn" data-lang="en-US" onclick="localStorage.setItem('selectedLang','en-US')">EN</button>
+                </form>
+
+                <style>
+                    .lang-btn.active { background-color:#0d6efd; border-color:#0d6efd; color:#fff; }
+                </style>
+
+                <script>
+                    // 3 líneas: aplicar estado guardado al cargar
+                    (function(){ const s=localStorage.getItem('selectedLang'); if(!s) return; document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===s)); })();
+                </script>
+
+
+                @* Ícono de notificaciones y login/logout *@
                 @if (User?.Identity?.IsAuthenticated == true)
                 {
-                    <a asp-controller="Notificaciones" asp-action="Index" class="notification-icon" id="notificationBell">
+                    <a asp-controller="Notificaciones" asp-action="Index" class="notification-icon" id="notificationBell" title="@t("Nav_Tickets")">
                         <i class="bi bi-bell-fill"></i>
                         <span class="notification-badge zero" id="notificationCount">0</span>
                     </a>
 
                     <form asp-controller="Login" asp-action="Logout" method="post" class="m-0">
                         @Html.AntiForgeryToken()
-                        <button type="submit" class="btn-getstarted">Cerrar Sesión</button>
+                        <button type="submit" class="btn-getstarted">@t("Btn_Logout")</button>
                     </form>
                 }
                 else
                 {
-                    <a class="btn-getstarted" asp-controller="Login" asp-action="Index">Iniciar Sesión</a>
+                    <a class="btn-getstarted" asp-controller="Login" asp-action="Index">@t("Btn_Login")</a>
                 }
             </div>
         </div>
@@ -154,11 +201,10 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
-                    <p class="mb-0 small text-muted">© 2025 - SupportU. Todos los derechos reservados.</p>
+                    <p class="mb-0 small text-muted">© 2025 - SupportU. @t("Footer_AllRightsReserved")</p>
                 </div>
-
                 <div class="col-md-6 text-md-end text-center">
-                    <p class="mb-0 small text-muted">Thaylin Barrueta &nbsp;|&nbsp; Fabricio Sequeira &nbsp;|&nbsp; Programación en Ambiente Web II</p>
+                    <p class="mb-0 small text-muted">Thaylin Barrueta &nbsp;|&nbsp; Fabricio Sequeira &nbsp;|&nbsp; @t("Footer_Course")</p>
                 </div>
             </div>
         </div>
@@ -204,36 +250,31 @@
     <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="~/assets/js/main.js"></script>
 
-    @* 🔔 SCRIPT PARA ACTUALIZAR CONTADOR DE NOTIFICACIONES *@
+    @* SCRIPT PARA ACTUALIZAR CONTADOR DE NOTIFICACIONES *@
     @if (User?.Identity?.IsAuthenticated == true)
     {
         <script>
-            // Actualizar el contador de notificaciones cada 30 segundos
             function actualizarContadorNotificaciones() {
                 $.ajax({
                     url: '@Url.Action("GetCount", "Notificaciones")',
                     type: 'GET',
-                    success: function(count) {
+                    success: function (count) {
                         const badge = $('#notificationCount');
                         badge.text(count);
-
                         if (count > 0) {
                             badge.removeClass('zero');
                         } else {
                             badge.addClass('zero');
                         }
                     },
-                    error: function() {
+                    error: function () {
                         console.error('Error al obtener el contador de notificaciones');
                     }
                 });
             }
 
-            // Ejecutar al cargar la página
-            $(document).ready(function() {
+            $(document).ready(function () {
                 actualizarContadorNotificaciones();
-
-                // Actualizar cada 30 segundos
                 setInterval(actualizarContadorNotificaciones, 30000);
             });
         </script>

@@ -1,6 +1,13 @@
 ﻿@model SupportU.Application.DTOs.TicketDTO
 @{
     var estadosSiguientes = ViewBag.EstadosSiguientes as List<string>;
+
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
 }
 
 <form id="formCambioEstado"
@@ -16,30 +23,30 @@
     <div class="alert alert-info mb-4">
         <div class="row">
             <div class="col-md-6">
-                <strong><i class="bi bi-ticket-detailed me-2"></i>Ticket:</strong> #@Model.TicketId
+                <strong><i class="bi bi-ticket-detailed me-2"></i>@t("HistorialEstados_Label_Ticket")</strong> #@Model.TicketId
             </div>
             <div class="col-md-6">
-                <strong><i class="bi bi-flag me-2"></i>Estado Actual:</strong>
+                <strong><i class="bi bi-flag me-2"></i>@t("HistorialEstados_Label_CurrentState")</strong>
                 <span class="badge bg-primary">@Model.Estado</span>
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-12">
-                <strong>Título:</strong> @Model.Titulo
+                <strong>@t("HistorialEstados_Label_Title")</strong> @Model.Titulo
             </div>
         </div>
     </div>
 
-    
+
     <div class="mb-3">
         <label for="nuevoEstado" class="form-label fw-bold">
-            <i class="bi bi-arrow-right-circle me-2"></i>Nuevo Estado *
+            <i class="bi bi-arrow-right-circle me-2"></i>@t("HistorialEstados_Label_NewState") *
         </label>
         <select id="nuevoEstado"
                 name="nuevoEstado"
                 class="form-select form-select-lg"
                 required>
-            <option value="">-- Seleccione el nuevo estado --</option>
+            <option value="">-- @t("HistorialEstados_Placeholder_SelectNewState") --</option>
             @if (estadosSiguientes != null && estadosSiguientes.Any())
             {
                 @foreach (var estado in estadosSiguientes)
@@ -49,36 +56,36 @@
             }
             else
             {
-                <option value="" disabled>No hay estados siguientes disponibles</option>
+                <option value="" disabled>@t("HistorialEstados_NoNextStates")</option>
             }
         </select>
         <div class="form-text">
             <i class="bi bi-info-circle me-1"></i>
-            Solo se muestran los estados siguientes válidos según el flujo
+            @t("HistorialEstados_Help_NextStates")
         </div>
     </div>
 
     <!-- OBSERVACIONES -->
     <div class="mb-3">
         <label for="observaciones" class="form-label fw-bold">
-            <i class="bi bi-chat-left-text me-2"></i>Observaciones *
+            <i class="bi bi-chat-left-text me-2"></i>@t("HistorialEstados_Label_Observations") *
         </label>
         <textarea id="observaciones"
                   name="observaciones"
                   class="form-control"
                   rows="4"
                   required
-                  placeholder="Describe los cambios realizados, el motivo del cambio de estado, o cualquier detalle relevante..."></textarea>
+                  placeholder="@t("HistorialEstados_Placeholder_Observations")"></textarea>
         <div class="form-text">
             <i class="bi bi-exclamation-triangle me-1"></i>
-            Las observaciones son <strong>obligatorias</strong> para mantener la trazabilidad
+            @Html.Raw(t("HistorialEstados_Help_Observations"))
         </div>
     </div>
 
     <!-- IMÁGENES -->
     <div class="mb-4">
         <label for="imagenes" class="form-label fw-bold">
-            <i class="bi bi-image me-2"></i>Imágenes de Evidencia *
+            <i class="bi bi-image me-2"></i>@t("HistorialEstados_Label_Images") *
         </label>
         <input type="file"
                id="imagenes"
@@ -89,25 +96,25 @@
                required>
         <div class="form-text">
             <i class="bi bi-exclamation-triangle me-1"></i>
-            Debe adjuntar <strong>al menos una imagen</strong> como evidencia del cambio
+            @Html.Raw(t("HistorialEstados_Help_Images"))
         </div>
 
         <!-- Preview de imágenes -->
         <div id="imagenesPreview" class="mt-3 row g-3">
             <div class="col-12">
-                <small class="text-muted">No hay imágenes seleccionadas</small>
+                <small class="text-muted">@t("HistorialEstados_NoImagesSelected")</small>
             </div>
         </div>
     </div>
 
     <!-- RESUMEN DEL CAMBIO -->
     <div class="alert alert-warning">
-        <strong><i class="bi bi-info-circle me-2"></i>Se registrará:</strong>
+        <strong><i class="bi bi-info-circle me-2"></i>@t("HistorialEstados_Label_WillBeRegistered")</strong>
         <br>
         <div class="mt-2">
             <span class="badge bg-secondary fs-6">@Model.Estado</span>
             <i class="bi bi-arrow-right mx-2 fs-5"></i>
-            <span class="badge bg-primary fs-6" id="estadoNuevoPreview">Seleccione estado</span>
+            <span class="badge bg-primary fs-6" id="estadoNuevoPreview">@t("HistorialEstados_Placeholder_SelectNewState")</span>
         </div>
     </div>
 
@@ -116,12 +123,12 @@
         <button type="button"
                 class="btn btn-secondary"
                 data-bs-dismiss="modal">
-            <i class="bi bi-x-circle"></i> Cancelar
+            <i class="bi bi-x-circle"></i> @t("HistorialEstados_Btn_Cancel")
         </button>
         <button type="submit"
                 class="btn btn-primary"
                 id="btnGuardarCambio">
-            <i class="bi bi-save"></i> Guardar Cambio
+            <i class="bi bi-save"></i> @t("HistorialEstados_Btn_SaveChange")
         </button>
     </div>
 </form>
@@ -177,3 +184,44 @@
         padding: 0.5rem 0.75rem;
     }
 </style>
+
+@section Scripts {
+    <script>
+        (function () {
+            try {
+                window.__i18n = window.__i18n || {};
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+                window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
+            } catch (e) { window.__i18n = window.__i18n || { translations: {} }; }
+
+            // Preview simple de imágenes 
+            var input = document.getElementById('imagenes');
+            var preview = document.getElementById('imagenesPreview');
+            if (input && preview) {
+                input.addEventListener('change', function () {
+                    preview.innerHTML = '';
+                    var files = Array.from(input.files || []);
+                    if (files.length === 0) {
+                        preview.innerHTML = '<div class="col-12"><small class="text-muted">' + window.__i18n.t('HistorialEstados_NoImagesSelected', 'No hay imágenes seleccionadas') + '</small></div>';
+                        return;
+                    }
+                    files.forEach(function (file) {
+                        var col = document.createElement('div');
+                        col.className = 'col-3';
+                        col.innerHTML = '<div class="preview-card"><div class="preview-img-container"><img src="' + URL.createObjectURL(file) + '" /></div><div class="preview-info"><small>' + file.name + '</small></div></div>';
+                        preview.appendChild(col);
+                    });
+                });
+            }
+
+            // Actualizar preview de estado seleccionado
+            var selectEstado = document.getElementById('nuevoEstado');
+            var estadoPreview = document.getElementById('estadoNuevoPreview');
+            if (selectEstado && estadoPreview) {
+                selectEstado.addEventListener('change', function () {
+                    estadoPreview.textContent = selectEstado.value || window.__i18n.t('HistorialEstados_Placeholder_SelectNewState', 'Seleccione estado');
+                });
+            }
+        })();
+    </script>
+}

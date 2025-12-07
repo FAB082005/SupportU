@@ -1,10 +1,13 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SupportU.Models;
+using SupportU.Web.Controllers;
 
 namespace SupportU.Controllers
 {
-    public class HomeController : Controller
+    // Asegúrate de que BaseController exista y cargue ViewData["Translations"]
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 
