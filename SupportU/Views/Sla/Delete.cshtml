@@ -1,6 +1,12 @@
 ﻿@model SupportU.Application.DTOs.SlaDTO
 @{
-    ViewData["Title"] = Model.Activo ? "Inactivar SLA" : "Reactivar SLA";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = Model.Activo ? t("Sla_Title_Delete_Inactivate") : t("Sla_Title_Delete_Reactivate");
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
@@ -9,9 +15,9 @@
             <div class="card-body p-4">
                 <h2 class="mb-3">@ViewData["Title"]</h2>
                 <dl class="row mb-4">
-                    <dt class="col-sm-4">Nombre</dt>
+                    <dt class="col-sm-4">@t("Sla_Label_Nombre")</dt>
                     <dd class="col-sm-8">@Model.Nombre</dd>
-                    <dt class="col-sm-4">Activo</dt>
+                    <dt class="col-sm-4">@t("Sla_Label_Activo")</dt>
                     <dd class="col-sm-8">@Model.Activo</dd>
                 </dl>
 
@@ -19,10 +25,10 @@
                 {
                     <form asp-action="Delete" asp-route-id="@Model.SlaId" method="post">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="estado" value="1" /> @* 1 => inactivar *@
+                        <input type="hidden" name="estado" value="1" />
                         <div class="d-flex gap-2 justify-content-end">
-                            <button type="submit" class="btn btn-danger">Inactivar</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-danger">@t("Sla_Notification_Inactivated")</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">@t("Sla_Btn_Cancel")</a>
                         </div>
                     </form>
                 }
@@ -30,10 +36,10 @@
                 {
                     <form asp-action="Delete" asp-route-id="@Model.SlaId" method="post">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" name="estado" value="0" /> @* 0 => reactivar *@
+                        <input type="hidden" name="estado" value="0" />
                         <div class="d-flex gap-2 justify-content-end">
-                            <button type="submit" class="btn btn-success">Reactivar</button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-success">@t("Sla_Notification_Reactivated")</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">@t("Sla_Btn_Cancel")</a>
                         </div>
                     </form>
                 }

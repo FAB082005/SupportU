@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using SupportU.Application.DTOs;
 using SupportU.Application.Services;
 
@@ -16,6 +21,13 @@ namespace SupportU.Web.Controllers
             _service = service;
             _serviceSla = serviceSla;
             _logger = logger;
+        }
+
+        private string t(string key)
+        {
+            var translations = ViewData["Translations"] as Dictionary<string, string>;
+            if (translations != null && translations.TryGetValue(key, out var v)) return v;
+            return key;
         }
 
         public async Task<IActionResult> Index()
@@ -36,8 +48,12 @@ namespace SupportU.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoriaDTO dto)
         {
-            _logger.LogInformation("Create POST called for Categoria. Nombre={Nombre}, SlaId={SlaId}, Criterio={Criterio}",
-                dto?.Nombre, dto?.SlaId, dto?.CriterioAsignacion);
+            _logger.LogInformation("Create POST called for Categoria. Nombre={Nombre}, SlaId={SlaId}, Criterio={Criterio}", dto?.Nombre, dto?.SlaId, dto?.CriterioAsignacion);
+
+            if (string.IsNullOrWhiteSpace(dto.Nombre))
+            {
+                ModelState.AddModelError(nameof(dto.Nombre), t("Categoria_Validation_NombreRequired"));
+            }
 
             if (!ModelState.IsValid)
             {
@@ -50,13 +66,13 @@ namespace SupportU.Web.Controllers
             {
                 var newId = await _service.AddAsync(dto);
                 _logger.LogInformation("Categoria created successfully. NewId={Id}", newId);
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Categoría creada correctamente','success')";
+                TempData["NotificationMessage"] = $"Swal.fire('{t("Categoria_Create_Success")}','{t("Categoria_Create_Success")}','success')";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating Categoria Nombre={Nombre}", dto?.Nombre);
-                ModelState.AddModelError(string.Empty, $"Error al crear la categoría: {ex.Message}");
+                ModelState.AddModelError(string.Empty, t("Categoria_Error_Create") + ex.Message);
                 await PopulateSlaAndAssignmentTypes(dto);
                 return View(dto);
             }
@@ -78,6 +94,11 @@ namespace SupportU.Web.Controllers
         {
             _logger.LogInformation("Edit POST called for CategoriaId={Id}, Nombre={Nombre}", dto?.CategoriaId, dto?.Nombre);
 
+            if (string.IsNullOrWhiteSpace(dto.Nombre))
+            {
+                ModelState.AddModelError(nameof(dto.Nombre), t("Categoria_Validation_NombreRequired"));
+            }
+
             if (!ModelState.IsValid)
             {
                 _logger.LogWarning("ModelState invalid on Categoria Edit. Id={Id}", dto?.CategoriaId);
@@ -89,68 +110,87 @@ namespace SupportU.Web.Controllers
             {
                 await _service.UpdateAsync(dto);
                 _logger.LogInformation("Categoria updated successfully. Id={Id}", dto.CategoriaId);
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Categoría actualizada correctamente','success')";
+                TempData["NotificationMessage"] = $"Swal.fire('{t("Categoria_Update_Success")}','{t("Categoria_Update_Success")}','success')";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating Categoria Id={Id}", dto?.CategoriaId);
-                ModelState.AddModelError(string.Empty, $"Error al actualizar la categoría: {ex.Message}");
+                ModelState.AddModelError(string.Empty, t("Categoria_Error_Update") + ex.Message);
                 await PopulateSlaAndAssignmentTypes(dto);
                 return View(dto);
             }
         }
+
+        // GET: Delete (shows confirmation)
+        public async Task<IActionResult> Delete(int id)
+        {
+            var item = (await _service.ListAsync()).Find(c => c.CategoriaId == id);
+            if (item == null) return NotFound();
+            return View(item);
+        }
+
+        // POST: DeleteConfirmed (handles inactivate/reactivate via form field "estado")
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            _logger.LogInformation("DeleteConfirmed POST called for CategoriaId={Id}", id);
+
+            var estadoForm = Request.Form["estado"].FirstOrDefault(); // "1" => inactivar, "0" => reactivar
+            try
+            {
+                if (!string.IsNullOrEmpty(estadoForm))
+                {
+                    var dto = await _service.FindByIdAsync(id);
+                    if (dto != null)
+                    {
+                        if (estadoForm == "1")
+                        {
+                            // Inactivar: usamos DeleteAsync (borrado lógico)
+                            await _service.DeleteAsync(id);
+                            TempData["NotificationMessage"] = $"Swal.fire('{t("Categoria_Delete_Success")}','{t("Categoria_Delete_Success")}','success')";
+                        }
+                        else if (estadoForm == "0")
+                        {
+                            // Reactivar: cargar, cambiar Activa=true y UpdateAsync
+                            dto.Activa = true;
+                            await _service.UpdateAsync(dto);
+                            TempData["NotificationMessage"] = $"Swal.fire('{t("Categoria_Reactivate_Success")}','{t("Categoria_Reactivate_Success")}','success')";
+                        }
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deleting/reactivating Categoria Id={Id}", id);
+                TempData["NotificationMessage"] = $"Swal.fire('Error','{t("Categoria_Delete_Error")} {ex.Message}','error')";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
         private async Task PopulateSlaAndAssignmentTypes(CategoriaDTO? dto)
         {
             var slas = await _serviceSla.ListAsync();
             ViewBag.Slas = new SelectList(slas, "SlaId", "Nombre", dto?.SlaId);
 
-            // Obtener traducciones desde ViewData (poblado por BaseController o layout fallback)
             var translations = ViewData["Translations"] as Dictionary<string, string>
                 ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-            string t(string key) => translations.TryGetValue(key, out var v) ? v : key;
+            string local(string key) => translations.TryGetValue(key, out var v) ? v : key;
 
             var assignmentTypes = new List<SelectListItem>
             {
-                new SelectListItem(t("Select_Placeholder"), "", true),
-                new SelectListItem(t("Assignment_MenorCarga"), "menor_carga"),
-                new SelectListItem(t("Assignment_MejorCalificado"), "mejor_calificado"),
-                new SelectListItem(t("Assignment_TiempoRestanteSLA"), "tiempo_restante_sla"),
-                new SelectListItem(t("Assignment_PrioridadPuntaje"), "prioridad_puntaje"),
-                new SelectListItem(t("Assignment_EspecialistaDisponible"), "especialista_disponible")
+                new SelectListItem(local("Select_Placeholder"), "", true),
+                new SelectListItem(local("Assignment_MenorCarga"), "menor_carga"),
+                new SelectListItem(local("Assignment_MejorCalificado"), "mejor_calificado"),
+                new SelectListItem(local("Assignment_TiempoRestanteSLA"), "tiempo_restante_sla"),
+                new SelectListItem(local("Assignment_PrioridadPuntaje"), "prioridad_puntaje"),
+                new SelectListItem(local("Assignment_EspecialistaDisponible"), "especialista_disponible")
             };
 
             ViewBag.AssignmentTypes = new SelectList(assignmentTypes, "Value", "Text", dto?.CriterioAsignacion);
         }
-        public async Task<IActionResult> Delete(int id)
-        {
-            var item = (await _service.ListAsync()).Find(c => c.CategoriaId == id);
-            if (item == null) return NotFound();
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // POST: Categoria/DeleteConfirmed/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            _logger.LogInformation("DeleteConfirmed POST called for CategoriaId={Id}", id);
-            try
-            {
-                await _service.DeleteAsync(id);
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Categoría eliminada correctamente','success')";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error deleting Categoria Id={Id}", id);
-                TempData["NotificationMessage"] = $"Swal.fire('Error','No se pudo eliminar la categoría: {ex.Message}','error')";
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
     }
-
 }

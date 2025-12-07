@@ -10,11 +10,13 @@ namespace SupportU.Application.Services
     {
         private readonly IRepositoryCategoria _repo;
         private readonly IMapper _mapper;
+        private readonly ILogger<ServiceCategoria> _logger;
 
-        public ServiceCategoria(IRepositoryCategoria repo, IMapper mapper)
+        public ServiceCategoria(IRepositoryCategoria repo, IMapper mapper, ILogger<ServiceCategoria> logger)
         {
             _repo = repo;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<List<CategoriaDTO>> ListAsync()
@@ -41,7 +43,9 @@ namespace SupportU.Application.Services
                 Activa = dto.Activa
             };
 
-            return await _repo.AddAsync(entity);
+            var id = await _repo.AddAsync(entity);
+            _logger.LogInformation("ServiceCategoria.AddAsync created CategoriaId={Id}", id);
+            return id;
         }
 
         public async Task UpdateAsync(CategoriaDTO dto)
@@ -49,7 +53,6 @@ namespace SupportU.Application.Services
             var entity = await _repo.FindByIdAsync(dto.CategoriaId);
             if (entity == null) throw new KeyNotFoundException("Categoría no encontrada");
 
-            // Actualizar solo campos escalares
             entity.Nombre = dto.Nombre?.Trim() ?? entity.Nombre;
             entity.Descripcion = dto.Descripcion;
             entity.SlaId = dto.SlaId;
@@ -57,11 +60,13 @@ namespace SupportU.Application.Services
             entity.Activa = dto.Activa;
 
             await _repo.UpdateAsync(entity);
+            _logger.LogInformation("ServiceCategoria.UpdateAsync updated CategoriaId={Id}", dto.CategoriaId);
         }
 
         public async Task DeleteAsync(int id)
         {
             await _repo.DeleteAsync(id);
+            _logger.LogInformation("ServiceCategoria.DeleteAsync deactivated CategoriaId={Id}", id);
         }
     }
 }

@@ -14,166 +14,179 @@ using SupportU.Infrastructure.Repository.Interfaces;
 
 namespace SupportU.Web.Controllers
 {
-	public class LoginController : Controller
-	{
-		private readonly IServiceUsuario _serviceUsuario;
-		private readonly IRepositoryUsuario _repoUsuario;
-		private readonly IServiceNotificacion _serviceNotificacion; // ✅ AGREGADO
-		private readonly IConfiguration _config;
+    public class LoginController : BaseController
+    {
+        private readonly IServiceUsuario _serviceUsuario;
+        private readonly IRepositoryUsuario _repoUsuario;
+        private readonly IServiceNotificacion _serviceNotificacion;
+        private readonly IConfiguration _config;
 
-		public LoginController(
-			IServiceUsuario serviceUsuario,
-			IRepositoryUsuario repoUsuario,
-			IServiceNotificacion serviceNotificacion, // ✅ AGREGADO
-			IConfiguration config)
-		{
-			_serviceUsuario = serviceUsuario ?? throw new ArgumentNullException(nameof(serviceUsuario));
-			_repoUsuario = repoUsuario ?? throw new ArgumentNullException(nameof(repoUsuario));
-			_serviceNotificacion = serviceNotificacion ?? throw new ArgumentNullException(nameof(serviceNotificacion)); // ✅ AGREGADO
-			_config = config ?? throw new ArgumentNullException(nameof(config));
-		}
+        public LoginController(
+            IServiceUsuario serviceUsuario,
+            IRepositoryUsuario repoUsuario,
+            IServiceNotificacion serviceNotificacion,
+            IConfiguration config)
+        {
+            _serviceUsuario = serviceUsuario;
+            _repoUsuario = repoUsuario;
+            _serviceNotificacion = serviceNotificacion;
+            _config = config;
+        }
 
+        // Helper local para traducciones
+        private string t(string key)
+        {
+            var translations = ViewData["Translations"] as Dictionary<string, string>
+                ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            return translations.TryGetValue(key, out var val) ? val : key;
+        }
 
-		// GET: /Login
-		public IActionResult Index()
-		{
-			return View();
-		}
+        // GET: /Login
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-		// POST: /Login
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(Login model, string? returnUrl)
-		{
-			if (!ModelState.IsValid)
-			{
-				TempData["ToastMessage"] = "toastr.error('Corrige los datos del formulario','Error');";
-				return View("Index", model);
-			}
+        // POST: /Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Login model, string? returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ToastMessage"] = $"toastr.error('{t("Login_Error_InvalidForm")}','{t("Login_Error")}');";
+                return View("Index", model);
+            }
 
-			var usuarios = await _serviceUsuario.ListAsync();
-			var usuario = usuarios.FirstOrDefault(u =>
-				string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
+            var usuarios = await _serviceUsuario.ListAsync();
+            var usuario = usuarios.FirstOrDefault(u =>
+                string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
 
-			if (usuario == null)
-			{
-				TempData["ToastMessage"] = "toastr.error('Correo no registrado','Error de acceso');";
-				return View("Index", model);
-			}
-			if (!usuario.Activo)
-			{
-				TempData["ToastMessage"] = "toastr.warning('Usuario inactivo. Contacte al administrador','Acceso denegado');";
-				return View("Index", model);
-			}
+            if (usuario == null)
+            {
+                TempData["ToastMessage"] = $"toastr.error('{t("Login_Error_EmailNotRegistered")}','{t("Login_Error")}');";
+                return View("Index", model);
+            }
+            if (!usuario.Activo)
+            {
+                TempData["ToastMessage"] = $"toastr.warning('{t("Login_Warning_UserInactive")}','{t("Login_AccessDenied")}');";
+                return View("Index", model);
+            }
 
-			var stored = usuario.PasswordHash ?? string.Empty;
-			var hasher = new PasswordHasher<object>();
-			var result = hasher.VerifyHashedPassword(null, stored, model.Password ?? string.Empty);
+            var stored = usuario.PasswordHash ?? string.Empty;
+            var hasher = new PasswordHasher<object>();
+            var result = hasher.VerifyHashedPassword(null, stored, model.Password ?? string.Empty);
 
+            if (result == PasswordVerificationResult.Success)
+            {
+                await SignIn(usuario, model.RememberMe);
 
-			if (result == PasswordVerificationResult.Success)
-			{
-				await SignIn(usuario, model.RememberMe);
+                try
+                {
+                    // Determina el idioma activo sin depender de ViewData
+                    var culture = System.Globalization.CultureInfo.CurrentUICulture?.Name ?? "es-CR";
 
-				// ✅ NOTIFICACIÓN DE INICIO DE SESIÓN
-				try
-				{
-					await _serviceNotificacion.CreateNotificationAsync(
-						usuarioDestinatarioId: usuario.UsuarioId,
-						ticketId: null,
-						tipo: "InicioSesion",
-						mensaje: $"Iniciaste sesión el {DateTime.Now:dd/MM/yyyy} a las {DateTime.Now:HH:mm}"
-					);
-				}
-				catch (Exception ex)
-				{
-					// Log pero no detener el login
-					Console.WriteLine($"Error al crear notificación de inicio de sesión: {ex.Message}");
-				}
+                    // Plantilla literal por cultura (sin claves ni diccionarios)
+                    var tpl = culture.Equals("en-US", StringComparison.OrdinalIgnoreCase)
+                        ? "You signed in on {0} at {1}"
+                        : "Iniciaste sesión el {0} a las {1}";
 
-				TempData["ToastMessage"] = $"toastr.success('Bienvenido {usuario.Nombre}','Conectado');";
+                    var mensaje = string.Format(
+                        tpl,
+                        DateTime.Now.ToString("dd/MM/yyyy"),
+                        DateTime.Now.ToString("HH:mm")
+                    );
 
-				if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
-					return Redirect(returnUrl);
+                    await _serviceNotificacion.CreateNotificationAsync(
+                        usuarioDestinatarioId: usuario.UsuarioId,
+                        ticketId: null,
+                        tipo: "InicioSesion",
+                        mensaje: mensaje
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al crear notificación de inicio de sesión: {ex.Message}");
+                }
 
-				return RedirectToAction("Index", "Home");
-			}
+                TempData["ToastMessage"] = $"toastr.success('{string.Format(t("Login_Welcome"), usuario.Nombre)}','{t("Login_Connected")}');";
 
-			TempData["ToastMessage"] = "toastr.error('Contraseña incorrecta','Error de acceso');";
-			return View("Index", model);
-		}
+                if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
 
+                return RedirectToAction("Index", "Home");
+            }
 
-		private async Task SignIn(UsuarioDTO usuario, bool rememberMe)
-		{
-			var claims = new List<Claim>
-			{
-				new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString()),
-				new Claim(ClaimTypes.Name, usuario.Email ?? string.Empty),
-				new Claim(ClaimTypes.Role, usuario.Rol ?? "Cliente")
-			};
+            TempData["ToastMessage"] = $"toastr.error('{t("Login_Error_WrongPassword")}','{t("Login_Error")}');";
+            return View("Index", model);
+        }
 
-			var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-			var principal = new ClaimsPrincipal(identity);
+        private async Task SignIn(UsuarioDTO usuario, bool rememberMe)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString()),
+                new Claim(ClaimTypes.Name, usuario.Email ?? string.Empty),
+                new Claim(ClaimTypes.Role, usuario.Rol ?? "Cliente")
+            };
 
-			var props = new AuthenticationProperties
-			{
-				IsPersistent = rememberMe,
-				AllowRefresh = true,
-				ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddHours(8) : (DateTimeOffset?)null
-			};
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
 
-			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
-		}
+            var props = new AuthenticationProperties
+            {
+                IsPersistent = rememberMe,
+                AllowRefresh = true,
+                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddHours(8) : (DateTimeOffset?)null
+            };
 
-		// POST: /Login/Logout
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Logout()
-		{
-			await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-			return RedirectToAction("Index", "Login");
-		}
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
+        }
 
-		// GET: /Login/ForgotPassword
-		public IActionResult ForgotPassword()
-		{
-			return View(new UsuarioDTO());
-		}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Login");
+        }
 
+        // GET: /Login/ForgotPassword
+        public IActionResult ForgotPassword()
+        {
+            return View(new UsuarioDTO());
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ForgotPassword(UsuarioDTO model)
-		{
-			if (string.IsNullOrWhiteSpace(model.Email))
-			{
-				ModelState.AddModelError(nameof(model.Email), "El correo es obligatorio");
-				return View(model);
-			}
-			if (string.IsNullOrWhiteSpace(model.PasswordHash))
-			{
-				ModelState.AddModelError(nameof(model.PasswordHash), "La nueva contraseña es obligatoria");
-				return View(model);
-			}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(UsuarioDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Email))
+            {
+                ModelState.AddModelError(nameof(model.Email), t("Forgot_EmailRequired"));
+                return View(model);
+            }
+            if (string.IsNullOrWhiteSpace(model.PasswordHash))
+            {
+                ModelState.AddModelError(nameof(model.PasswordHash), t("Forgot_NewPasswordRequired"));
+                return View(model);
+            }
 
-			var usuarios = await _serviceUsuario.ListAsync();
-			var usuario = usuarios.FirstOrDefault(u =>
-				string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
+            var usuarios = await _serviceUsuario.ListAsync();
+            var usuario = usuarios.FirstOrDefault(u =>
+                string.Equals(u.Email?.Trim(), model.Email?.Trim(), StringComparison.OrdinalIgnoreCase));
 
-			if (usuario == null)
-			{
-				ModelState.AddModelError(nameof(model.Email), "Correo no registrado");
-				return View(model);
-			}
+            if (usuario == null)
+            {
+                ModelState.AddModelError(nameof(model.Email), t("Forgot_EmailNotRegistered"));
+                return View(model);
+            }
 
-			usuario.PasswordHash = model.PasswordHash;
+            usuario.PasswordHash = model.PasswordHash;
+            await _serviceUsuario.UpdateAsync(usuario);
 
-			await _serviceUsuario.UpdateAsync(usuario);
-
-			TempData["ToastMessage"] = "toastr.success('Contraseña actualizada correctamente','Éxito');";
-			return RedirectToAction("Index", "Login");
-		}
-
-	}
+            TempData["ToastMessage"] = $"toastr.success('{t("Forgot_Success_PasswordUpdated")}','{t("Forgot_Success")}');";
+            return RedirectToAction("Index", "Login");
+        }
+    }
 }

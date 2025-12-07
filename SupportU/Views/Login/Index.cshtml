@@ -1,6 +1,13 @@
 ﻿@model SupportU.Application.DTOs.Login
 @{
-    ViewData["Title"] = "Iniciar Sesión";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Login_Title");
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
@@ -10,24 +17,24 @@
                 <div class="card shadow-lg border-0 rounded-4">
                     <div class="card-body p-4">
                         <div class="text-center mb-3">
-                            <h2 class="fw-bold">Bienvenido a SupportU</h2>
-                            <p class="text-muted">Ingresa con tu correo y contraseña</p>
+                            <h2 class="fw-bold">@t("Login_WelcomeTitle")</h2>
+                            <p class="text-muted">@t("Login_WelcomeSubtitle")</p>
                         </div>
 
                         <form asp-action="Login" method="post" novalidate>
                             @Html.AntiForgeryToken()
 
                             <div class="mb-3">
-                                <label asp-for="Email" class="form-label fw-bold">Correo</label>
+                                <label asp-for="Email" class="form-label fw-bold">@t("Login_Label_Email")</label>
                                 <input asp-for="Email" class="form-control form-control-lg" autocomplete="username" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
 
                             <div class="mb-3 position-relative">
-                                <label asp-for="Password" class="form-label fw-bold">Contraseña</label>
+                                <label asp-for="Password" class="form-label fw-bold">@t("Login_Label_Password")</label>
                                 <div class="input-group">
                                     <input asp-for="Password" type="password" id="pwdInput" class="form-control form-control-lg" autocomplete="current-password" />
-                                    <button type="button" id="togglePwd" class="btn btn-outline-secondary" title="Mostrar / Ocultar">
+                                    <button type="button" id="togglePwd" class="btn btn-outline-secondary" title="@t("Login_TogglePassword")">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                 </div>
@@ -37,25 +44,27 @@
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="form-check">
                                     <input asp-for="RememberMe" class="form-check-input" />
-                                    <label asp-for="RememberMe" class="form-check-label">Recordarme</label>
+                                    <label asp-for="RememberMe" class="form-check-label">@t("Login_Label_RememberMe")</label>
                                 </div>
-                                <a asp-action="ForgotPassword" class="small">¿Olvidaste tu contraseña?</a>
+
+                                <a asp-action="ForgotPassword" class="small">@t("Login_Link_ForgotPassword")</a>
                             </div>
 
                             <div class="d-flex gap-2 justify-content-end">
-                                <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
-                                <a asp-controller="Usuario" asp-action="Create" class="btn btn-outline-secondary btn-lg">Registrarse</a>
+                                <button type="submit" class="btn btn-primary btn-lg">@t("Login_Btn_Submit")</button>
+                                <a asp-controller="Usuario" asp-action="Create" class="btn btn-outline-secondary btn-lg">@t("Login_Btn_Register")</a>
                             </div>
                         </form>
                     </div>
                     <div class="card-footer bg-light text-center">
-                        <small class="text-muted">¿Tienes problemas para ingresar? Contacta al administrador.</small>
+                        <small class="text-muted">@t("Login_HelpContactAdmin")</small>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
@@ -72,23 +81,10 @@
         </script>
     }
 
-    @if (TempData.Peek("ForgotLogs") != null)
-    {
-        <script>
-            (function () {
-                try {
-            @Html.Raw(TempData.Peek("ForgotLogs").ToString());
-                } catch (e) {
-                    console.error('Error ejecutando ForgotLogs', e);
-                }
-            })();
-        </script>
-    }
     @if (TempData.Peek("LoginLogs") != null)
     {
         <script>
             @Html.Raw(TempData.Peek("LoginLogs").ToString());
         </script>
     }
-
 }

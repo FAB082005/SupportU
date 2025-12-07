@@ -3,7 +3,7 @@ using SupportU.Application.Services.Interfaces;
 
 namespace SupportU.Web.Controllers
 {
-    public class AsignacionController : Controller
+    public class AsignacionController : BaseController
     {
         private readonly IServiceAsignacion _serviceAsignacion;
 

@@ -1,0 +1,60 @@
+﻿@model SupportU.Application.DTOs.TecnicoDTO
+@{
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Tecnico_Edit_Title");
+    var allEspecialidades = ViewBag.AllEspecialidades as IEnumerable<SupportU.Application.DTOs.EspecialidadDTO> ?? Enumerable.Empty<SupportU.Application.DTOs.EspecialidadDTO>();
+    var selectedIds = ViewBag.SelectedEspecialidades as List<int> ?? new List<int>();
+
+    var firstSelected = selectedIds.FirstOrDefault(); 
+}
+
+<section class="section mt-5">
+    <div class="container">
+        <h2>@ViewData["Title"]</h2>
+
+        <form asp-action="Edit" method="post" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="TecnicoId" />
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">@t("Tecnico_Label_Nombre")</label>
+                <input class="form-control" value="@Model.NombreUsuario" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">@t("Tecnico_Label_Email")</label>
+                <input class="form-control" value="@Model.CorreoUsuario" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">@t("Tecnico_Label_Especialidades")</label>
+                <select name="especialidades" class="form-select" multiple size="8">
+                    @foreach (var esp in allEspecialidades)
+                    {
+                        // marcar solo si es la primera seleccionada
+                        var isSelected = (firstSelected != 0 && esp.EspecialidadId == firstSelected);
+                        <option value="@esp.EspecialidadId" selected="@(isSelected ? "selected" : null)">
+                            @esp.Nombre
+                        </option>
+                    }
+                </select>
+                <div class="form-text">@t("Tecnico_Help_SelectMultipleEspecialidades")</div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">@t("Tecnico_Btn_Save")</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@t("Tecnico_Btn_Cancel")</a>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

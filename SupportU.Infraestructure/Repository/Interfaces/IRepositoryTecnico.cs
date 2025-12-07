@@ -11,5 +11,7 @@ namespace SupportU.Infrastructure.Repository
 		Task UpdateAsync(Tecnico entity);
 		Task DeleteByUsuarioIdAsync(int usuarioId);
 		Task<Tecnico?> FindByIdAsync(int tecnicoId);
-	}
+        Task UpdateEspecialidadesAsync(int tecnicoId, List<int> especialidadIds);
+
+    }
 }

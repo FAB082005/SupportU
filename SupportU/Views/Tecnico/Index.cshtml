@@ -1,48 +1,54 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.TecnicoDTO>
 @{
-    ViewData["Title"] = "Gestión de Técnicos";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Tecnico_Index_Title") ?? "Gestión de Técnicos";
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Gestión de Técnicos</h2>
+            <h2 class="mb-0">@t("Tecnico_Management")</h2>
         </div>
 
         <div class="table-responsive shadow-sm rounded">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Carga de Trabajo</th>
-                        <th>Estado</th>
-                        <th>Calificación</th>
-                        <th>Nombre Usuario</th>
-                        <th>Email Usuario</th>
-                        <th class="text-center">Acciones</th>
+                        <th>@t("Tecnico_Label_Nombre")</th>
+                        <th>@t("Tecnico_Label_Email")</th>
+                        <th>@t("Tecnico_Label_CargaTrabajo")</th>
+                        <th>@t("Tecnico_Label_Especialidades")</th>
+                        <th class="text-center">@t("Tecnico_Label_Actions")</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>@item.NombreUsuario</td>
+                            <td>@item.CorreoUsuario</td>
                             <td>@item.CargaTrabajo</td>
                             <td>
-                                @if (item.Estado == "Disponible")
+                                @if (item.Especialidades != null && item.Especialidades.Any())
                                 {
-                                    <span class="badge bg-success">Disponible</span>
-                                }
-                                else if (item.Estado == "Ocupado")
-                                {
-                                    <span class="badge bg-warning text-dark">Ocupado</span>
+                                    @string.Join(", ", item.Especialidades.Select(e => e.Nombre))
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">@item.Estado</span>
+                                    <span class="text-muted">-</span>
                                 }
                             </td>
-                            <td>@item.CalificacionPromedio</td>
-                            <td>@item.NombreUsuario</td>
-                            <td>@item.CorreoUsuario</td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.TecnicoId" class="btn btn-sm btn-edit" title="@t("Tecnico_Btn_Edit")">
+                                    <i class="bi bi-pencil-square"></i> @t("Tecnico_Btn_Edit")
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

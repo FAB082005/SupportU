@@ -1,0 +1,23 @@
+2025-12-07 12:59:19.976 -06:00 [INF] Create POST called for Categoria. Nombre=sdd, SlaId=2, Criterio=mejor_calificado
+2025-12-07 12:59:20.152 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=5
+2025-12-07 12:59:20.154 -06:00 [INF] Categoria created successfully. NewId=5
+2025-12-07 13:20:17.364 -06:00 [INF] Create POST called for Categoria. Nombre=jnanan, SlaId=2, Criterio=tiempo_restante_sla
+2025-12-07 13:20:20.226 -06:00 [INF] Create POST called for Categoria. Nombre=jnanan, SlaId=2, Criterio=tiempo_restante_sla
+2025-12-07 13:20:30.321 -06:00 [INF] Create POST called for Categoria. Nombre=jnanan, SlaId=2, Criterio=menor_carga
+2025-12-07 13:20:30.349 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=8
+2025-12-07 13:20:30.350 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=8
+2025-12-07 13:20:30.351 -06:00 [INF] Categoria created successfully. NewId=8
+2025-12-07 13:20:57.869 -06:00 [INF] Create POST called for Categoria. Nombre=mxksmx, SlaId=3, Criterio=mejor_calificado
+2025-12-07 13:20:57.877 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=9
+2025-12-07 13:20:57.878 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=9
+2025-12-07 13:20:57.878 -06:00 [INF] Categoria created successfully. NewId=9
+2025-12-07 13:25:54.139 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-07 13:25:54.442 -06:00 [INF] RepositoryCategoria.DeleteAsync deactivated Id=3
+2025-12-07 13:25:54.444 -06:00 [INF] ServiceCategoria.DeleteAsync deactivated CategoriaId=3
+2025-12-07 13:25:58.045 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=4
+2025-12-07 13:25:58.065 -06:00 [INF] RepositoryCategoria.DeleteAsync deactivated Id=4
+2025-12-07 13:25:58.066 -06:00 [INF] ServiceCategoria.DeleteAsync deactivated CategoriaId=4
+2025-12-07 14:19:24.502 -06:00 [INF] RepositoryTecnico.UpdateEspecialidadesAsync updated tecnicoId=1 count=1
+2025-12-07 14:19:24.537 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1
+2025-12-07 14:19:31.019 -06:00 [INF] RepositoryTecnico.UpdateEspecialidadesAsync updated tecnicoId=1 count=1
+2025-12-07 14:19:31.020 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1

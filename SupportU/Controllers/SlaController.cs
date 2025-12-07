@@ -1,157 +1,164 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SupportU.Application.DTOs;
 using SupportU.Application.Services;
 
 namespace SupportU.Web.Controllers
 {
-    public class SlaController : Controller
+    public class SlaController : BaseController
     {
         private readonly IServiceSla _service;
+        private readonly ILogger<SlaController> _logger;
 
-        public SlaController(IServiceSla service)
+        public SlaController(IServiceSla service, ILogger<SlaController> logger)
         {
-            _service = service ?? throw new System.ArgumentNullException(nameof(service));
+            _service = service;
+            _logger = logger;
         }
 
-        // GET: /Sla
+        private string t(string key)
+        {
+            var translations = ViewData["Translations"] as System.Collections.Generic.Dictionary<string, string>;
+            if (translations != null && translations.TryGetValue(key, out var v)) return v;
+            return key;
+        }
+
         public async Task<IActionResult> Index()
         {
+            ViewData["Title"] = t("Sla_Title_Index");
             var list = await _service.ListAsync();
             return View(list);
         }
 
-        // GET: /Sla/Details/5
         public async Task<IActionResult> Details(int id)
         {
+            ViewData["Title"] = t("Sla_Title_Index");
             var dto = await _service.FindByIdAsync(id);
             if (dto == null) return NotFound();
             return View(dto);
         }
 
-        // GET: /Sla/Create
         public IActionResult Create()
         {
+            ViewData["Title"] = t("Sla_Title_Create");
             return View(new SlaDTO { Activo = true });
         }
 
-        // POST: /Sla/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SlaDTO dto)
         {
+            ViewData["Title"] = t("Sla_Title_Create");
+
             if (string.IsNullOrWhiteSpace(dto.Nombre))
-            {
-                ModelState.AddModelError(nameof(dto.Nombre), "Nombre es obligatorio");
-            }
+                ModelState.AddModelError(nameof(dto.Nombre), t("Sla_Validation_NombreRequired"));
+
             if (dto.TiempoRespuestaMinutos <= 0)
-            {
-                ModelState.AddModelError(nameof(dto.TiempoRespuestaMinutos), "Tiempo de respuesta debe ser mayor a 0");
-            }
+                ModelState.AddModelError(nameof(dto.TiempoRespuestaMinutos), t("Sla_Validation_TiempoRespuestaPositive"));
+
             if (dto.TiempoResolucionMinutos <= 0)
-            {
-                ModelState.AddModelError(nameof(dto.TiempoResolucionMinutos), "Tiempo de resolución debe ser mayor a 0");
-            }
+                ModelState.AddModelError(nameof(dto.TiempoResolucionMinutos), t("Sla_Validation_TiempoResolucionPositive"));
+
             if (!ModelState.IsValid) return View(dto);
 
             try
             {
                 await _service.AddAsync(dto);
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','SLA creado correctamente','success');";
+                TempData["NotificationMessage"] = $"Swal.fire('{t("Sla_Notification_Created")}','{t("Sla_Notification_Created")}','success')";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            catch (Exception ex)
             {
-                var inner = dbEx.InnerException?.Message ?? dbEx.Message;
-                ModelState.AddModelError(string.Empty, "Error BD: " + inner);
-                TempData["LastDbError"] = inner;
-                return View(dto);
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Error inesperado: " + ex.Message);
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
                 TempData["LastDbError"] = ex.Message;
                 return View(dto);
             }
         }
 
-        // GET: /Sla/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            ViewData["Title"] = t("Sla_Title_Edit");
             var dto = await _service.FindByIdAsync(id);
             if (dto == null) return NotFound();
             return View(dto);
         }
 
-        // POST: /Sla/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(SlaDTO dto)
         {
+            ViewData["Title"] = t("Sla_Title_Edit");
+
             if (string.IsNullOrWhiteSpace(dto.Nombre))
-                ModelState.AddModelError(nameof(dto.Nombre), "Nombre es obligatorio");
+                ModelState.AddModelError(nameof(dto.Nombre), t("Sla_Validation_NombreRequired"));
+
             if (dto.TiempoRespuestaMinutos <= 0)
-                ModelState.AddModelError(nameof(dto.TiempoRespuestaMinutos), "Tiempo de respuesta debe ser mayor a 0");
+                ModelState.AddModelError(nameof(dto.TiempoRespuestaMinutos), t("Sla_Validation_TiempoRespuestaPositive"));
+
             if (dto.TiempoResolucionMinutos <= 0)
-                ModelState.AddModelError(nameof(dto.TiempoResolucionMinutos), "Tiempo de resolución debe ser mayor a 0");
+                ModelState.AddModelError(nameof(dto.TiempoResolucionMinutos), t("Sla_Validation_TiempoResolucionPositive"));
 
             if (!ModelState.IsValid) return View(dto);
 
             try
             {
                 await _service.UpdateAsync(dto);
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','SLA actualizado correctamente','success');";
+                TempData["NotificationMessage"] = $"Swal.fire('{t("Sla_Notification_Updated")}','{t("Sla_Notification_Updated")}','success')";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            catch (Exception ex)
             {
-                var inner = dbEx.InnerException?.Message ?? dbEx.Message;
-                ModelState.AddModelError(string.Empty, "Error BD: " + inner);
-                TempData["LastDbError"] = inner;
-                return View(dto);
-            }
-            catch (System.Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Error: " + ex.Message);
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
                 TempData["LastDbError"] = ex.Message;
                 return View(dto);
             }
         }
 
-        // GET: /Sla/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var dto = await _service.FindByIdAsync(id);
             if (dto == null) return NotFound();
+            ViewData["Title"] = dto.Activo ? t("Sla_Title_Delete_Inactivate") : t("Sla_Title_Delete_Reactivate");
             return View(dto);
         }
 
-        // POST: /Sla/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var estadoForm = Request.Form["estado"].FirstOrDefault();
-            if (!string.IsNullOrEmpty(estadoForm))
+            try
             {
-                var dto = await _service.FindByIdAsync(id);
-                if (dto != null)
+                if (!string.IsNullOrEmpty(estadoForm))
                 {
-                    if (estadoForm == "1") 
+                    var dto = await _service.FindByIdAsync(id);
+                    if (dto != null)
                     {
-                        dto.Activo = false;
-                        await _service.UpdateAsync(dto);
-                        TempData["NotificationMessage"] = "Swal.fire('Éxito','SLA inactivado correctamente','success');";
-                    }
-                    else if (estadoForm == "0") 
-                    {
-                        dto.Activo = true;
-                        await _service.UpdateAsync(dto);
-                        TempData["NotificationMessage"] = "Swal.fire('Éxito','SLA reactivado correctamente','success');";
+                        if (estadoForm == "1")
+                        {
+                            dto.Activo = false;
+                            await _service.UpdateAsync(dto);
+                            TempData["NotificationMessage"] = $"Swal.fire('{t("Sla_Notification_Inactivated")}','{t("Sla_Notification_Inactivated")}','success')";
+                        }
+                        else if (estadoForm == "0")
+                        {
+                            dto.Activo = true;
+                            await _service.UpdateAsync(dto);
+                            TempData["NotificationMessage"] = $"Swal.fire('{t("Sla_Notification_Reactivated")}','{t("Sla_Notification_Reactivated")}','success')";
+                        }
                     }
                 }
+
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                TempData["LastDbError"] = ex.Message;
+                ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

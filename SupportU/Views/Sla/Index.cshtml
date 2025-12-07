@@ -1,23 +1,29 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.SlaDTO>
 @{
-    ViewData["Title"] = "Gestión de SLA";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = t("Sla_Title_Index");
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Gestión de SLA</h2>
-            <a asp-action="Create" class="btn btn-create"><i class="bi bi-plus-circle"></i> Nuevo SLA</a>
+            <h2 class="mb-0">@t("Sla_Title_Index")</h2>
+            <a asp-action="Create" class="btn btn-create"><i class="bi bi-plus-circle"></i> @t("Sla_Title_Create")</a>
         </div>
 
         <div class="table-responsive shadow-sm rounded">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Tiempo Respuesta (min)</th>
-                        <th>Tiempo Resolución (min)</th>
-                        <th>Activo</th>
+                        <th>@t("Sla_Label_Nombre")</th>
+                        <th>@t("Sla_Label_TiempoRespuesta")</th>
+                        <th>@t("Sla_Label_TiempoResolucion")</th>
+                        <th>@t("Sla_Label_Activo")</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -31,18 +37,16 @@
                             <td>
                                 @if (item.Activo)
                                 {
-                                    <span class="badge bg-success">Activo</span>
+                                    <span class="badge bg-success">@t("Status_Active")</span>
                                 }
                                 else
                                 {
-
-                                    <span class="badge bg-secondary">Inactivo</span>
+                                    <span class="badge bg-secondary">@t("Status_Inactive")</span>
                                 }
                             </td>
                             <td class="text-center">
                                 <a asp-action="Edit" asp-route-id="@item.SlaId" class="btn btn-sm btn-edit"><i class="bi bi-pencil-square"></i></a>
                                 <a asp-action="Delete" asp-route-id="@item.SlaId" class="btn btn-sm btn-delete"><i class="bi bi-power"></i></a>
-
                             </td>
                         </tr>
                     }

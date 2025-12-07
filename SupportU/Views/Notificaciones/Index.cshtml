@@ -1,6 +1,13 @@
 ﻿@model List<SupportU.Application.DTOs.NotificacionDTO>
 @{
-    ViewData["Title"] = "Mis Notificaciones";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Notifications_Title");
 }
 
 <div class="container py-5">
@@ -10,10 +17,10 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>
                     <i class="bi bi-bell-fill text-primary me-2"></i>
-                    Mis Notificaciones
+                    @t("Notifications_Header")
                 </h2>
                 <span class="badge bg-primary fs-6">
-                    @Model.Count(n => n.EsPendiente) pendientes
+                    @Model.Count(n => n.EsPendiente) @t("Notifications_PendingSuffix")
                 </span>
             </div>
 
@@ -22,8 +29,8 @@
             {
                 <div class="alert alert-info text-center py-5">
                     <i class="bi bi-info-circle fs-1 d-block mb-3"></i>
-                    <h5>No tienes notificaciones</h5>
-                    <p class="text-muted mb-0">Cuando ocurran eventos importantes, aparecerán aquí</p>
+                    <h5>@t("Notifications_Empty_Title")</h5>
+                    <p class="text-muted mb-0">@t("Notifications_Empty_Subtitle")</p>
                 </div>
             }
             else
@@ -33,7 +40,6 @@
                     {
                         <div class="list-group-item @(notif.EsPendiente ? "border-start border-primary border-4" : "bg-light")"
                              style="transition: all 0.3s;">
-
                             <div class="d-flex w-100 justify-content-between align-items-start">
                                 <div class="flex-grow-1">
                                     <!-- TIPO DE NOTIFICACIÓN -->
@@ -42,40 +48,63 @@
                                         {
                                             case "TicketCreado":
                                                 <span class="badge bg-success">
-                                                    <i class="bi bi-plus-circle me-1"></i>Ticket Creado
+                                                    <i class="bi bi-plus-circle me-1"></i>@t("Notifications_Type_TicketCreated")
                                                 </span>
                                                 break;
+
                                             case "TicketAsignado":
                                                 <span class="badge bg-primary">
-                                                    <i class="bi bi-person-check me-1"></i>Ticket Asignado
+                                                    <i class="bi bi-person-check me-1"></i>@t("Notifications_Type_TicketAssigned")
                                                 </span>
                                                 break;
+
                                             case "CambioEstado":
                                                 <span class="badge bg-warning text-dark">
-                                                    <i class="bi bi-arrow-repeat me-1"></i>Cambio de Estado
+                                                    <i class="bi bi-arrow-repeat me-1"></i>@t("Notifications_Type_StateChanged")
                                                 </span>
                                                 break;
+
                                             case "InicioSesion":
                                                 <span class="badge bg-info">
-                                                    <i class="bi bi-box-arrow-in-right me-1"></i>Inicio de Sesión
+                                                    <i class="bi bi-box-arrow-in-right me-1"></i>@t("Notifications_Type_Login")
                                                 </span>
                                                 break;
+
                                             default:
                                                 <span class="badge bg-secondary">
-                                                    <i class="bi bi-bell me-1"></i>Notificación
+                                                    <i class="bi bi-bell me-1"></i>@t("Notifications_Type_Generic")
                                                 </span>
                                                 break;
                                         }
 
                                         @if (notif.EsPendiente)
                                         {
-                                            <span class="badge bg-danger ms-2">NUEVA</span>
+                                            <span class="badge bg-danger ms-2">@t("Notifications_Badge_New")</span>
                                         }
                                     </div>
 
-                                    <!-- MENSAJE -->
+                                    <!-- MENSAJE (viene de BD; si trae una clave conocida la convertimos usando las cadenas existentes) -->
+                                    @{
+                                        var displayMessage = notif.Mensaje ?? string.Empty;
+
+                                        // Si la BD contiene la clave antigua o la clave de tipo, la convertimos a texto legible
+                                        if (string.Equals(displayMessage, "Login_Notification_LoginMessage", StringComparison.OrdinalIgnoreCase)
+                                            || string.Equals(displayMessage, "Notifications_Type_Login", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            // Obtenemos el texto para "Login" desde las cadenas disponibles
+                                            var tipoTexto = t("Notifications_Type_Login");
+                                            if (string.Equals(tipoTexto, "Notifications_Type_Login", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                // Fallback literal si la clave no está en las traducciones
+                                                tipoTexto = "Login";
+                                            }
+
+                                            // Mostramos el tipo + fecha/hora de la notificación
+                                            displayMessage = $"{tipoTexto} - {notif.FechaCreacion.ToString("dd/MM/yyyy HH:mm")}";
+                                        }
+                                    }
                                     <h6 class="mb-2 @(notif.EsPendiente ? "fw-bold" : "")">
-                                        @notif.Mensaje
+                                        @displayMessage
                                     </h6>
 
                                     <!-- FECHA -->
@@ -91,7 +120,7 @@
                                     <button type="button"
                                             class="btn btn-sm btn-outline-primary ms-3 btn-marcar-leida"
                                             data-id="@notif.NotificacionId"
-                                            title="Marcar como leída">
+                                            title="@t("Notifications_MarkAsRead_Tooltip")">
                                         <i class="bi bi-check2"></i>
                                     </button>
                                 }
@@ -105,45 +134,49 @@
 </div>
 
 @section Scripts {
-    <script>
-        $(document).ready(function() {
-            // MARCAR COMO LEÍDA
-            $('.btn-marcar-leida').on('click', function() {
-                const btn = $(this);
-                const notifId = btn.data('id');
-                const listItem = btn.closest('.list-group-item');
+<script>
+    $(function () {
+        // Delegated handler para botones que puedan ser renderizados dinámicamente
+        $(document).on('click', '.btn-marcar-leida', function (e) {
+            e.preventDefault();
+            const btn = $(this);
+            const notifId = btn.data('id');
+            const listItem = btn.closest('.list-group-item');
 
-                $.ajax({
-                    url: '@Url.Action("MarcarLeida", "Notificaciones")',
-                    type: 'POST',
-                    data: {
-                        id: notifId,
-                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            // Animación de transición
-                            listItem.fadeOut(300, function() {
-                                listItem.removeClass('border-start border-primary border-4');
-                                listItem.addClass('bg-light');
-                                listItem.find('.badge.bg-danger').remove();
-                                listItem.find('h6').removeClass('fw-bold');
-                                btn.remove();
-                                listItem.fadeIn(300);
-                            });
+            // Obtener token antiforgery (aspnet core)
+            const token = $('input[name="__RequestVerificationToken"]').val() || $('input[name="_RequestVerificationToken"]').val();
 
-                            toastr.success('Notificación marcada como leída');
-                        } else {
-                            toastr.error('No se pudo marcar la notificación');
-                        }
-                    },
-                    error: function() {
-                        toastr.error('Error al procesar la solicitud');
+            $.ajax({
+                url: '@Url.Action("MarcarLeida", "Notificaciones")',
+                type: 'POST',
+                data: {
+                    id: notifId,
+                    __RequestVerificationToken: token
+                },
+                success: function (response) {
+                    if (response && response.success) {
+                        // Actualizar UI: quitar badge NUEVA, quitar estilo pendiente y eliminar botón
+                        listItem.fadeOut(200, function () {
+                            listItem.removeClass('border-start border-primary border-4');
+                            listItem.addClass('bg-light');
+                            listItem.find('.badge.bg-danger').remove();
+                            listItem.find('h6').removeClass('fw-bold');
+                            btn.remove();
+                            listItem.fadeIn(200);
+                        });
+                        toastr.success('@t("Notifications_MarkAsRead_Success")');
+                    } else {
+                        var msg = (response && response.message) ? response.message : '@t("Notifications_MarkAsRead_Error")';
+                        toastr.error(msg);
                     }
-                });
+                },
+                error: function (xhr, status, err) {
+                    toastr.error('@t("Notifications_MarkAsRead_RequestError")');
+                }
             });
         });
-    </script>
+    });
+</script>
 }
 
 @* Token antiforgery para las peticiones AJAX *@

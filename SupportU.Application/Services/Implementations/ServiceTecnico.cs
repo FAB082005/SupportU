@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using SupportU.Application.DTOs;
 using SupportU.Infrastructure.Repository;
 namespace SupportU.Application.Services
@@ -7,11 +8,14 @@ namespace SupportU.Application.Services
 	{
 		private readonly IRepositoryTecnico _repo;
 		private readonly IMapper _mapper;
-		public ServiceTecnico(IRepositoryTecnico repo, IMapper mapper)
+        private readonly ILogger<ServiceTecnico> _logger;
+        public ServiceTecnico(IRepositoryTecnico repo, IMapper mapper, ILogger<ServiceTecnico> logger)
 		{
 			_repo = repo;
 			_mapper = mapper;
-		}
+			_logger = logger;
+
+        }
 
 		public async Task<List<TecnicoDTO>> ListAsync()
 		{
@@ -62,5 +66,11 @@ namespace SupportU.Application.Services
 				await _repo.UpdateAsync(tecnico);
 			}
 		}
-	}
+        public async Task UpdateEspecialidadesAsync(int tecnicoId, List<int> especialidadIds)
+        {
+            if (especialidadIds == null) especialidadIds = new List<int>();
+            await _repo.UpdateEspecialidadesAsync(tecnicoId, especialidadIds);
+            _logger.LogInformation("ServiceTecnico.UpdateEspecialidadesAsync tecnicoId={Id} count={Count}", tecnicoId, especialidadIds.Count);
+        }
+    }
 }

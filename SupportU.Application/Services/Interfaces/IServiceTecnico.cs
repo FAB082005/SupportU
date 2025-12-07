@@ -10,5 +10,7 @@ namespace SupportU.Application.Services
 		Task IncrementarCargaAsync(int tecnicoId);
 		Task DecrementarCargaAsync(int tecnicoId);
 		Task ActualizarEstadoAsync(int tecnicoId, string nuevoEstado);
-	}
+        Task UpdateEspecialidadesAsync(int tecnicoId, List<int> especialidadIds);
+
+    }
 }
