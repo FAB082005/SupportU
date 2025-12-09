@@ -12,5 +12,7 @@ namespace SupportU.Application.Services
 		Task ActualizarEstadoAsync(int tecnicoId, string nuevoEstado);
         Task UpdateEspecialidadesAsync(int tecnicoId, List<int> especialidadIds);
 
+        Task<int> AddAsync(TecnicoDTO dto);
+
     }
 }

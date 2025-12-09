@@ -11,7 +11,7 @@
     var allEspecialidades = ViewBag.AllEspecialidades as IEnumerable<SupportU.Application.DTOs.EspecialidadDTO> ?? Enumerable.Empty<SupportU.Application.DTOs.EspecialidadDTO>();
     var selectedIds = ViewBag.SelectedEspecialidades as List<int> ?? new List<int>();
 
-    var firstSelected = selectedIds.FirstOrDefault(); 
+    var firstSelected = selectedIds.FirstOrDefault();
 }
 
 <section class="section mt-5">
@@ -37,7 +37,6 @@
                 <select name="especialidades" class="form-select" multiple size="8">
                     @foreach (var esp in allEspecialidades)
                     {
-                        // marcar solo si es la primera seleccionada
                         var isSelected = (firstSelected != 0 && esp.EspecialidadId == firstSelected);
                         <option value="@esp.EspecialidadId" selected="@(isSelected ? "selected" : null)">
                             @esp.Nombre

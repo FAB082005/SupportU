@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using SupportU.Application.DTOs;
+using SupportU.Infraestructure.Models;
 using SupportU.Infrastructure.Repository;
 namespace SupportU.Application.Services
 {
@@ -71,6 +72,31 @@ namespace SupportU.Application.Services
             if (especialidadIds == null) especialidadIds = new List<int>();
             await _repo.UpdateEspecialidadesAsync(tecnicoId, especialidadIds);
             _logger.LogInformation("ServiceTecnico.UpdateEspecialidadesAsync tecnicoId={Id} count={Count}", tecnicoId, especialidadIds.Count);
+        }
+
+        public async Task<int> AddAsync(TecnicoDTO dto)
+        {
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
+            if (dto.UsuarioId <= 0) throw new ArgumentException("UsuarioId inválido en TecnicoDTO");
+
+            var entity = new Tecnico
+            {
+                UsuarioId = dto.UsuarioId,
+                CargaTrabajo = dto.CargaTrabajo,
+                Estado = string.IsNullOrWhiteSpace(dto.Estado) ? "Disponible" : dto.Estado,
+                CalificacionPromedio = dto.CalificacionPromedio
+            };
+
+            var newId = await _repo.AddAsync(entity);
+
+            if (newId <= 0) throw new InvalidOperationException("No se pudo crear el técnico (id inválido).");
+
+            if (dto.EspecialidadIds != null && dto.EspecialidadIds.Count > 0)
+            {
+                await _repo.UpdateEspecialidadesAsync(newId, dto.EspecialidadIds);
+            }
+
+            return newId;
         }
     }
 }

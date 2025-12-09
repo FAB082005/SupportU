@@ -45,9 +45,18 @@
                                 }
                             </td>
                             <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@item.TecnicoId" class="btn btn-sm btn-edit" title="@t("Tecnico_Btn_Edit")">
-                                    <i class="bi bi-pencil-square"></i> @t("Tecnico_Btn_Edit")
-                                </a>
+                                @if (item.TecnicoId > 0)
+                                {
+                                    <a asp-controller="Tecnico" asp-action="Edit" asp-route-id="@item.TecnicoId" class="btn btn-sm btn-edit" title="@t("Tecnico_Btn_Edit")">
+                                        <i class="bi bi-pencil-square"></i> @t("Tecnico_Btn_Edit")
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Tecnico" asp-action="EditByUsuario" asp-route-usuarioId="@item.UsuarioId" class="btn btn-sm btn-edit" title="@t("Tecnico_Btn_Edit")">
+                                        <i class="bi bi-pencil-square"></i> @t("Tecnico_Btn_Edit")
+                                    </a>
+                                }
                             </td>
                         </tr>
                     }

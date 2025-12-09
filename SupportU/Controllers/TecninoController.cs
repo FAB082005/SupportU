@@ -14,6 +14,7 @@ namespace SupportU.Web.Controllers
         private readonly IServiceEspecialidad _serviceEspecialidad;
         private readonly ILogger<TecnicoController> _logger;
 
+        // Mantengo la asignación tal como la tenías
         public TecnicoController(IServiceTecnico serviceTecnico, IServiceEspecialidad serviceEspecialidad, ILogger<TecnicoController> logger)
         {
             _serviceTecnico = serviceTecnico;
@@ -25,17 +26,73 @@ namespace SupportU.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var list = await _serviceTecnico.ListAsync();
-            return View(list);
+            var faltantes = list.Where(x => x.TecnicoId == 0 && x.UsuarioId > 0 && x.UsuarioActivo).ToList();
+
+            foreach (var u in faltantes)
+            {
+                try
+                {
+                    var existente = await _serviceTecnico.FindByUsuarioIdAsync(u.UsuarioId);
+                    if (existente == null)
+                    {
+                        var nuevoDto = new TecnicoDTO
+                        {
+                            UsuarioId = u.UsuarioId,
+                            CargaTrabajo = 0,
+                            Estado = "Disponible",
+                            CalificacionPromedio = 0.00m
+                        };
+
+                        await _serviceTecnico.AddAsync(nuevoDto);
+                    }
+                }
+                catch
+                {
+                    // no propagamos
+                }
+            }
+
+            var syncedList = await _serviceTecnico.ListAsync();
+            return View(syncedList);
         }
+
+        public async Task<IActionResult> EditByUsuario(int usuarioId)
+        {
+            if (usuarioId <= 0) return RedirectToAction(nameof(Index));
+
+            var tecnicoExistente = await _serviceTecnico.FindByUsuarioIdAsync(usuarioId);
+            if (tecnicoExistente != null)
+            {
+                return RedirectToAction(nameof(Edit), new { id = tecnicoExistente.TecnicoId });
+            }
+
+            var nuevo = new TecnicoDTO
+            {
+                UsuarioId = usuarioId,
+                CargaTrabajo = 0,
+                Estado = "Disponible",
+                CalificacionPromedio = 0.00m
+            };
+
+            var newId = await _serviceTecnico.AddAsync(nuevo);
+            return RedirectToAction(nameof(Edit), new { id = newId });
+        }
+
 
         // GET: Tecnico/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
+            if (id <= 0) return RedirectToAction(nameof(Index));
+
             var dto = await _serviceTecnico.FindByIdAsync(id);
-            if (dto == null) return NotFound();
+            if (dto == null)
+            {
+                TempData["NotificationMessage"] = "Swal.fire('Atención','Técnico no encontrado','warning')";
+                return RedirectToAction(nameof(Index));
+            }
 
             var allEspecialidades = await _serviceEspecialidad.ListAsync();
-            ViewBag.AllEspecialidades = allEspecialidades; // lista de EspecialidadDTO
+            ViewBag.AllEspecialidades = allEspecialidades;
             ViewBag.SelectedEspecialidades = dto.Especialidades?.Select(e => e.EspecialidadId).ToList() ?? new System.Collections.Generic.List<int>();
 
             return View(dto);

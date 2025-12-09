@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SupportU.Infraestructure.Data;
 using SupportU.Infraestructure.Models;
 
@@ -8,9 +11,9 @@ namespace SupportU.Infrastructure.Repository
     public class RepositoryTecnico : IRepositoryTecnico
     {
         private readonly SupportUContext _context;
-        private readonly ILogger<RepositoryTecnico> _logger;
+        private readonly Microsoft.Extensions.Logging.ILogger<RepositoryTecnico> _logger;
 
-        public RepositoryTecnico(SupportUContext context, ILogger<RepositoryTecnico> logger)
+        public RepositoryTecnico(SupportUContext context, Microsoft.Extensions.Logging.ILogger<RepositoryTecnico> logger)
         {
             _context = context;
             _logger = logger;
@@ -18,6 +21,35 @@ namespace SupportU.Infrastructure.Repository
 
         public async Task<List<Tecnico>> ListAsync()
         {
+            // Sincronizar técnicos faltantes (usuarios con Rol = "Técnico" y Activo = true)
+            var usuarioIds = await _context.Usuario
+                .Where(u => u.Rol == "Técnico" && u.Activo)
+                .Select(u => u.UsuarioId)
+                .ToListAsync();
+
+            if (usuarioIds.Any())
+            {
+                var existentes = await _context.Tecnico
+                    .Where(t => usuarioIds.Contains(t.UsuarioId))
+                    .Select(t => t.UsuarioId)
+                    .ToListAsync();
+
+                var faltantes = usuarioIds.Except(existentes).ToList();
+                if (faltantes.Any())
+                {
+                    var nuevos = faltantes.Select(id => new Tecnico
+                    {
+                        UsuarioId = id,
+                        CargaTrabajo = 0,
+                        Estado = "Disponible",
+                        CalificacionPromedio = 0.00m
+                    }).ToList();
+
+                    await _context.Tecnico.AddRangeAsync(nuevos);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
             var query =
                 from u in _context.Usuario
                 where u.Rol == "Técnico"
@@ -35,10 +67,16 @@ namespace SupportU.Infrastructure.Repository
 
             var tecnicos = await query.ToListAsync();
 
-            // Cargar especialidades para técnicos existentes
             foreach (var tecnico in tecnicos.Where(t => t.TecnicoId > 0))
             {
-                await _context.Entry(tecnico).Collection(t => t.Especialidad).LoadAsync();
+                var tracked = await _context.Tecnico
+                    .Include(x => x.Especialidad)
+                    .FirstOrDefaultAsync(x => x.TecnicoId == tecnico.TecnicoId);
+
+                if (tracked != null)
+                {
+                    tecnico.Especialidad = tracked.Especialidad;
+                }
             }
 
             return tecnicos;
@@ -102,7 +140,6 @@ namespace SupportU.Infrastructure.Repository
             }
 
             await _context.SaveChangesAsync();
-            _logger.LogInformation("RepositoryTecnico.UpdateEspecialidadesAsync updated tecnicoId={Id} count={Count}", tecnicoId, especialidades.Count);
         }
     }
 }
