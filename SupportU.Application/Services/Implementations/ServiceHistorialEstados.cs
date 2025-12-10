@@ -62,27 +62,24 @@ namespace SupportU.Application.Services.Implementations
 		{
 			try
 			{
-				_logger.LogInformation("🔄 Iniciando cambio de estado para Ticket {TicketId}: {EstadoAnterior} → {EstadoNuevo}",
+				_logger.LogInformation("Iniciando cambio de estado para ticket {TicketId} de {EstadoAnterior} a {EstadoNuevo}",
 					dto.TicketId, dto.EstadoAnterior, dto.EstadoNuevo);
 
-				// 🔴 IMPORTANTE: Obtener y actualizar el ticket con cálculo de SLA
 				var ticket = await _repoTicket.FindByIdAsyncForUpdate(dto.TicketId);
 				if (ticket == null)
 				{
 					throw new KeyNotFoundException($"Ticket {dto.TicketId} no encontrado");
 				}
 
-				// Actualizar el estado del ticket
+				// Actualiza el estado del ticket
 				ticket.Estado = dto.EstadoNuevo;
 
-				// 🔴 CALCULAR CUMPLIMIENTO DE SLA
 				await CalcularCumplimientoSLA(ticket, dto.EstadoNuevo);
 
-				// Guardar los cambios del ticket
+				// Guarda los cambios del ticket
 				await _repoTicket.UpdateAsync(ticket);
-				_logger.LogInformation("✅ Ticket actualizado con nuevo estado y SLA calculado");
+				_logger.LogInformation("Estado del ticket actualizado, SLA calculado exitosamente");
 
-				// Crear el historial
 				var entity = new HistorialEstado
 				{
 					TicketId = dto.TicketId,
@@ -94,9 +91,9 @@ namespace SupportU.Application.Services.Implementations
 				};
 
 				var historialId = await _repo.AddAsync(entity);
-				_logger.LogInformation("✅ Historial creado con ID: {HistorialId}", historialId);
+				_logger.LogInformation("Historial de cambio de estado creado con ID {HistorialId}", historialId);
 
-				// Guardar imágenes
+				// Guarda las imágenes
 				if (dto.Imagenes != null && dto.Imagenes.Any())
 				{
 					foreach (var imagenDto in dto.Imagenes)
@@ -107,119 +104,99 @@ namespace SupportU.Application.Services.Implementations
 						var imagenId = await _serviceImagen.AddAsync(imagenDto);
 					}
 
-					_logger.LogInformation("✅ {Count} imágenes guardadas exitosamente", dto.Imagenes.Count);
+					_logger.LogInformation("Se guardaron {Count} imagenes asociadas al cambio de estado", dto.Imagenes.Count);
 				}
 				else
 				{
-					_logger.LogWarning("⚠️ No se recibieron imágenes para guardar");
+					_logger.LogWarning("No se recibieron imagenes para guardar en el historial");
 				}
 
-				// Generar notificaciones
 				await GenerarNotificacionesCambioEstadoAsync(dto);
 
 				return historialId;
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "❌ ERROR en ServiceHistorialEstados.AddAsync");
-				_logger.LogError("Mensaje: {Message}", ex.Message);
-				_logger.LogError("InnerException: {InnerException}", ex.InnerException?.Message);
+				_logger.LogError(ex, "Error al agregar historial de estado para ticket {TicketId}", dto.TicketId);
+				_logger.LogError("Detalle del error: {Message}", ex.Message);
+				if (ex.InnerException != null)
+				{
+					_logger.LogError("Inner exception: {InnerMessage}", ex.InnerException.Message);
+				}
 				throw;
 			}
 		}
 
-		/// <summary>
-		/// 🔴 NUEVO MÉTODO: Calcula y actualiza el cumplimiento de SLA según el nuevo estado
-		/// </summary>
 		private async Task CalcularCumplimientoSLA(Ticket ticket, string nuevoEstado)
 		{
 			try
 			{
 				var ahora = DateTime.Now;
-
-				// Obtener el ticket completo con su categoría y SLA (FindByIdAsync devuelve Ticket, no DTO)
 				var ticketCompleto = await _repoTicket.FindByIdAsync(ticket.TicketId);
 				if (ticketCompleto?.Categoria?.Sla == null)
 				{
-					_logger.LogWarning("⚠️ No se encontró SLA para el ticket {TicketId}", ticket.TicketId);
+					_logger.LogWarning("No se encontro configuracion de SLA para el ticket {TicketId}", ticket.TicketId);
 					return;
 				}
 
-				// Obtener tiempos de SLA
+				// Obtiene los tiempos de SLA
 				var tiempoRespuestaMinutos = ticketCompleto.Categoria.Sla.TiempoRespuestaMinutos;
 				var tiempoResolucionMinutos = ticketCompleto.Categoria.Sla.TiempoResolucionMinutos;
 
-				// Calcular fechas límite
+				// Calcula las fechas límite
 				var fechaLimiteRespuesta = ticket.FechaCreacion.AddMinutes(tiempoRespuestaMinutos);
 				var fechaLimiteResolucion = ticket.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
 
-				_logger.LogInformation("📊 SLA del Ticket {TicketId}:", ticket.TicketId);
-				_logger.LogInformation("   • Creado: {FechaCreacion}", ticket.FechaCreacion);
-				_logger.LogInformation("   • Límite Respuesta: {FechaLimite} ({Minutos} min)",
-					fechaLimiteRespuesta, tiempoRespuestaMinutos);
-				_logger.LogInformation("   • Límite Resolución: {FechaLimite} ({Minutos} min)",
-					fechaLimiteResolucion, tiempoResolucionMinutos);
+				_logger.LogInformation("Verificando SLA del ticket {TicketId}. Creado: {FechaCreacion}, Limite respuesta: {LimiteRespuesta}, Limite resolucion: {LimiteResolucion}",
+					ticket.TicketId, ticket.FechaCreacion, fechaLimiteRespuesta, fechaLimiteResolucion);
 
-				// 1️⃣ PRIMERA RESPUESTA (cuando sale de "Pendiente" por primera vez)
 				if (nuevoEstado != "Pendiente" && !ticket.fecha_primera_respuesta.HasValue)
 				{
 					ticket.fecha_primera_respuesta = ahora;
 					ticket.CumplimientoRespuesta = ahora <= fechaLimiteRespuesta;
 
-					_logger.LogInformation("📝 Primera respuesta registrada:");
-					_logger.LogInformation("   • Fecha: {Fecha}", ahora);
-					_logger.LogInformation("   • Cumplimiento: {Cumplido} {Emoji}",
-						ticket.CumplimientoRespuesta.Value ? "SÍ" : "NO",
-						ticket.CumplimientoRespuesta.Value ? "✅" : "❌");
+					var estadoCumplimiento = ticket.CumplimientoRespuesta.Value ? "dentro del tiempo" : "fuera del tiempo";
+					_logger.LogInformation("Primera respuesta registrada para ticket {TicketId} el {Fecha}, {Estado} establecido",
+						ticket.TicketId, ahora, estadoCumplimiento);
 				}
-
-				// 2️⃣ RESOLUCIÓN (cuando llega a "Resuelto")
 				if (nuevoEstado == "Resuelto" && !ticket.fecha_resolucion.HasValue)
 				{
 					ticket.fecha_resolucion = ahora;
 					ticket.CumplimientoResolucion = ahora <= fechaLimiteResolucion;
 
-					_logger.LogInformation("🎯 Resolución registrada:");
-					_logger.LogInformation("   • Fecha: {Fecha}", ahora);
-					_logger.LogInformation("   • Cumplimiento: {Cumplido} {Emoji}",
-						ticket.CumplimientoResolucion.Value ? "SÍ" : "NO",
-						ticket.CumplimientoResolucion.Value ? "✅" : "❌");
+					var estadoCumplimiento = ticket.CumplimientoResolucion.Value ? "cumpliendo" : "excediendo";
+					_logger.LogInformation("Ticket {TicketId} resuelto el {Fecha}, {Estado} el tiempo de resolucion del SLA",
+						ticket.TicketId, ahora, estadoCumplimiento);
 				}
-
-				// 3️⃣ CIERRE (cuando llega a "Cerrado")
 				if (nuevoEstado == "Cerrado")
 				{
 					// Marcar fecha de cierre
 					if (!ticket.FechaCierre.HasValue)
 					{
 						ticket.FechaCierre = ahora;
-						_logger.LogInformation("🔒 Ticket cerrado en: {Fecha}", ahora);
+						_logger.LogInformation("Ticket {TicketId} cerrado el {Fecha}", ticket.TicketId, ahora);
 					}
 
-					// IMPORTANTE: Si se cierra sin haber marcado resolución, considerarlo resuelto en este momento
 					if (!ticket.fecha_resolucion.HasValue)
 					{
 						ticket.fecha_resolucion = ahora;
 						ticket.CumplimientoResolucion = ahora <= fechaLimiteResolucion;
 
-						_logger.LogInformation("🎯 Resolución registrada automáticamente (al cerrar sin pasar por Resuelto):");
-						_logger.LogInformation("   • Fecha: {Fecha}", ahora);
-						_logger.LogInformation("   • Límite era: {FechaLimite}", fechaLimiteResolucion);
-						_logger.LogInformation("   • Diferencia: {Diff} minutos", (ahora - fechaLimiteResolucion).TotalMinutes);
-						_logger.LogInformation("   • Cumplimiento: {Cumplido} {Emoji}",
-							ticket.CumplimientoResolucion.Value ? "SÍ" : "NO",
-							ticket.CumplimientoResolucion.Value ? "✅" : "❌");
+						var diferencia = (ahora - fechaLimiteResolucion).TotalMinutes;
+						var estadoCumplimiento = ticket.CumplimientoResolucion.Value ? "cumpliendo" : "excediendo";
+						_logger.LogInformation("Resolucion automatica al cerrar ticket {TicketId}. Diferencia con limite: {Diferencia} minutos, {Estado} SLA",
+							ticket.TicketId, diferencia, estadoCumplimiento);
 					}
 					else
 					{
-						_logger.LogInformation("✅ El ticket ya tenía fecha de resolución registrada: {Fecha}", ticket.fecha_resolucion.Value);
+						_logger.LogInformation("Ticket {TicketId} ya tenia fecha de resolucion previa: {FechaResolucion}",
+							ticket.TicketId, ticket.fecha_resolucion.Value);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "❌ Error al calcular cumplimiento de SLA para ticket {TicketId}", ticket.TicketId);
-				// No lanzamos la excepción para no interrumpir el cambio de estado
+				_logger.LogError(ex, "Error al calcular cumplimiento de SLA para ticket {TicketId}", ticket.TicketId);
 			}
 		}
 
@@ -230,7 +207,7 @@ namespace SupportU.Application.Services.Implementations
 				var ticket = await _repoTicket.FindByIdAsync(dto.TicketId);
 				if (ticket == null)
 				{
-					_logger.LogWarning("No se encontró el ticket {TicketId} para generar notificaciones", dto.TicketId);
+					_logger.LogWarning("No se pudo obtener informacion del ticket {TicketId} para generar notificaciones", dto.TicketId);
 					return;
 				}
 
@@ -245,11 +222,11 @@ namespace SupportU.Application.Services.Implementations
 						mensaje: mensajeCliente
 					);
 
-					_logger.LogInformation("📧 Notificación enviada al cliente (Usuario {UsuarioId})", ticket.UsuarioSolicitanteId);
+					_logger.LogInformation("Notificacion de cambio de estado enviada al usuario solicitante {UsuarioId}", ticket.UsuarioSolicitanteId);
 				}
 				catch (Exception ex)
 				{
-					_logger.LogError(ex, "Error al crear notificación para el cliente");
+					_logger.LogError(ex, "Error al crear notificacion para el usuario solicitante");
 				}
 
 				if (ticket.TecnicoAsignadoId.HasValue)
@@ -269,26 +246,26 @@ namespace SupportU.Application.Services.Implementations
 								mensaje: mensajeTecnico
 							);
 
-							_logger.LogInformation("📧 Notificación enviada al técnico (Usuario {UsuarioId})", tecnico.UsuarioId);
+							_logger.LogInformation("Notificacion de cambio de estado enviada al tecnico asignado {UsuarioId}", tecnico.UsuarioId);
 						}
 						else
 						{
-							_logger.LogWarning("No se encontró información del técnico {TecnicoId}", ticket.TecnicoAsignadoId.Value);
+							_logger.LogWarning("No se encontro informacion del tecnico con ID {TecnicoId}", ticket.TecnicoAsignadoId.Value);
 						}
 					}
 					catch (Exception ex)
 					{
-						_logger.LogError(ex, "Error al crear notificación para el técnico");
+						_logger.LogError(ex, "Error al crear notificacion para el tecnico asignado");
 					}
 				}
 				else
 				{
-					_logger.LogInformation("El ticket no tiene técnico asignado, no se envía notificación a técnico");
+					_logger.LogInformation("El ticket {TicketId} no tiene tecnico asignado, omitiendo notificacion", dto.TicketId);
 				}
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error general al generar notificaciones de cambio de estado");
+				_logger.LogError(ex, "Error general al generar notificaciones de cambio de estado para ticket {TicketId}", dto.TicketId);
 			}
 		}
 

@@ -1,5 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = t("Dashboard_Title");
 }
 
 <div class="container-fluid py-4">
@@ -9,8 +15,8 @@
             <div class="d-flex align-items-center">
                 <i class="bi bi-graph-up-arrow me-3" style="font-size: 2.5rem; color: #007bff;"></i>
                 <div>
-                    <h2 class="mb-0">Dashboard Administrativo</h2>
-                    <p class="text-muted mb-0">Panel de control y estadísticas del sistema</p>
+                    <h2 class="mb-0">@t("Dashboard_Header")</h2>
+                    <p class="text-muted mb-0">@t("Dashboard_Subtitle")</p>
                 </div>
             </div>
         </div>
@@ -26,9 +32,9 @@
                             <i class="bi bi-star-fill text-primary" style="font-size: 1.8rem;"></i>
                         </div>
                     </div>
-                    <h6 class="text-muted mb-2">Promedio de Valoraciones</h6>
+                    <h6 class="text-muted mb-2">@t("Dashboard_Card_AverageRating")</h6>
                     <h2 class="mb-1 fw-bold text-primary" id="promedioValoraciones">0</h2>
-                    <small class="text-muted">⭐ de 5 estrellas</small>
+                    <small class="text-muted">⭐ @t("Dashboard_Card_AverageRating_Subtitle")</small>
                 </div>
             </div>
         </div>
@@ -41,9 +47,9 @@
                             <i class="bi bi-check-circle-fill text-success" style="font-size: 1.8rem;"></i>
                         </div>
                     </div>
-                    <h6 class="text-muted mb-2">Cumplimiento SLA</h6>
+                    <h6 class="text-muted mb-2">@t("Dashboard_Card_SLACompliance")</h6>
                     <h2 class="mb-1 fw-bold text-success" id="cumplimientoSLA">0%</h2>
-                    <small class="text-muted" id="cumplimientoDetalle">0 de 0 tickets</small>
+                    <small class="text-muted" id="cumplimientoDetalle">0 @t("Dashboard_Card_SLACompliance_Subtitle")</small>
                 </div>
             </div>
         </div>
@@ -56,9 +62,9 @@
                             <i class="bi bi-ticket-detailed-fill text-info" style="font-size: 1.8rem;"></i>
                         </div>
                     </div>
-                    <h6 class="text-muted mb-2">Total de Tickets</h6>
+                    <h6 class="text-muted mb-2">@t("Dashboard_Card_TotalTickets")</h6>
                     <h2 class="mb-1 fw-bold text-info" id="totalTickets">0</h2>
-                    <small class="text-muted">En el sistema</small>
+                    <small class="text-muted">@t("Dashboard_Card_TotalTickets_Subtitle")</small>
                 </div>
             </div>
         </div>
@@ -71,9 +77,9 @@
                             <i class="bi bi-exclamation-triangle-fill text-warning" style="font-size: 1.8rem;"></i>
                         </div>
                     </div>
-                    <h6 class="text-muted mb-2">Tickets Pendientes</h6>
+                    <h6 class="text-muted mb-2">@t("Dashboard_Card_PendingTickets")</h6>
                     <h2 class="mb-1 fw-bold text-warning" id="ticketsPendientes">0</h2>
-                    <small class="text-muted">Sin asignar</small>
+                    <small class="text-muted">@t("Dashboard_Card_PendingTickets_Subtitle")</small>
                 </div>
             </div>
         </div>
@@ -86,7 +92,7 @@
                 <div class="card-header bg-white border-0 py-3">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
-                        <h5 class="mb-0 fw-semibold">Distribución de Tickets por Estado</h5>
+                        <h5 class="mb-0 fw-semibold">@t("Dashboard_Chart_TicketsByStatus")</h5>
                     </div>
                 </div>
                 <div class="card-body">
@@ -100,7 +106,7 @@
                 <div class="card-header bg-white border-0 py-3">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-bar-chart-fill me-2 text-success"></i>
-                        <h5 class="mb-0 fw-semibold">Tickets Creados por Mes</h5>
+                        <h5 class="mb-0 fw-semibold">@t("Dashboard_Chart_TicketsByMonth")</h5>
                     </div>
                 </div>
                 <div class="card-body">
@@ -117,7 +123,7 @@
                 <div class="card-header bg-white border-0 py-3">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-trophy-fill me-2 text-warning"></i>
-                        <h5 class="mb-0 fw-semibold">Top 5 Técnicos</h5>
+                        <h5 class="mb-0 fw-semibold">@t("Dashboard_Chart_TopTechnicians")</h5>
                     </div>
                 </div>
                 <div class="card-body">
@@ -125,19 +131,19 @@
                         <table class="table table-hover align-middle" id="tablaRanking">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="text-center" width="50">#</th>
-                                    <th>Técnico</th>
-                                    <th class="text-center" width="120">Calificación</th>
-                                    <th class="text-center" width="120">Tickets</th>
+                                    <th class="text-center" width="50">@t("Dashboard_Table_Rank")</th>
+                                    <th>@t("Dashboard_Table_Technician")</th>
+                                    <th class="text-center" width="120">@t("Dashboard_Table_Rating")</th>
+                                    <th class="text-center" width="120">@t("Dashboard_Table_Tickets")</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td colspan="4" class="text-center text-muted py-4">
                                         <div class="spinner-border spinner-border-sm me-2" role="status">
-                                            <span class="visually-hidden">Cargando...</span>
+                                            <span class="visually-hidden">@t("Dashboard_Loading")</span>
                                         </div>
-                                        Cargando datos...
+                                        @t("Dashboard_Loading")
                                     </td>
                                 </tr>
                             </tbody>
@@ -152,7 +158,7 @@
                 <div class="card-header bg-white border-0 py-3">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-x-circle-fill me-2 text-danger"></i>
-                        <h5 class="mb-0 fw-semibold">Categorías con Más Incumplimientos</h5>
+                        <h5 class="mb-0 fw-semibold">@t("Dashboard_Chart_MostBreaches")</h5>
                     </div>
                 </div>
                 <div class="card-body">
@@ -166,6 +172,11 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
+        // Inicializar traducciones para JavaScript
+        window.__i18n = window.__i18n || {};
+        window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+        window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
+
         // Configuración de colores para estados
         const coloresEstados = {
             'Pendiente': '#ffc107',
@@ -198,7 +209,7 @@
         function cargarCumplimientoSLA() {
             $.get('/Dashboard/GetCumplimientoSLA', function(data) {
                 $('#cumplimientoSLA').text(data.porcentaje.toFixed(1) + '%');
-                $('#cumplimientoDetalle').text(data.cumplidos + ' de ' + data.total + ' tickets');
+                $('#cumplimientoDetalle').text(data.cumplidos + ' de ' + data.total + ' ' + window.__i18n.t('Dashboard_Card_SLACompliance_Subtitle', 'tickets'));
             }).fail(function() {
                 $('#cumplimientoSLA').text('N/A');
             });
@@ -268,7 +279,7 @@
                     data: {
                         labels: data.map(d => d.mes),
                         datasets: [{
-                            label: 'Tickets Creados',
+                            label: window.__i18n.t('Dashboard_TicketsCreated', 'Tickets Creados'),
                             data: data.map(d => d.cantidad),
                             backgroundColor: 'rgba(0, 123, 255, 0.7)',
                             borderColor: '#007bff',
@@ -315,7 +326,9 @@
                 const tbody = $('#tablaRanking tbody');
 
                 if (data.length === 0) {
-                    tbody.html('<tr><td colspan="4" class="text-center text-muted py-4">No hay datos disponibles</td></tr>');
+                    tbody.html('<tr><td colspan="4" class="text-center text-muted py-4">' +
+                              window.__i18n.t('Dashboard_NoData', 'No hay datos disponibles') +
+                              '</td></tr>');
                     return;
                 }
 
@@ -340,7 +353,9 @@
                 tbody.html(filas);
             }).fail(function() {
                 $('#tablaRanking tbody').html(
-                    '<tr><td colspan="4" class="text-center text-danger py-4">Error al cargar datos</td></tr>'
+                    '<tr><td colspan="4" class="text-center text-danger py-4">' +
+                    window.__i18n.t('Dashboard_Error', 'Error al cargar datos') +
+                    '</td></tr>'
                 );
             });
         }
@@ -351,7 +366,9 @@
                 const canvas = document.getElementById('chartIncumplimientos');
 
                 if (data.length === 0) {
-                    canvas.parentElement.innerHTML = '<p class="text-center text-muted py-4">No hay incumplimientos registrados</p>';
+                    canvas.parentElement.innerHTML = '<p class="text-center text-muted py-4">' +
+                                                     window.__i18n.t('Dashboard_NoBreaches', 'No hay incumplimientos registrados') +
+                                                     '</p>';
                     return;
                 }
 
@@ -360,7 +377,7 @@
                     data: {
                         labels: data.map(d => d.categoria),
                         datasets: [{
-                            label: 'Incumplimientos',
+                            label: window.__i18n.t('Dashboard_Breaches', 'Incumplimientos'),
                             data: data.map(d => d.incumplimientos),
                             backgroundColor: 'rgba(220, 53, 69, 0.7)',
                             borderColor: '#dc3545',

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SupportU.Web.Controllers
 {
-	public class EtiquetaController : Controller
+	public class EtiquetaController : BaseController
 	{
 		private readonly IServiceEtiqueta _service;
 		private readonly IServiceCategoria _serviceCategoria;

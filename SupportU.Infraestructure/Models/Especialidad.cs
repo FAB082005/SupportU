@@ -11,7 +11,7 @@ public partial class Especialidad
 
     public bool Activa { get; set; }
 
-    public virtual ICollection<Categoria> Categoria { get; set; } = new List<Categoria>();
+	public virtual ICollection<CategoriaEspecialidad> CategoriaEspecialidades { get; set; } = new List<CategoriaEspecialidad>();
 
-    public virtual ICollection<Tecnico> Tecnico { get; set; } = new List<Tecnico>();
+	public virtual ICollection<Tecnico> Tecnico { get; set; } = new List<Tecnico>();
 }

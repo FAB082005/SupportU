@@ -1,101 +1,166 @@
 ﻿@model SupportU.Application.DTOs.TicketDTO
 @{
-    ViewData["Title"] = "Crear Ticket";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Ticket_Create_Title");
     var etiquetas = ViewBag.Etiquetas as List<SupportU.Application.DTOs.EtiquetaDTO>;
     var categorias = ViewBag.Categorias as List<SupportU.Application.DTOs.CategoriaDTO>;
 }
 
-<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">
-                <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Ticket
-            </h4>
-            <p class="text-muted mb-4">Complete el formulario para registrar un nuevo ticket de soporte</p>
+<section class="section mt-5 pt-4">
+    <div class="container" style="max-width: 700px;">
+        <div class="card shadow-lg border-0" style="border-radius: 20px; overflow: hidden;">
 
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-
-            <form asp-action="Create" method="post" id="formCrearTicket">
-                @Html.AntiForgeryToken()
-
-                <div class="mb-3">
-                    <label asp-for="Titulo" class="form-label fw-bold">Título *</label>
-                    <input asp-for="Titulo" class="form-control" placeholder="Ej: Monitor no enciende" required />
-                    <span asp-validation-for="Titulo" class="text-danger"></span>
+            <!-- Header con color -->
+            <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%); border: none;">
+                <div class="mb-2">
+                    <i class="bi bi-ticket-perforated" style="font-size: 2.5rem;"></i>
                 </div>
+                <h3 class="mb-1 fw-bold">@t("Ticket_Create_Header")</h3>
+                <p class="mb-0 opacity-90" style="font-size: 0.95rem;">@t("Ticket_Create_Subtitle")</p>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="Descripcion" class="form-label fw-bold">Descripción *</label>
-                    <textarea asp-for="Descripcion" class="form-control" rows="4"
-                              placeholder="Describe el problema con el mayor detalle posible..." required></textarea>
-                    <span asp-validation-for="Descripcion" class="text-danger"></span>
-                </div>
+            <div class="card-body p-4 p-md-5" style="background-color: #f8f9fa;">
 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label asp-for="Prioridad" class="form-label fw-bold">Prioridad *</label>
-                        <select asp-for="Prioridad" class="form-select" required>
-                            <option value="">-- Seleccione --</option>
-                            <option value="Baja">Baja</option>
-                            <option value="Media" selected>Media</option>
-                            <option value="Alta">Alta</option>
-                            <option value="Crítica">Crítica</option>
-                        </select>
-                        <span asp-validation-for="Prioridad" class="text-danger"></span>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3" role="alert"></div>
+
+                <form asp-action="Create" method="post" id="formCrearTicket">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Título -->
+                    <div class="mb-4">
+                        <label asp-for="Titulo" class="form-label text-secondary fw-semibold mb-2">
+                            <i class="bi bi-pencil-square me-1"></i>@t("Label_Title")
+                        </label>
+                        <input asp-for="Titulo"
+                               class="form-control form-control-lg border-0 shadow-sm"
+                               placeholder="@t("Label_Title_Placeholder")"
+                               style="border-radius: 12px; background-color: white;"
+                               required />
+                        <span asp-validation-for="Titulo" class="text-danger small"></span>
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="etiquetaSeleccionadaId" class="form-label fw-bold">Etiqueta *</label>
-                        <select id="etiquetaSeleccionadaId" name="etiquetaSeleccionadaId" class="form-select" required>
-                            <option value="">-- Seleccione una etiqueta --</option>
-                            @if (etiquetas != null && etiquetas.Any())
-                            {
-                                @foreach (var etiqueta in etiquetas)
+                    <!-- Descripción -->
+                    <div class="mb-4">
+                        <label asp-for="Descripcion" class="form-label text-secondary fw-semibold mb-2">
+                            <i class="bi bi-card-text me-1"></i>@t("Label_Description")
+                        </label>
+                        <textarea asp-for="Descripcion"
+                                  class="form-control border-0 shadow-sm"
+                                  rows="4"
+                                  placeholder="@t("Label_Description_Placeholder")"
+                                  style="border-radius: 12px; background-color: white; resize: none;"
+                                  required></textarea>
+                        <span asp-validation-for="Descripcion" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Prioridad y Etiqueta -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="Prioridad" class="form-label text-secondary fw-semibold mb-2">
+                                <i class="bi bi-flag me-1"></i>@t("Label_Priority")
+                            </label>
+                            <select asp-for="Prioridad"
+                                    class="form-select form-select-lg border-0 shadow-sm"
+                                    style="border-radius: 12px; background-color: white;"
+                                    required>
+                                <option value="">@t("Label_Priority_Select")</option>
+                                <option value="Baja">@t("Priority_Low")</option>
+                                <option value="Media" selected>@t("Priority_Medium")</option>
+                                <option value="Alta">@t("Priority_High")</option>
+                                <option value="Crítica">@t("Priority_Critical")</option>
+                            </select>
+                            <span asp-validation-for="Prioridad" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="etiquetaSeleccionadaId" class="form-label text-secondary fw-semibold mb-2">
+                                <i class="bi bi-tag me-1"></i>@t("Label_Tag")
+                            </label>
+                            <select id="etiquetaSeleccionadaId"
+                                    name="etiquetaSeleccionadaId"
+                                    class="form-select form-select-lg border-0 shadow-sm"
+                                    style="border-radius: 12px; background-color: white;"
+                                    required>
+                                <option value="">@t("Label_Tag_Select")</option>
+                                @if (etiquetas != null && etiquetas.Any())
                                 {
-                                    <option value="@etiqueta.EtiquetaId" data-categoria-id="@etiqueta.CategoriaId">
-                                        @etiqueta.Nombre
-                                    </option>
+                                    @foreach (var etiqueta in etiquetas)
+                                    {
+                                        <option value="@etiqueta.EtiquetaId" data-categoria-id="@etiqueta.CategoriaId">
+                                            @etiqueta.Nombre
+                                        </option>
+                                    }
                                 }
-                            }
-                        </select>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mb-3 mt-3">
-                    <label for="categoriaNombre" class="form-label fw-bold">Categoría Asignada</label>
-                    <input type="text" id="categoriaNombre" class="form-control"
-                           placeholder="Se asigna automáticamente..." readonly />
-                    <input asp-for="CategoriaId" type="hidden" id="categoriaIdHidden" />
-                </div>
+                    <!-- Categoría -->
+                    <div class="mb-4">
+                        <label for="categoriaNombre" class="form-label text-secondary fw-semibold mb-2">
+                            <i class="bi bi-folder me-1"></i>@t("Label_Category")
+                        </label>
+                        <input type="text"
+                               id="categoriaNombre"
+                               class="form-control form-control-lg border-0 shadow-sm"
+                               placeholder="@t("Label_Category_Placeholder")"
+                               style="border-radius: 12px; background-color: #e9ecef; cursor: not-allowed;"
+                               readonly />
+                        <input asp-for="CategoriaId" type="hidden" id="categoriaIdHidden" />
+                    </div>
 
-                <!-- ✅ MENSAJE INFORMATIVO (REEMPLAZA LA SECCIÓN DE ASIGNACIÓN) -->
-                <div class="alert alert-info">
-                    <i class="bi bi-info-circle me-2"></i>
-                    <strong>Nota:</strong> El ticket se creará en estado <strong>Pendiente</strong>.
-                    Un administrador lo asignará posteriormente.
-                </div>
+                    <!-- Información del ticket -->
+                    <div class="alert alert-light border-0 shadow-sm mb-4" style="border-radius: 12px; background-color: white;">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-info-circle text-primary me-2" style="font-size: 1.2rem;"></i>
+                            <strong class="text-secondary">@t("Info_TicketInformation")</strong>
+                        </div>
+                        <small class="text-muted d-block">
+                            <strong>@t("Info_User")</strong> ID @Model.UsuarioSolicitanteId
+                        </small>
+                        <small class="text-muted d-block">
+                            <strong>@t("Info_Status")</strong> <span class="badge bg-warning text-dark">@t("Status_Pending")</span>
+                        </small>
+                        <small class="text-muted d-block">
+                            <strong>@t("Info_Date")</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                        </small>
+                    </div>
 
-                <input asp-for="UsuarioSolicitanteId" type="hidden" />
-                <input asp-for="Estado" type="hidden" />
-                <input asp-for="FechaCreacion" type="hidden" />
+                    <!-- Nota informativa -->
+                    <div class="alert border-0 shadow-sm mb-4" style="border-radius: 12px; background-color: #e7f3ff; color: #004085;">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        <small>
+                            @Html.Raw(t("Info_Note"))
+                        </small>
+                    </div>
 
-                <div class="alert alert-light border mt-3">
-                    <small class="text-muted">
-                        <strong>Usuario:</strong> ID @Model.UsuarioSolicitanteId |
-                        <strong>Estado:</strong> Pendiente |
-                        <strong>Fecha:</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
-                    </small>
-                </div>
+                    <!-- Campos ocultos -->
+                    <input asp-for="UsuarioSolicitanteId" type="hidden" />
+                    <input asp-for="Estado" type="hidden" />
+                    <input asp-for="FechaCreacion" type="hidden" />
 
-                <div class="mt-4 d-flex gap-2">
-                    <button type="submit" class="btn btn-success" id="btnSubmit">
-                        <i class="bi bi-save"></i> Crear Ticket
-                    </button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        <i class="bi bi-x-circle"></i> Cancelar
-                    </a>
-                </div>
-            </form>
+                    <!-- Botones -->
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit"
+                                class="btn btn-lg text-white flex-fill shadow-sm"
+                                id="btnSubmit"
+                                style="border-radius: 12px; background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%); border: none; font-weight: 600;">
+                            <i class="bi bi-check-circle me-2"></i>@t("Btn_CreateTicket")
+                        </button>
+                        <a asp-action="Index"
+                           class="btn btn-lg btn-light flex-fill shadow-sm"
+                           style="border-radius: 12px; border: none; font-weight: 600; color: #6c757d;">
+                            <i class="bi bi-x-circle me-2"></i>@t("Btn_Cancel")
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </section>
@@ -104,66 +169,106 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        const categoriaMap = new Map();
-        @if (categorias != null)
-        {
-                foreach (var cat in categorias)
-                {
-                        @:categoriaMap.set(@cat.CategoriaId, '@cat.Nombre');
-                }
-        }
+        (function () {
+            window.__i18n = window.__i18n || {};
+            try {
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+            } catch (e) {
+                window.__i18n.translations = {};
+            }
+            window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('formCrearTicket');
-            const btnSubmit = document.getElementById('btnSubmit');
-            const selectEtiqueta = document.getElementById('etiquetaSeleccionadaId');
-            const inputCategoriaNombre = document.getElementById('categoriaNombre');
-            const inputCategoriaId = document.getElementById('categoriaIdHidden');
+            const categoriaMap = new Map();
+            @if (categorias != null)
+            {
+                        foreach (var cat in categorias)
+                        {
+                                    @:categoriaMap.set(@cat.CategoriaId, '@cat.Nombre');
+                        }
+            }
 
-            // ✅ ASIGNAR CATEGORÍA SEGÚN ETIQUETA
-            selectEtiqueta.addEventListener('change', function() {
-                const selectedOption = this.options[this.selectedIndex];
-                const categoriaId = selectedOption.getAttribute('data-categoria-id');
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('formCrearTicket');
+                const btnSubmit = document.getElementById('btnSubmit');
+                const selectEtiqueta = document.getElementById('etiquetaSeleccionadaId');
+                const inputCategoriaNombre = document.getElementById('categoriaNombre');
+                const inputCategoriaId = document.getElementById('categoriaIdHidden');
 
-                if (categoriaId) {
-                    inputCategoriaId.value = categoriaId;
-                    const categoriaNombre = categoriaMap.get(parseInt(categoriaId)) || 'Categoría no encontrada';
-                    inputCategoriaNombre.value = categoriaNombre;
-                } else {
-                    inputCategoriaId.value = '';
-                    inputCategoriaNombre.value = 'Se asigna automáticamente...';
-                }
+                // Asignar categoría según etiqueta
+                selectEtiqueta.addEventListener('change', function() {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const categoriaId = selectedOption.getAttribute('data-categoria-id');
+
+                    if (categoriaId) {
+                        inputCategoriaId.value = categoriaId;
+                        const categoriaNombre = categoriaMap.get(parseInt(categoriaId)) || 'Categoría no encontrada';
+                        inputCategoriaNombre.value = categoriaNombre;
+                    } else {
+                        inputCategoriaId.value = '';
+                        inputCategoriaNombre.value = window.__i18n.t('Label_Category_Placeholder', 'Se asigna automáticamente...');
+                    }
+                });
+
+                // Validación al enviar
+                form.addEventListener('submit', function (e) {
+                    const etiquetaId = selectEtiqueta.value;
+                    const categoriaId = inputCategoriaId.value;
+
+                    if (!etiquetaId) {
+                        e.preventDefault();
+                        alert(window.__i18n.t('Alert_SelectTag', ' Debe seleccionar una etiqueta'));
+                        selectEtiqueta.focus();
+                        return false;
+                    }
+
+                    if (!categoriaId) {
+                        e.preventDefault();
+                        alert(window.__i18n.t('Alert_CategoryError', ' Error: No se pudo determinar la categoría'));
+                        return false;
+                    }
+
+                    if (btnSubmit) {
+                        btnSubmit.disabled = true;
+                        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + window.__i18n.t('Btn_Saving', 'Guardando...');
+                    }
+                });
+
+                // Animaciones suaves en focus
+                const inputs = document.querySelectorAll('.form-control, .form-select');
+                inputs.forEach(input => {
+                    input.addEventListener('focus', function() {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.boxShadow = '0 4px 12px rgba(37, 117, 252, 0.15)';
+                        this.style.transition = 'all 0.2s ease';
+                    });
+
+                    input.addEventListener('blur', function() {
+                        this.style.transform = 'translateY(0)';
+                        this.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                    });
+                });
             });
-
-            // ✅ VALIDACIÓN AL ENVIAR
-            form.addEventListener('submit', function (e) {
-                const etiquetaId = selectEtiqueta.value;
-                const categoriaId = inputCategoriaId.value;
-
-                if (!etiquetaId) {
-                    e.preventDefault();
-                    alert('⚠️ Debe seleccionar una etiqueta');
-                    selectEtiqueta.focus();
-                    return false;
-                }
-
-                if (!categoriaId) {
-                    e.preventDefault();
-                    alert('⚠️ Error: No se pudo determinar la categoría');
-                    return false;
-                }
-
-                if (btnSubmit) {
-                    btnSubmit.disabled = true;
-                    btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
-                }
-            });
-        });
+        })();
     </script>
 
     <style>
-        #categoriaNombre {
-            background-color: #f8f9fa;
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: 0 4px 12px rgba(37, 117, 252, 0.15) !important;
+            border-color: transparent !important;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s ease;
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
     </style>
 }

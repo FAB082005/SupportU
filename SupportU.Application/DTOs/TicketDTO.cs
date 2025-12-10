@@ -27,5 +27,7 @@ namespace SupportU.Application.DTOs
         public virtual Tecnico? TecnicoAsignado { get; set; }
         public virtual Usuario? UsuarioSolicitante { get; set; } = null!;
         public virtual Valoracion? Valoracion { get; set; }
-    }
+		public string? CategoriaNombre { get; set; }
+
+	}
 }

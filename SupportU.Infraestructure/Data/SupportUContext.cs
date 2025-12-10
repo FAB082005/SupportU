@@ -36,7 +36,10 @@ public partial class SupportUContext : DbContext
 
     public virtual DbSet<Valoracion> Valoracion { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	// Dentro de tu clase SupportUContext, agrega:
+	public virtual DbSet<CategoriaEspecialidad> CategoriaEspecialidad { get; set; }
+
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Asignacion>(entity =>
         {
@@ -100,24 +103,7 @@ public partial class SupportUContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CATEGORIA_SLA");
 
-            entity.HasMany(d => d.Especialidad).WithMany(p => p.Categoria)
-                .UsingEntity<Dictionary<string, object>>(
-                    "CategoriaEspecialidad",
-                    r => r.HasOne<Especialidad>().WithMany()
-                        .HasForeignKey("EspecialidadId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_CATEGORIA_ESPECIALIDAD_ESPECIALIDAD"),
-                    l => l.HasOne<Categoria>().WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_CATEGORIA_ESPECIALIDAD_CATEGORIA"),
-                    j =>
-                    {
-                        j.HasKey("CategoriaId", "EspecialidadId");
-                        j.ToTable("CATEGORIA_ESPECIALIDAD");
-                        j.IndexerProperty<int>("CategoriaId").HasColumnName("categoria_id");
-                        j.IndexerProperty<int>("EspecialidadId").HasColumnName("especialidad_id");
-                    });
+        
         });
 
         modelBuilder.Entity<Especialidad>(entity =>
@@ -441,7 +427,28 @@ public partial class SupportUContext : DbContext
                 .HasConstraintName("FK_VALORACION_USUARIO");
         });
 
-        OnModelCreatingPartial(modelBuilder);
+		modelBuilder.Entity<CategoriaEspecialidad>(entity =>
+		{
+			entity.HasKey(e => new { e.CategoriaId, e.EspecialidadId });
+			entity.ToTable("CATEGORIA_ESPECIALIDAD");
+
+			entity.Property(e => e.CategoriaId).HasColumnName("categoria_id");
+			entity.Property(e => e.EspecialidadId).HasColumnName("especialidad_id");
+
+			entity.HasOne(e => e.Categoria)
+				.WithMany(c => c.CategoriaEspecialidades)  
+				.HasForeignKey(e => e.CategoriaId)
+				.OnDelete(DeleteBehavior.Restrict)
+				.HasConstraintName("FK_CATEGORIA_ESPECIALIDAD_CATEGORIA");
+
+			entity.HasOne(e => e.Especialidad)
+				.WithMany(esp => esp.CategoriaEspecialidades)  
+				.HasForeignKey(e => e.EspecialidadId)
+				.OnDelete(DeleteBehavior.Restrict)
+				.HasConstraintName("FK_CATEGORIA_ESPECIALIDAD_ESPECIALIDAD");
+		});
+
+		OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

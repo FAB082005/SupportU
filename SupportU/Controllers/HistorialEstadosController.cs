@@ -200,10 +200,7 @@ namespace SupportU.Web.Controllers
 				
 				var historialId = await _serviceHistorial.AddAsync(historialDTO);
 
-				// ❌ ELIMINADO: No necesitamos actualizar el ticket aquí
-				// porque el servicio ya lo hizo con los cálculos de SLA correctos
-
-				_logger.LogInformation("✅ Cambio de estado completado. Ticket {TicketId}: {EstadoAnterior} → {EstadoNuevo}",
+				_logger.LogInformation(" Cambio de estado completado. Ticket {TicketId}: {EstadoAnterior} → {EstadoNuevo}",
 					ticketId, ticket.Estado, nuevoEstado);
 
 				if (IsAjaxRequest())
@@ -263,14 +260,12 @@ namespace SupportU.Web.Controllers
 
 			if (rolUsuario == "Administrador") return true;
 
-			// ✅ Técnicos: pueden cambiar estados del flujo normal
+			
 			if (rolUsuario == "Técnico")
 			{
 				return ticket.TecnicoAsignadoId.HasValue &&
 					   ticket.TecnicoAsignado?.UsuarioId == usuarioId;
 			}
-
-			// ✅ Clientes: solo pueden cerrar (Resuelto -> Cerrado) SUS propios tickets
 			if (rolUsuario == "Cliente")
 			{
 				return ticket.UsuarioSolicitanteId == usuarioId && ticket.Estado == "Resuelto";
@@ -286,7 +281,7 @@ namespace SupportU.Web.Controllers
 				{ "Pendiente", new List<string> { "Asignado" } },
 				{ "Asignado", new List<string> { "En Proceso" } },
 				{ "En Proceso", new List<string> { "Resuelto" } },
-				{ "Resuelto", new List<string> { "Cerrado" } } // ✅ Ahora SÍ incluimos Cerrado
+				{ "Resuelto", new List<string> { "Cerrado" } } 
             };
 
 			return transicionesValidas.ContainsKey(estadoActual) &&
@@ -302,11 +297,11 @@ namespace SupportU.Web.Controllers
 				{ "Pendiente", new List<string> { "Asignado" } },
 				{ "Asignado", new List<string> { "En Proceso" } },
 				{ "En Proceso", new List<string> { "Resuelto" } },
-				{ "Resuelto", new List<string>() }, // Por defecto vacío
+				{ "Resuelto", new List<string>() },
                 { "Cerrado", new List<string>() }
 			};
 
-			// ✅ Solo Clientes y Admins ven "Cerrado" como opción en "Resuelto"
+			//  Solo Clientes y Admins ven "Cerrado" como opción en "Resuelto"
 			if (estadoActual == "Resuelto" && (rolUsuario == "Cliente" || rolUsuario == "Administrador"))
 			{
 				siguientesEstados["Resuelto"] = new List<string> { "Cerrado" };

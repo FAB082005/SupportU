@@ -11,6 +11,6 @@
         public string? SlaNombre { get; set; }
 		public virtual SlaDTO? Sla { get; set; }
 		public virtual ICollection<CategoriaEspecialidadDTO> CategoriaEspecialidad { get; set; } = new List<CategoriaEspecialidadDTO>();
+		public List<int> EspecialidadesSeleccionadas { get; set; } = new List<int>();
 	}
 }
-//////////////////////////////////

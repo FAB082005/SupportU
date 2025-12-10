@@ -1,6 +1,14 @@
 ﻿@model SupportU.Application.DTOs.EtiquetaDTO
 @{
-    ViewData["Title"] = "Editar Etiqueta";
+    // Helper local para traducciones
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var v) ? v : key;
+    };
+
+    ViewData["Title"] = t("Etiqueta_Edit_Title");
 }
 
 <div class="container mt-4">
@@ -9,7 +17,7 @@
             <div class="card">
                 <div class="card-header bg-warning">
                     <h4 class="mb-0">
-                        <i class="bi bi-pencil"></i> Editar Etiqueta
+                        <i class="bi bi-pencil"></i> @t("Etiqueta_Edit_Header")
                     </h4>
                 </div>
                 <div class="card-body">
@@ -18,22 +26,22 @@
                         <input type="hidden" asp-for="EtiquetaId" />
 
                         <div class="mb-3">
-                            <label class="form-label text-muted">ID</label>
+                            <label class="form-label text-muted">@t("Label_ID")</label>
                             <input type="text" class="form-control" value="@Model.EtiquetaId" disabled />
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Nombre" class="form-label">Nombre *</label>
-                            <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre de la etiqueta" />
+                            <label asp-for="Nombre" class="form-label">@t("Label_Nombre") *</label>
+                            <input asp-for="Nombre" class="form-control" placeholder="@t("Placeholder_NombreEtiqueta")" />
                             <span asp-validation-for="Nombre" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="CategoriaId" class="form-label">Categoría *</label>
+                            <label asp-for="CategoriaId" class="form-label">@t("Label_Categoria") *</label>
                             <select asp-for="CategoriaId"
                                     class="form-select"
                                     asp-items="ViewBag.Categorias">
-                                <option value="0">-- Seleccione una categoría --</option>
+                                <option value="0">@t("Select_Placeholder")</option>
                             </select>
                             <span asp-validation-for="CategoriaId" class="text-danger"></span>
                         </div>
@@ -41,7 +49,7 @@
                         <div class="mb-3 form-check">
                             <input asp-for="Activa" class="form-check-input" type="checkbox" />
                             <label asp-for="Activa" class="form-check-label">
-                                Activa
+                                @t("Label_Activa")
                             </label>
                         </div>
 
@@ -58,10 +66,10 @@
 
                         <div class="d-flex justify-content-between mt-4">
                             <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancelar
+                                <i class="bi bi-arrow-left"></i> @t("Btn_Cancel")
                             </a>
                             <button type="submit" class="btn btn-warning">
-                                <i class="bi bi-save"></i> Actualizar
+                                <i class="bi bi-save"></i> @t("Btn_Update")
                             </button>
                         </div>
                     </form>

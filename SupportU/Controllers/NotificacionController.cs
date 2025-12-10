@@ -49,7 +49,7 @@ namespace SupportU.Web.Controllers
             }
             catch (Exception ex)
             {
-                // Log si tienes logger; aquí devolvemos false y mensaje para depuración
+           
                 Console.WriteLine($"Error MarkAsRead: {ex.Message}");
                 return Json(new { success = false, message = "Error interno" });
             }

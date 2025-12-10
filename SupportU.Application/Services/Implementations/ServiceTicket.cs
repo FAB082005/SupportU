@@ -90,14 +90,13 @@ namespace SupportU.Application.Services.Implementations
 
 			await _serviceHistorial.AddAsync(historialCreacion);
 
-			// ✅ CREAR ASIGNACIÓN AUTOMÁTICA (sin técnico asignado aún)
 			try
 			{
 				var asignacionDTO = new AsignacionDTO
 				{
 					TicketId = ticketId,
-					TecnicoId = 0, // Temporal, se actualizará cuando se asigne
-					MetodoAsignacion = "Pendiente", // Indica que aún no ha sido asignado
+					TecnicoId = 0, 
+					MetodoAsignacion = "Pendiente", 
 					FechaAsignacion = DateTime.Now,
 					UsuarioAsignadorId = dto.UsuarioSolicitanteId
 				};
@@ -178,14 +177,14 @@ namespace SupportU.Application.Services.Implementations
 			var tiempoRespuestaMinutos = categoria.Sla.TiempoRespuestaMinutos;
 			var tiempoResolucionMinutos = categoria.Sla.TiempoResolucionMinutos;
 
-			// 1. Calcular cumplimiento de respuesta
+			// Calcula el cumplimiento de respuesta
 			if (ticket.fecha_primera_respuesta.HasValue)
 			{
 				var fechaLimiteRespuesta = ticket.FechaCreacion.AddMinutes(tiempoRespuestaMinutos);
 				ticket.CumplimientoRespuesta = ticket.fecha_primera_respuesta <= fechaLimiteRespuesta;
 			}
 
-			// 2. Calcular cumplimiento de resolución
+			//  Calcula el cumplimiento de resolución
 			if (ticket.fecha_resolucion.HasValue)
 			{
 				var fechaLimiteResolucion = ticket.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
@@ -193,7 +192,6 @@ namespace SupportU.Application.Services.Implementations
 			}
 			else if (ticket.FechaCierre.HasValue)
 			{
-				// Si no hay fecha_resolucion pero sí fecha_cierre, usar esta
 				var fechaLimiteResolucion = ticket.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
 				ticket.CumplimientoResolucion = ticket.FechaCierre <= fechaLimiteResolucion;
 			}

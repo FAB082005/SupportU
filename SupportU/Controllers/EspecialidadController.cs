@@ -79,7 +79,7 @@ namespace SupportU.Web.Controllers
             }
         }
 
-        // GET: /Especialidad/Delete/5
+   
         public async Task<IActionResult> Delete(int id)
         {
             var dto = await _service.FindByIdAsync(id);
@@ -87,10 +87,10 @@ namespace SupportU.Web.Controllers
             return View(dto);
         }
 
-        // POST: /Especialidad/DeleteConfirmed/5
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, string estado) // <-- recibir estado por model binding
+        public async Task<IActionResult> DeleteConfirmed(int id, string estado) 
         {
             _logger.LogInformation("DeleteConfirmed called for id={Id} with estado param='{EstadoParam}'", id, estado);
 

@@ -1,104 +1,125 @@
 ﻿@model SupportU.Application.DTOs.EtiquetaDTO
 @{
-    ViewData["Title"] = "Nueva Etiqueta";
+    // Helper local para traducciones
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var v) ? v : key;
+    };
+
+    ViewData["Title"] = t("Etiqueta_Create_Title") ?? "Nueva Etiqueta";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
-                        <i class="bi bi-tag"></i> Nueva Etiqueta
-                    </h4>
+<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">
+                <i class="bi bi-tag"></i> @(t("Etiqueta_Create_Header") ?? "Nueva Etiqueta")
+            </h4>
+
+            <form asp-action="Create" method="post" novalidate>
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label fw-bold">@t("Label_Nombre")</label>
+                    <input asp-for="Nombre" class="form-control" placeholder="@t("Placeholder_NombreEtiqueta")" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
-                <div class="card-body">
-                    <form asp-action="Create" method="post">
-                        @Html.AntiForgeryToken()
 
-                        <div class="mb-3">
-                            <label asp-for="Nombre" class="form-label">Nombre *</label>
-                            <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre de la etiqueta" />
-                            <span asp-validation-for="Nombre" class="text-danger"></span>
-                        </div>
+                <div class="mb-3">
+                    <label asp-for="CategoriaId" class="form-label fw-bold">@t("Label_Categoria")</label>
+                    <select asp-for="CategoriaId" class="form-select" asp-items="ViewBag.Categorias">
+                        <option value="">@t("Select_Placeholder")</option>
+                    </select>
+                    <span asp-validation-for="CategoriaId" class="text-danger"></span>
+                    <div class="form-text">@t("Help_SelectCategoria")</div>
+                </div>
 
-                        <div class="mb-3">
-                            <label asp-for="CategoriaId" class="form-label">Categoría *</label>
-                            <select asp-for="CategoriaId"
-                                    class="form-select"
-                                    asp-items="ViewBag.Categorias">
-                                <option value="0">-- Seleccione una categoría --</option>
-                            </select>
-                            <span asp-validation-for="CategoriaId" class="text-danger"></span>
-                        </div>
+                <div class="form-check form-switch mt-3">
+                    <input asp-for="Activa" class="form-check-input" />
+                    <label asp-for="Activa" class="form-check-label">@t("Label_Activa")</label>
+                </div>
 
-                        <div class="mb-3 form-check">
-                            <input asp-for="Activa" class="form-check-input" type="checkbox" />
-                            <label asp-for="Activa" class="form-check-label">
-                                Activa
-                            </label>
-                        </div>
-
-                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Count > 0)
+                @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Count > 0)
+                {
+                    <div class="alert alert-danger mt-3">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        @foreach (var error in ViewData.ModelState[""].Errors)
                         {
-                            <div class="alert alert-danger">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                                @foreach (var error in ViewData.ModelState[""].Errors)
-                                {
-                                    <div>@error.ErrorMessage</div>
-                                }
-                            </div>
+                            <div>@error.ErrorMessage</div>
                         }
+                    </div>
+                }
 
-                        <div class="d-flex justify-content-between mt-4">
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancelar
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i> Guardar
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- DEBUG DATA (solo para desarrollo) -->
-                    @if (Model != null)
-                    {
-                        <div class="alert alert-warning mt-4">
-                            <h5><strong>DEBUG – Datos recibidos en POST</strong></h5>
-
-                            <p><strong>Nombre:</strong> @Model.Nombre</p>
-                            <p><strong>CategoriaId:</strong> @Model.CategoriaId</p>
-                            <p><strong>Activa:</strong> @Model.Activa</p>
-
-                            <h6 class="mt-3"><strong>ModelState:</strong></h6>
-                            @if (!ViewData.ModelState.IsValid)
-                            {
-                                <ul>
-                                    @foreach (var kvp in ViewData.ModelState)
-                                    {
-                                        foreach (var err in kvp.Value.Errors)
-                                        {
-                                            <li><strong>@kvp.Key:</strong> @err.ErrorMessage</li>
-                                        }
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <p>ModelState válido ✔</p>
-                            }
-                        </div>
-                    }
-                    <!-- FIN DEBUG -->
-
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> @t("Btn_Save")
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> @t("Btn_Cancel")
+                    </a>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-</div>
+</section>
+
+@section Styles {
+    <style>
+        /* Estilos consistentes con la vista de categorías */
+        .section {
+            background-color: #f8f9fa;
+            min-height: calc(100vh - 76px);
+        }
+
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+        }
+
+        .card-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: #495057;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #198754;
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+        }
+
+        .btn-success {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+            .btn-success:hover {
+                background-color: #157347;
+                border-color: #146c43;
+            }
+
+        .form-check-input:checked {
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .form-text {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .alert {
+            border: none;
+            border-radius: 0.375rem;
+        }
+    </style>
+}
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }

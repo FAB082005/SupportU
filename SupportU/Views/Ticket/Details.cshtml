@@ -1,6 +1,12 @@
 ﻿@model SupportU.Application.DTOs.TicketDTO
 @{
-    ViewData["Title"] = "Detalle del Ticket";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = t("Ticket_Details_Title");
 
     var diasResolucion = Model.FechaCierre.HasValue
         ? (Model.FechaCierre.Value - Model.FechaCreacion).Days
@@ -12,12 +18,15 @@
     var fechaLimiteRespuesta = Model.FechaCreacion.AddMinutes(tiempoRespuestaMinutos);
     var fechaLimiteResolucion = Model.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
 
-    // ✅ Determinar permisos para botones
+    //  Determinar permisos para botones
     var esAdmin = ViewBag.RolUsuario == "Administrador";
     var esTecnico = ViewBag.RolUsuario == "Técnico";
     var esCliente = ViewBag.RolUsuario == "Cliente";
     var esCreador = Model.UsuarioSolicitanteId == ViewBag.UsuarioId;
     var esTecnicoAsignado = Model.TecnicoAsignadoId.HasValue && Model.TecnicoAsignado?.UsuarioId == ViewBag.UsuarioId;
+
+    // ✅ AGREGADO: Variable para controlar quién puede editar
+    var puedeEditar = esAdmin || esCreador || (esTecnico && esTecnicoAsignado);
 
     // Botón "Cambiar Estado" para técnicos y admin (no si está cerrado)
     var puedeVerBotonCambiarEstado = (esTecnico && esTecnicoAsignado && Model.Estado != "Cerrado" && Model.Estado != "Resuelto")
@@ -76,23 +85,21 @@
 
 <div class="container mt-4" style="padding-top: 80px;">
     <div class="text-center mb-4">
-        <h1 class="display-6 fw-bold text-dark">Detalle del Ticket #@Model.TicketId</h1>
-        <p class="text-muted">Información completa del ticket</p>
+        <h1 class="display-6 fw-bold text-dark">@t("Ticket_Details_Header")@Model.TicketId</h1>
+        <p class="text-muted">@t("Ticket_Details_Subtitle")</p>
     </div>
 
-    <!-- ========== BOTONES DE ACCIÓN SUPERIORES ========== -->
     <div class="text-center mb-4">
         <div class="btn-group" role="group">
             <!-- Botón Regresar - Todos -->
             <a asp-action="Index" class="btn btn-outline-primary">
-                <i class="bi bi-arrow-left me-2"></i>Regresar al Listado
+                <i class="bi bi-arrow-left me-2"></i>@t("Btn_BackToList")
             </a>
 
-            <!-- Botón Editar - Solo Admin -->
-            @if (esAdmin)
+            @if (puedeEditar)
             {
                 <a asp-action="Edit" asp-route-id="@Model.TicketId" class="btn btn-warning">
-                    <i class="bi bi-pencil-square me-2"></i>Editar Ticket
+                    <i class="bi bi-pencil-square me-2"></i>@t("Btn_EditTicket")
                 </a>
             }
 
@@ -100,15 +107,15 @@
             @if (puedeVerBotonCambiarEstado)
             {
                 <button type="button" class="btn btn-info" onclick="abrirModalCambioEstado(@Model.TicketId)">
-                    <i class="bi bi-arrow-repeat me-2"></i>Cambiar Estado
+                    <i class="bi bi-arrow-repeat me-2"></i>@t("Btn_ChangeStatus")
                 </button>
             }
 
-            <!-- ✅ Botón Cerrar Ticket - Admin y Cliente propietario -->
+            <!--  Botón Cerrar Ticket - Admin y Cliente propietario -->
             @if (puedeVerBotonCerrar)
             {
                 <button type="button" class="btn btn-success" onclick="abrirModalCambioEstado(@Model.TicketId)">
-                    <i class="bi bi-check-circle me-2"></i>Cerrar Ticket
+                    <i class="bi bi-check-circle me-2"></i>@t("Btn_CloseTicket")
                 </button>
             }
         </div>
@@ -119,8 +126,8 @@
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-info-circle-fill me-2"></i>
-            <strong>¡Ticket Resuelto!</strong>
-            Este ticket ha sido marcado como resuelto. Si estás conforme con la solución, puedes cerrarlo definitivamente.
+            <strong>@t("Alert_Resolved_Title")</strong>
+            @t("Alert_Resolved_Text")
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
@@ -130,20 +137,20 @@
             <!-- Información Básica del Ticket -->
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0 text-dark">Información Básica</h5>
+                    <h5 class="mb-0 text-dark">@t("Section_BasicInfo")</h5>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-4 text-muted">Título:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_Title")</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.Titulo)</dd>
 
-                        <dt class="col-sm-4 text-muted">Descripción:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_Description")</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.Descripcion)</dd>
 
-                        <dt class="col-sm-4 text-muted">Fecha Creación:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_CreationDate")</dt>
                         <dd class="col-sm-8">@Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</dd>
 
-                        <dt class="col-sm-4 text-muted">Estado:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_Status")</dt>
                         <dd class="col-sm-8">
                             @{
                                 var estadoBadgeClass = Model.Estado switch
@@ -155,26 +162,35 @@
                                     "Cerrado" => "bg-dark",
                                     _ => "bg-secondary"
                                 };
+                                var estadoTraducido = Model.Estado switch
+                                {
+                                    "Pendiente" => t("Status_Pending"),
+                                    "Asignado" => t("Status_Assigned"),
+                                    "En Proceso" => t("Status_InProgress"),
+                                    "Resuelto" => t("Status_Resolved"),
+                                    "Cerrado" => t("Status_Closed"),
+                                    _ => Model.Estado
+                                };
                             }
-                            <span class="badge @estadoBadgeClass">@Html.DisplayFor(model => model.Estado)</span>
+                            <span class="badge @estadoBadgeClass">@estadoTraducido</span>
                         </dd>
 
-                        <dt class="col-sm-4 text-muted">Prioridad:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_Priority")</dt>
                         <dd class="col-sm-8">
                             <span class="badge bg-secondary">@Html.DisplayFor(model => model.Prioridad)</span>
                         </dd>
 
-                        <dt class="col-sm-4 text-muted">Usuario Solicitante:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_Requester")</dt>
                         <dd class="col-sm-8">
                             @Model.UsuarioSolicitante.Nombre @Model.UsuarioSolicitante.Apellidos
                         </dd>
 
-                        <dt class="col-sm-4 text-muted">Categoría:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_Category")</dt>
                         <dd class="col-sm-8">@Html.DisplayFor(model => model.Categoria.Nombre)</dd>
 
                         @if (Model.TecnicoAsignado != null)
                         {
-                            <dt class="col-sm-4 text-muted">Técnico Asignado:</dt>
+                            <dt class="col-sm-4 text-muted">@t("Label_AssignedTechnician")</dt>
                             <dd class="col-sm-8">
                                 @Model.TecnicoAsignado.Usuario.Nombre @Model.TecnicoAsignado.Usuario.Apellidos
                             </dd>
@@ -182,11 +198,11 @@
 
                         @if (Model.FechaCierre.HasValue)
                         {
-                            <dt class="col-sm-4 text-muted">Fecha Cierre:</dt>
+                            <dt class="col-sm-4 text-muted">@t("Label_CloseDate")</dt>
                             <dd class="col-sm-8">@Model.FechaCierre.Value.ToString("dd/MM/yyyy HH:mm")</dd>
 
-                            <dt class="col-sm-4 text-muted">Días de Resolución:</dt>
-                            <dd class="col-sm-8">@diasResolucion días</dd>
+                            <dt class="col-sm-4 text-muted">@t("Label_ResolutionDays")</dt>
+                            <dd class="col-sm-8">@diasResolucion @t("ResolutionDays_Value")</dd>
                         }
                     </dl>
                 </div>
@@ -195,32 +211,32 @@
             <!-- SLA y Cumplimiento -->
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0 text-dark">SLA y Cumplimiento</h5>
+                    <h5 class="mb-0 text-dark">@t("Section_SLA")</h5>
                 </div>
                 <div class="card-body">
                     <dl class="row mb-0">
-                        <dt class="col-sm-4 text-muted">SLA Respuesta:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_ResponseSLA")</dt>
                         <dd class="col-sm-8">@fechaLimiteRespuesta.ToString("dd/MM/yyyy HH:mm")</dd>
 
-                        <dt class="col-sm-4 text-muted">SLA Resolución:</dt>
+                        <dt class="col-sm-4 text-muted">@t("Label_ResolutionSLA")</dt>
                         <dd class="col-sm-8">@fechaLimiteResolucion.ToString("dd/MM/yyyy HH:mm")</dd>
 
                         @if (Model.CumplimientoRespuesta.HasValue)
                         {
-                            <dt class="col-sm-4 text-muted">Cumplimiento Respuesta:</dt>
+                            <dt class="col-sm-4 text-muted">@t("Label_ResponseCompliance")</dt>
                             <dd class="col-sm-8">
                                 <span class="badge bg-@(Model.CumplimientoRespuesta.Value ? "success" : "danger")">
-                                    @(Model.CumplimientoRespuesta.Value ? "Cumplido" : "Incumplido")
+                                    @(Model.CumplimientoRespuesta.Value ? t("Compliance_Met") : t("Compliance_NotMet"))
                                 </span>
                             </dd>
                         }
 
                         @if (Model.CumplimientoResolucion.HasValue)
                         {
-                            <dt class="col-sm-4 text-muted">Cumplimiento Resolución:</dt>
+                            <dt class="col-sm-4 text-muted">@t("Label_ResolutionCompliance")</dt>
                             <dd class="col-sm-8">
                                 <span class="badge bg-@(Model.CumplimientoResolucion.Value ? "success" : "danger")">
-                                    @(Model.CumplimientoResolucion.Value ? "Cumplido" : "Incumplido")
+                                    @(Model.CumplimientoResolucion.Value ? t("Compliance_Met") : t("Compliance_NotMet"))
                                 </span>
                             </dd>
                         }
@@ -231,7 +247,7 @@
             <!-- Historial de Estados -->
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom">
-                    <h5 class="mb-0 text-dark">Historial de Estados</h5>
+                    <h5 class="mb-0 text-dark">@t("Section_StatusHistory")</h5>
                 </div>
                 <div class="card-body">
                     @if (Model.HistorialEstado.Any())
@@ -260,7 +276,7 @@
                                             }
 
                                             <h6 class="mb-0">
-                                                <span class="text-muted">@(historial.EstadoAnterior ?? "Inicial")</span>
+                                                <span class="text-muted">@(historial.EstadoAnterior ?? t("StatusHistory_Initial"))</span>
                                                 <span class="mx-2">→</span>
                                                 <strong class="text-dark">@historial.EstadoNuevo</strong>
                                             </h6>
@@ -274,7 +290,7 @@
                                     }
 
                                     <small class="text-muted ms-4 d-block">
-                                        Por: @historial.Usuario.Nombre @historial.Usuario.Apellidos
+                                        @t("StatusHistory_By") @historial.Usuario.Nombre @historial.Usuario.Apellidos
                                     </small>
 
                                     @if (imagenesDelHistorial.Any())
@@ -301,7 +317,7 @@
                     }
                     else
                     {
-                        <p class="text-muted mb-0">No hay historial de cambios registrados.</p>
+                        <p class="text-muted mb-0">@t("StatusHistory_NoRecords")</p>
                     }
                 </div>
             </div>
@@ -310,7 +326,7 @@
             <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 text-dark">
-                        <i class="bi bi-star-fill text-warning"></i> Valoración del Servicio
+                        <i class="bi bi-star-fill text-warning"></i> @t("Section_Rating")
                     </h5>
 
                     <!-- SOLO mostrar botón si NO es técnico -->
@@ -320,7 +336,7 @@
                            asp-action="Create"
                            asp-route-ticketId="@Model.TicketId"
                            class="btn btn-sm btn-primary">
-                            <i class="bi bi-plus-circle"></i> Agregar Valoración
+                            <i class="bi bi-plus-circle"></i> @t("Btn_AddRating")
                         </a>
                     }
                 </div>
@@ -328,7 +344,7 @@
                     @if (Model.Valoracion != null)
                     {
                         <div class="mb-3">
-                            <strong class="text-muted">Puntaje:</strong>
+                            <strong class="text-muted">@t("Label_Score")</strong>
                             <div class="mt-2">
                                 @for (int i = 1; i <= 5; i++)
                                 {
@@ -348,7 +364,7 @@
                         @if (!string.IsNullOrEmpty(Model.Valoracion.Comentario))
                         {
                             <div class="mb-0">
-                                <strong class="text-muted">Comentario:</strong>
+                                <strong class="text-muted">@t("Label_Comment")</strong>
                                 <div class="card bg-light mt-2">
                                     <div class="card-body">
                                         <p class="mb-0">@Model.Valoracion.Comentario</p>
@@ -362,7 +378,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 <i class="bi bi-calendar"></i>
-                                Valorado el: @Model.Valoracion.FechaValoracion.ToString("dd/MM/yyyy HH:mm")
+                                @t("Label_RatedOn") @Model.Valoracion.FechaValoracion.ToString("dd/MM/yyyy HH:mm")
                             </small>
                             <!-- SOLO mostrar botón de detalles si NO es técnico -->
                             @if (!esTecnico)
@@ -371,7 +387,7 @@
                                    asp-action="Details"
                                    asp-route-id="@Model.Valoracion.ValoracionId"
                                    class="btn btn-sm btn-outline-info">
-                                    <i class="bi bi-eye"></i> Ver Detalle Completo
+                                    <i class="bi bi-eye"></i> @t("Btn_ViewFullDetails")
                                 </a>
                             }
                         </div>
@@ -382,7 +398,7 @@
                         {
                             <div class="text-center py-4">
                                 <i class="bi bi-star text-muted" style="font-size: 3rem;"></i>
-                                <p class="text-muted mt-3 mb-3">Este ticket aún no ha sido valorado</p>
+                                <p class="text-muted mt-3 mb-3">@t("Rating_NoRating")</p>
 
                                 <!-- SOLO mostrar botón de crear si NO es técnico -->
                                 @if (!esTecnico)
@@ -391,7 +407,7 @@
                                        asp-action="Create"
                                        asp-route-ticketId="@Model.TicketId"
                                        class="btn btn-primary">
-                                        <i class="bi bi-plus-circle"></i> Agregar Valoración Ahora
+                                        <i class="bi bi-plus-circle"></i> @t("Btn_AddRatingNow")
                                     </a>
                                 }
                                 else
@@ -399,7 +415,7 @@
                                     <!-- Mensaje alternativo para técnicos -->
                                     <p class="text-muted">
                                         <i class="bi bi-info-circle"></i>
-                                        Los técnicos no pueden agregar valoraciones.
+                                        @t("Rating_TechnicianNote")
                                     </p>
                                 }
                             </div>
@@ -408,7 +424,7 @@
                         {
                             <div class="alert alert-info mb-0">
                                 <i class="bi bi-info-circle"></i>
-                                <strong>Información:</strong> La valoración estará disponible cuando el ticket esté cerrado o resuelto.
+                                @t("Rating_InfoAlert")
                             </div>
                         }
                     }
@@ -423,7 +439,7 @@
             {
                 <div class="card mb-4 border-0 shadow-sm">
                     <div class="card-header bg-white border-bottom">
-                        <h5 class="mb-0 text-dark">Imágenes Iniciales del Ticket</h5>
+                        <h5 class="mb-0 text-dark">@t("Section_InitialImages")</h5>
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
@@ -444,29 +460,29 @@
             <!-- Botones inferiores -->
             <div class="text-center mb-5">
                 <a asp-action="Index" class="btn btn-outline-primary">
-                    <i class="bi bi-arrow-left me-2"></i>Regresar al Listado
+                    <i class="bi bi-arrow-left me-2"></i>@t("Btn_BackToList")
                 </a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ✅ MODAL ÚNICO PARA CAMBIAR ESTADO (compartido con Edit.cshtml) -->
+<!--  MODAL ÚNICO PARA CAMBIAR ESTADO (compartido con Edit.cshtml) -->
 <div class="modal fade" id="modalCambioEstado" tabindex="-1" aria-labelledby="modalCambioEstadoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="modalCambioEstadoLabel">
-                    <i class="bi bi-arrow-right-circle me-2"></i>Cambiar Estado del Ticket
+                    <i class="bi bi-arrow-right-circle me-2"></i>@t("Modal_ChangeStatus_Title")
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalCambioEstadoBody">
                 <div class="text-center py-5">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
+                        <span class="visually-hidden">@t("Modal_Loading")</span>
                     </div>
-                    <p class="mt-3">Cargando formulario...</p>
+                    <p class="mt-3">@t("Modal_LoadingForm")</p>
                 </div>
             </div>
         </div>
@@ -474,11 +490,27 @@
 </div>
 
 @section Scripts {
-    <!-- ✅ AGREGAR SWEETALERT2 -->
+    <!--  AGREGAR SWEETALERT2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // Textos traducidos para JavaScript
+        const translations = {
+            alertImageRequired: '@t("Alert_ImageRequired")',
+            alertObservationsRequired: '@t("Alert_ObservationsRequired")',
+            btnSaving: '@t("Btn_Saving")',
+            swalSuccessTitle: '@t("Swal_Success_Title")',
+            swalSuccessMessage: '@t("Swal_Success_Message")',
+            swalSuccessReloading: '@t("Swal_Success_Reloading")',
+            swalErrorTitle: '@t("Swal_Error_Title")',
+            swalErrorChangeStatus: '@t("Swal_Error_ChangeStatus")',
+            swalErrorProcessing: '@t("Swal_Error_Processing")',
+            modalErrorLoading: '@t("Modal_ErrorLoading")',
+            previewNoImages: '@t("Preview_NoImages")',
+            previewSelectStatus: '@t("Preview_SelectStatus")'
+        };
+
         // Toggle de imágenes en historial
         document.querySelectorAll('.collapse-toggle').forEach(toggle => {
             toggle.addEventListener('click', function () {
@@ -490,7 +522,7 @@
         const tooltips = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltips.map(el => new bootstrap.Tooltip(el));
 
-        // ✅ Función única para abrir el modal de cambiar estado
+        // Función única para abrir el modal de cambiar estado
         async function abrirModalCambioEstado(ticketId) {
             const modal = new bootstrap.Modal(document.getElementById('modalCambioEstado'));
             const modalBody = document.getElementById('modalCambioEstadoBody');
@@ -513,7 +545,7 @@
                 modalBody.innerHTML = `
                     <div class="alert alert-danger">
                         <i class="bi bi-exclamation-triangle me-2"></i>
-                        Error al cargar el formulario. Por favor, intente nuevamente.
+                        ${translations.modalErrorLoading}
                     </div>
                 `;
             }
@@ -543,7 +575,7 @@
                     Swal.fire({
                         icon: 'warning',
                         title: 'Atención',
-                        text: 'Debe adjuntar al menos una imagen como evidencia'
+                        text: translations.alertImageRequired
                     });
                     return;
                 }
@@ -553,14 +585,14 @@
                     Swal.fire({
                         icon: 'warning',
                         title: 'Atención',
-                        text: 'Las observaciones son obligatorias'
+                        text: translations.alertObservationsRequired
                     });
                     return;
                 }
 
                 if (btnSubmit) {
                     btnSubmit.disabled = true;
-                    btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+                    btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + translations.btnSaving;
                 }
 
                 try {
@@ -584,25 +616,25 @@
                     const result = await response.json();
 
                     if (result.success) {
-                        // ✅ CERRAR EL MODAL PRIMERO
+                        //  CERRAR EL MODAL PRIMERO
                         const modalInstance = bootstrap.Modal.getInstance(document.getElementById('modalCambioEstado'));
                         if (modalInstance) {
                             modalInstance.hide();
                         }
 
-                        // ✅ REMOVER BACKDROP MANUALMENTE
+                        //  REMOVER BACKDROP MANUALMENTE
                         const backdrop = document.querySelector('.modal-backdrop');
                         if (backdrop) {
                             backdrop.remove();
                         }
 
-                        // ✅ MOSTRAR ALERTA Y RECARGAR
+                        //  MOSTRAR ALERTA Y RECARGAR
                         await Swal.fire({
                             icon: 'success',
-                            title: '¡Estado actualizado!',
+                            title: translations.swalSuccessTitle,
                             html: `<p><strong>${result.message}</strong></p>
-                                   <p class="text-muted">El ticket ahora está en estado: <strong>${result.nuevoEstado}</strong></p>
-                                   <small>Recargando página...</small>`,
+                                   <p class="text-muted">${translations.swalSuccessMessage} <strong>${result.nuevoEstado}</strong></p>
+                                   <small>${translations.swalSuccessReloading}</small>`,
                             timer: 2000,
                             timerProgressBar: true,
                             showConfirmButton: false,
@@ -610,14 +642,14 @@
                             allowEscapeKey: false
                         });
 
-                        // ✅ RECARGAR LA PÁGINA
+                        // RECARGAR LA PÁGINA
                         window.location.reload();
 
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error',
-                            text: result.message || 'No se pudo cambiar el estado'
+                            title: translations.swalErrorTitle,
+                            text: result.message || translations.swalErrorChangeStatus
                         });
 
                         if (btnSubmit) {
@@ -630,9 +662,9 @@
 
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error',
-                        html: `<p>Ocurrió un error al procesar la solicitud</p>
-                               <small class="text-muted">${error.message}</small>`
+                        title: translations.swalErrorTitle,
+                        html: `<p>${translations.swalErrorProcessing}</p>
+                            <small class="text-muted">${error.message}</small>`
                     });
 
                     if (btnSubmit) {
@@ -670,7 +702,7 @@
                 previewContainer.innerHTML = '';
 
                 if (selectedFiles.length === 0) {
-                    previewContainer.innerHTML = '<div class="col-12"><small class="text-muted">No hay imágenes seleccionadas</small></div>';
+                    previewContainer.innerHTML = '<div class="col-12"><small class="text-muted">' + translations.previewNoImages + '</small></div>';
                     return;
                 }
 
@@ -687,7 +719,7 @@
                                     <button type="button"
                                             class="btn btn-danger btn-sm btn-remove-img"
                                             data-index="${index}"
-                                            title="Eliminar">
+                                            title="@t("Preview_Remove")">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -726,7 +758,7 @@
             if (selectEstado && previewEstado) {
                 selectEstado.addEventListener('change', function() {
                     const valor = this.value;
-                    previewEstado.textContent = valor || 'Seleccione estado';
+                    previewEstado.textContent = valor || translations.previewSelectStatus;
 
                     const colorClasses = {
                         'Asignado': 'bg-info',
@@ -792,4 +824,4 @@
             padding: 0.5rem 0.75rem;
         }
     </style>
-}
+    }

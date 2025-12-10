@@ -8,7 +8,10 @@ namespace SupportU.Application.Profiles
     {
         public TicketProfile()
         {
-            CreateMap<Ticket, TicketDTO>();
-        }
+			CreateMap<Ticket, TicketDTO>()
+			  
+			  .ForMember(dest => dest.CategoriaNombre,
+						opt => opt.MapFrom(src => src.Categoria != null ? src.Categoria.Nombre : null));
+		}
     }
 }

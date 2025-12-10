@@ -10,3 +10,42 @@
 2025-12-10 02:12:04.577 -06:00 [WRN] ?? No se recibieron im?genes para guardar
 2025-12-10 02:28:43.880 -06:00 [WRN] ?? No se recibieron im?genes para guardar
 2025-12-10 02:30:12.717 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 04:00:03.328 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 04:15:46.044 -06:00 [WRN] DEBUG POST Create => Nombre: Acceso a sistemas, CategoriaId: 2, Activa: True
+2025-12-10 04:15:46.102 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 04:16:05.476 -06:00 [WRN] DEBUG POST Create => Nombre: sapa perra, CategoriaId: 1, Activa: True
+2025-12-10 04:16:05.477 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 04:40:16.400 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 04:43:34.100 -06:00 [WRN] DEBUG POST Create => Nombre: para caat, CategoriaId: 6, Activa: True
+2025-12-10 04:43:34.101 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 04:44:05.887 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 04:45:09.835 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 04:46:47.762 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 04:48:06.612 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 09:05:17.479 -06:00 [WRN] DEBUG POST Create => Nombre: prueba f, CategoriaId: 8, Activa: True
+2025-12-10 09:05:17.485 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 09:05:34.450 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 09:11:54.620 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 09:19:13.686 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 09:19:53.624 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 11:28:48.959 -06:00 [WRN] DEBUG POST Create => Nombre: prueba ffff, CategoriaId: 9, Activa: True
+2025-12-10 11:28:48.968 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 11:30:20.355 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 11:31:37.942 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 11:36:10.933 -06:00 [WRN] DEBUG POST Create => Nombre: prueba prueba, CategoriaId: 6, Activa: True
+2025-12-10 11:36:10.938 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 11:36:31.160 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 11:37:25.488 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 12:05:42.573 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 12:06:00.718 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 12:07:31.179 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 12:07:38.701 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 13:55:18.335 -06:00 [WRN] ?? No se recibieron im?genes para guardar
+2025-12-10 16:17:52.019 -06:00 [WRN] DEBUG POST Create => Nombre: prueba ettt, CategoriaId: 5, Activa: True
+2025-12-10 16:17:52.026 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-10 16:18:35.948 -06:00 [WRN] No se recibieron imagenes para guardar en el historial
+2025-12-10 16:18:58.132 -06:00 [WRN] No se recibieron imagenes para guardar en el historial
+2025-12-10 16:19:24.571 -06:00 [WRN] No se recibieron imagenes para guardar en el historial
+2025-12-10 16:19:52.089 -06:00 [WRN] No se recibieron imagenes para guardar en el historial
+2025-12-10 16:34:23.156 -06:00 [WRN] No se recibieron imagenes para guardar en el historial
+2025-12-10 16:34:31.266 -06:00 [WRN] No se recibieron imagenes para guardar en el historial

@@ -9,7 +9,7 @@ using System.Security.Claims;
 namespace SupportU.Web.Controllers
 {
 	[Authorize]
-	public class TicketController : Controller
+	public class TicketController : BaseController
 	{
 		private readonly IServiceTicket _serviceTicket;
 		private readonly IServiceTecnico _serviceTecnico;
@@ -82,8 +82,6 @@ namespace SupportU.Web.Controllers
 				var ticket = await _serviceTicket.FindByIdAsync(id);
 				if (ticket == null) return NotFound();
 
-				// IMPORTANTE: Cargar la valoración si existe
-				// Agregar esto si no lo tienes en tu servicio
 				ViewBag.UsuarioId = GetCurrentUserId();
 				ViewBag.RolUsuario = User.FindFirstValue(ClaimTypes.Role);
 
@@ -159,14 +157,13 @@ namespace SupportU.Web.Controllers
 				return View(dto);
 			}
 		}
-
 		[HttpPost]
 		[Authorize(Roles = "Administrador")]
 		public async Task<IActionResult> AsignarManual([FromBody] AsignarManualRequest request)
 		{
 			try
 			{
-				_logger.LogInformation("🎯 Asignación manual iniciada. Ticket: {TicketId}, Técnico: {TecnicoId}",
+				_logger.LogInformation("Asignación manual iniciada. Ticket: {TicketId}, Técnico: {TecnicoId}",
 					request?.ticketId ?? 0, request?.tecnicoId ?? 0);
 
 				if (request == null || request.ticketId <= 0 || request.tecnicoId <= 0)
@@ -192,39 +189,18 @@ namespace SupportU.Web.Controllers
 					return Json(new { success = false, message = "Técnico no encontrado" });
 				}
 
+				// ✅ INCREMENTAR LA CARGA DE TRABAJO DEL TÉCNICO
+				await _serviceTecnico.IncrementarCargaAsync(request.tecnicoId);
+				_logger.LogInformation("✅ Carga de trabajo incrementada. Técnico {TecnicoId}", request.tecnicoId);
+
 				// Actualizar ticket
 				ticket.TecnicoAsignadoId = request.tecnicoId;
 				ticket.Estado = "Asignado";
 				await _serviceTicket.UpdateAsync(ticket);
 
-				// ✅ ACTUALIZAR O CREAR ASIGNACIÓN CON EL TÉCNICO ASIGNADO
-				var todasAsignaciones = await _serviceAsignacion.ListAsync();
-				var asignacionExistente = todasAsignaciones.FirstOrDefault(a => a.TicketId == request.ticketId);
+				// Gestionar asignación (siempre crear/
 
-				if (asignacionExistente != null)
-				{
-					// Si ya existe una asignación, actualizarla
-					asignacionExistente.TecnicoId = request.tecnicoId;
-					asignacionExistente.MetodoAsignacion = "Manual";
-					asignacionExistente.FechaAsignacion = DateTime.Now;
-					asignacionExistente.UsuarioAsignadorId = GetCurrentUserId();
-				}
-				else
-				{
-					// Si no existe, crear nueva asignación
-					var nuevaAsignacion = new AsignacionDTO
-					{
-						TicketId = request.ticketId,
-						TecnicoId = request.tecnicoId,
-						MetodoAsignacion = "Manual",
-						FechaAsignacion = DateTime.Now,
-						UsuarioAsignadorId = GetCurrentUserId()
-					};
-
-					await _serviceAsignacion.AddAsync(nuevaAsignacion);
-				}
-
-				// Crear historial de asignación manual
+				// Crear historial
 				var historialAsignacion = new HistorialEstadosDTO
 				{
 					TicketId = request.ticketId,
@@ -238,7 +214,7 @@ namespace SupportU.Web.Controllers
 
 				await _serviceHistorial.AddAsync(historialAsignacion);
 
-				_logger.LogInformation("✅ Ticket {TicketId} asignado manualmente a técnico {TecnicoId}",
+				_logger.LogInformation(" Ticket {TicketId} asignado manualmente a técnico {TecnicoId}",
 					request.ticketId, request.tecnicoId);
 
 				return Json(new
@@ -250,7 +226,7 @@ namespace SupportU.Web.Controllers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error en asignación manual");
+				_logger.LogError(ex, " Error en asignación manual");
 				return Json(new { success = false, message = $"Error: {ex.Message}" });
 			}
 		}
@@ -267,7 +243,7 @@ namespace SupportU.Web.Controllers
 		{
 			try
 			{
-				_logger.LogInformation("🤖 [CONTROLLER] AsignarAutomatico iniciado");
+				_logger.LogInformation(" [CONTROLLER] AsignarAutomatico iniciado");
 
 				if (request == null || request.ticketId <= 0)
 				{
@@ -286,13 +262,12 @@ namespace SupportU.Web.Controllers
 
 				if (resultado.Exitoso)
 				{
-					// ✅ ACTUALIZAR O CREAR ASIGNACIÓN CON EL TÉCNICO ASIGNADO
 					var todasAsignaciones = await _serviceAsignacion.ListAsync();
 					var asignacionExistente = todasAsignaciones.FirstOrDefault(a => a.TicketId == ticketId);
 
 					if (asignacionExistente != null)
 					{
-						// Si ya existe una asignación, actualizarla
+						
 						asignacionExistente.TecnicoId = resultado.TecnicoId;
 						asignacionExistente.MetodoAsignacion = "Automatico";
 						asignacionExistente.FechaAsignacion = DateTime.Now;
@@ -300,7 +275,6 @@ namespace SupportU.Web.Controllers
 					}
 					else
 					{
-						// Si no existe, crear nueva asignación
 						var nuevaAsignacion = new AsignacionDTO
 						{
 							TicketId = ticketId,
@@ -341,7 +315,7 @@ namespace SupportU.Web.Controllers
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "💥 [CONTROLLER] Error en AsignarAutomatico");
+				_logger.LogError(ex, " [CONTROLLER] Error en AsignarAutomatico");
 				return Json(new { success = false, message = $"Error: {ex.Message}" });
 			}
 		}
@@ -388,6 +362,8 @@ namespace SupportU.Web.Controllers
 			}
 		}
 
+
+
 		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
@@ -403,10 +379,18 @@ namespace SupportU.Web.Controllers
 				var usuarioId = GetCurrentUserId();
 				var rolUsuario = User.FindFirstValue(ClaimTypes.Role);
 
-				// Solo permitir edición si es admin, el dueño o técnico asignado
+				var esTecnicoAsignado = false;
+				if (rolUsuario == "Técnico" && ticket.TecnicoAsignadoId.HasValue)
+				{
+					var tecnicos = await _serviceTecnico.ListAsync();
+					var tecnicoActual = tecnicos.FirstOrDefault(t => t.UsuarioId == usuarioId);
+					esTecnicoAsignado = tecnicoActual != null && tecnicoActual.TecnicoId == ticket.TecnicoAsignadoId.Value;
+				}
+
+		
 				if (rolUsuario != "Administrador" &&
 					ticket.UsuarioSolicitanteId != usuarioId &&
-					ticket.TecnicoAsignadoId != usuarioId)
+					!esTecnicoAsignado)
 				{
 					TempData["Error"] = "No tiene permisos para editar este ticket";
 					return RedirectToAction(nameof(Index));
@@ -417,18 +401,15 @@ namespace SupportU.Web.Controllers
 				// Obtener la etiqueta actual basada en la categoría del ticket
 				if (ticket.CategoriaId > 0)
 				{
-					// Buscar etiquetas que pertenecen a esta categoría
 					var etiquetas = await _serviceEtiqueta.ListAsync();
 					var etiquetasDeCategoria = etiquetas.Where(e => e.CategoriaId == ticket.CategoriaId).ToList();
 
 					if (etiquetasDeCategoria.Any())
 					{
-						// Si solo hay una etiqueta para esta categoría, seleccionarla
 						if (etiquetasDeCategoria.Count == 1)
 						{
 							ViewBag.EtiquetaSeleccionada = etiquetasDeCategoria.First().EtiquetaId;
 						}
-						// Si hay múltiples, necesitarías lógica adicional para determinar cuál es la correcta
 					}
 				}
 
@@ -441,6 +422,9 @@ namespace SupportU.Web.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 		}
+
+
+
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -462,9 +446,19 @@ namespace SupportU.Web.Controllers
 				var usuarioId = GetCurrentUserId();
 				var rolUsuario = User.FindFirstValue(ClaimTypes.Role);
 
+				
+				var esTecnicoAsignado = false;
+				if (rolUsuario == "Técnico" && ticketExistente.TecnicoAsignadoId.HasValue)
+				{
+					var tecnicos = await _serviceTecnico.ListAsync();
+					var tecnicoActual = tecnicos.FirstOrDefault(t => t.UsuarioId == usuarioId);
+					esTecnicoAsignado = tecnicoActual != null && tecnicoActual.TecnicoId == ticketExistente.TecnicoAsignadoId.Value;
+				}
+
+				
 				if (rolUsuario != "Administrador" &&
 					ticketExistente.UsuarioSolicitanteId != usuarioId &&
-					ticketExistente.TecnicoAsignadoId != usuarioId)
+					!esTecnicoAsignado)
 				{
 					TempData["Error"] = "No tiene permisos para editar este ticket";
 					return RedirectToAction(nameof(Index));
@@ -478,7 +472,6 @@ namespace SupportU.Web.Controllers
 					return View(ticketExistente);
 				}
 
-				// Obtener la etiqueta seleccionada para determinar la categoría
 				var etiquetas = await _serviceEtiqueta.ListAsync();
 				var etiquetaSeleccionada = etiquetas.FirstOrDefault(e => e.EtiquetaId == etiquetaSeleccionadaId);
 
@@ -495,7 +488,6 @@ namespace SupportU.Web.Controllers
 				_logger.LogInformation("Edit POST - Etiqueta seleccionada: {EtiquetaId} -> Categoría: {CategoriaId}",
 					etiquetaSeleccionadaId, dto.CategoriaId);
 
-				// Mantener campos que no se editan directamente en el formulario
 				dto.UsuarioSolicitanteId = ticketExistente.UsuarioSolicitanteId;
 				dto.FechaCreacion = ticketExistente.FechaCreacion;
 				dto.Estado = ticketExistente.Estado;
@@ -506,7 +498,7 @@ namespace SupportU.Web.Controllers
 				dto.fecha_resolucion = ticketExistente.fecha_resolucion;
 				dto.TecnicoAsignadoId = ticketExistente.TecnicoAsignadoId;
 
-				// Validar ModelState
+
 				if (!ModelState.IsValid)
 				{
 					_logger.LogWarning("Edit POST - ModelState inválido. Errores:");
@@ -542,7 +534,7 @@ namespace SupportU.Web.Controllers
 			}
 		}
 
-		#region Métodos Privados
+
 
 		private int GetCurrentUserId()
 		{
@@ -615,6 +607,6 @@ namespace SupportU.Web.Controllers
 			}
 		}
 
-		#endregion
+
 	}
 }

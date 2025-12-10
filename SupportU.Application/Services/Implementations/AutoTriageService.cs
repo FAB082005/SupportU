@@ -66,7 +66,7 @@ namespace SupportU.Application.Services
 
 		
 
-				var especialidadesRequeridas = categoria.Especialidad?.Select(e => e.EspecialidadId).ToList()
+				var especialidadesRequeridas = categoria.CategoriaEspecialidades?.Select(e => e.EspecialidadId).ToList()
 					?? new List<int>();
 
 				if (!especialidadesRequeridas.Any())

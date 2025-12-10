@@ -848,3 +848,938 @@
 2025-12-10 02:30:12.733 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
 2025-12-10 02:30:12.743 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 2)
 2025-12-10 02:30:12.745 -06:00 [INF] ? Ticket 12 asignado manualmente a t?cnico 1
+2025-12-10 04:00:02.890 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=ivufvf jdjdj
+2025-12-10 04:00:03.080 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=26
+2025-12-10 04:00:03.092 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 26: null ? Pendiente
+2025-12-10 04:00:03.099 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 04:00:03.109 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:00:03.110 -06:00 [INF]  Ticket 26: Estado=Pendiente, CategoriaId=1, UsuarioId=1
+2025-12-10 04:00:03.244 -06:00 [INF] ?? SLA del Ticket 26:
+2025-12-10 04:00:03.245 -06:00 [INF]    ? Creado: "2025-12-10T04:00:02.8843548-06:00"
+2025-12-10 04:00:03.247 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T08:00:02.8843548-06:00" (240 min)
+2025-12-10 04:00:03.248 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:00:02.8843548-06:00" (1440 min)
+2025-12-10 04:00:03.250 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=26
+2025-12-10 04:00:03.270 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=26
+2025-12-10 04:00:03.271 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:00:03.274 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=26, EstadoNuevo=Pendiente
+2025-12-10 04:00:03.326 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=52
+2025-12-10 04:00:03.327 -06:00 [INF] ? Historial creado con ID: 52
+2025-12-10 04:00:03.370 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 04:00:03.371 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 04:03:40.734 -06:00 [INF] Edit POST - Iniciando edici?n del ticket 2
+2025-12-10 04:03:40.814 -06:00 [INF] Edit POST - Etiqueta seleccionada: 1 -> Categor?a: 1
+2025-12-10 04:03:40.817 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 2
+2025-12-10 04:03:40.861 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:03:40.864 -06:00 [INF]  Ticket 2: Estado=Cerrado, CategoriaId=2, UsuarioId=11
+2025-12-10 04:03:40.867 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=2
+2025-12-10 04:03:41.055 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=2
+2025-12-10 04:03:41.163 -06:00 [INF] Edit POST - Ticket 2 actualizado correctamente
+2025-12-10 04:40:15.466 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 04:40:15.657 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 23
+2025-12-10 04:40:15.697 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:40:15.700 -06:00 [INF]  Ticket 23: Estado=Pendiente, CategoriaId=1, UsuarioId=12
+2025-12-10 04:40:16.016 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=23
+2025-12-10 04:40:16.086 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=23
+2025-12-10 04:40:16.196 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 04:40:16.311 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 23: Pendiente ? Asignado
+2025-12-10 04:40:16.313 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 23
+2025-12-10 04:40:16.315 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:40:16.316 -06:00 [INF]  Ticket 23: Estado=Asignado, CategoriaId=1, UsuarioId=12
+2025-12-10 04:40:16.337 -06:00 [INF] ?? SLA del Ticket 23:
+2025-12-10 04:40:16.338 -06:00 [INF]    ? Creado: "2024-10-23T11:30:00.0000000"
+2025-12-10 04:40:16.339 -06:00 [INF]    ? L?mite Respuesta: "2024-10-23T15:30:00.0000000" (240 min)
+2025-12-10 04:40:16.340 -06:00 [INF]    ? L?mite Resoluci?n: "2024-10-24T11:30:00.0000000" (1440 min)
+2025-12-10 04:40:16.342 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 04:40:16.342 -06:00 [INF]    ? Fecha: "2025-12-10T04:40:16.3199086-06:00"
+2025-12-10 04:40:16.343 -06:00 [INF]    ? Cumplimiento: NO ?
+2025-12-10 04:40:16.344 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=23
+2025-12-10 04:40:16.353 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=23
+2025-12-10 04:40:16.354 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:40:16.356 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=23, EstadoNuevo=Asignado
+2025-12-10 04:40:16.398 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=53
+2025-12-10 04:40:16.399 -06:00 [INF] ? Historial creado con ID: 53
+2025-12-10 04:40:16.424 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 12)
+2025-12-10 04:40:16.452 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 04:40:59.938 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 23: Asignado ? En Proceso
+2025-12-10 04:40:59.940 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 23
+2025-12-10 04:40:59.943 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:40:59.944 -06:00 [INF]  Ticket 23: Estado=Asignado, CategoriaId=1, UsuarioId=12
+2025-12-10 04:40:59.947 -06:00 [INF] ?? SLA del Ticket 23:
+2025-12-10 04:40:59.947 -06:00 [INF]    ? Creado: "2024-10-23T11:30:00.0000000"
+2025-12-10 04:40:59.948 -06:00 [INF]    ? L?mite Respuesta: "2024-10-23T15:30:00.0000000" (240 min)
+2025-12-10 04:40:59.949 -06:00 [INF]    ? L?mite Resoluci?n: "2024-10-24T11:30:00.0000000" (1440 min)
+2025-12-10 04:40:59.950 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=23
+2025-12-10 04:40:59.957 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=23
+2025-12-10 04:40:59.958 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:40:59.959 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=23, EstadoNuevo=En Proceso
+2025-12-10 04:40:59.963 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=54
+2025-12-10 04:40:59.963 -06:00 [INF] ? Historial creado con ID: 54
+2025-12-10 04:40:59.969 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 04:40:59.972 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-10 04:40:59.972 -06:00 [INF] RutaArchivo: /uploads/tickets/e18df8ec-87be-4a21-8180-4d7fb88a628d_Cover-3.png
+2025-12-10 04:40:59.973 -06:00 [INF] TicketId: 23
+2025-12-10 04:40:59.974 -06:00 [INF] HistorialEstadoId: 54
+2025-12-10 04:40:59.974 -06:00 [INF]  Imagen asociada a historial 54
+2025-12-10 04:40:59.996 -06:00 [INF] Imagen guardada exitosamente con ID: 1
+2025-12-10 04:40:59.997 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 04:40:59.997 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 04:40:59.998 -06:00 [INF] RutaArchivo: /uploads/tickets/dd633d62-2090-472f-841a-ddd491b3aad6_redes.jpg
+2025-12-10 04:40:59.998 -06:00 [INF] TicketId: 23
+2025-12-10 04:40:59.999 -06:00 [INF] HistorialEstadoId: 54
+2025-12-10 04:40:59.999 -06:00 [INF]  Imagen asociada a historial 54
+2025-12-10 04:41:00.001 -06:00 [INF] Imagen guardada exitosamente con ID: 2
+2025-12-10 04:41:00.001 -06:00 [INF] ? 2 im?genes guardadas exitosamente
+2025-12-10 04:41:00.025 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 12)
+2025-12-10 04:41:00.039 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 04:41:00.041 -06:00 [INF] ? Cambio de estado completado. Ticket 23: Asignado ? En Proceso
+2025-12-10 04:43:19.826 -06:00 [INF] Create POST called for Categoria. Nombre=prueba nueva cat, SlaId=6, Criterio=mejor_calificado
+2025-12-10 04:43:19.851 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=6
+2025-12-10 04:43:19.852 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=6
+2025-12-10 04:43:19.853 -06:00 [INF] Categoria created successfully. NewId=6
+2025-12-10 04:44:05.838 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba total
+2025-12-10 04:44:05.848 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=27
+2025-12-10 04:44:05.849 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: null ? Pendiente
+2025-12-10 04:44:05.850 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 04:44:05.853 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:44:05.855 -06:00 [INF]  Ticket 27: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 04:44:05.871 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 04:44:05.872 -06:00 [INF]    ? Creado: "2025-12-10T04:44:05.8367301-06:00"
+2025-12-10 04:44:05.874 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T05:04:05.8367301-06:00" (20 min)
+2025-12-10 04:44:05.876 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T05:04:05.8367301-06:00" (20 min)
+2025-12-10 04:44:05.876 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 04:44:05.880 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 04:44:05.881 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:44:05.881 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=Pendiente
+2025-12-10 04:44:05.885 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=55
+2025-12-10 04:44:05.886 -06:00 [INF] ? Historial creado con ID: 55
+2025-12-10 04:44:05.891 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 04:44:05.891 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 04:44:25.538 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 6
+2025-12-10 04:44:40.474 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 04:44:40.489 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 04:44:40.491 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:44:40.491 -06:00 [INF]  Ticket 27: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 04:45:06.480 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 6
+2025-12-10 04:45:09.752 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 27, T?cnico: 1
+2025-12-10 04:45:09.783 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 04:45:09.785 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:45:09.786 -06:00 [INF]  Ticket 27: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 04:45:09.787 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 04:45:09.795 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 04:45:09.818 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: Pendiente ? Asignado
+2025-12-10 04:45:09.819 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 04:45:09.820 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:45:09.821 -06:00 [INF]  Ticket 27: Estado=Asignado, CategoriaId=6, UsuarioId=1
+2025-12-10 04:45:09.824 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 04:45:09.825 -06:00 [INF]    ? Creado: "2025-12-10T04:44:05.8367301"
+2025-12-10 04:45:09.826 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T05:04:05.8367301" (20 min)
+2025-12-10 04:45:09.827 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T05:04:05.8367301" (20 min)
+2025-12-10 04:45:09.827 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 04:45:09.828 -06:00 [INF]    ? Fecha: "2025-12-10T04:45:09.8225759-06:00"
+2025-12-10 04:45:09.828 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 04:45:09.829 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 04:45:09.831 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 04:45:09.831 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:45:09.832 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=Asignado
+2025-12-10 04:45:09.834 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=56
+2025-12-10 04:45:09.835 -06:00 [INF] ? Historial creado con ID: 56
+2025-12-10 04:45:09.838 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 04:45:09.841 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 2)
+2025-12-10 04:45:09.842 -06:00 [INF] ? Ticket 27 asignado manualmente a t?cnico 1
+2025-12-10 04:46:22.765 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=8 count=1
+2025-12-10 04:46:47.717 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=pruebaaaaa
+2025-12-10 04:46:47.724 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=28
+2025-12-10 04:46:47.726 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 28: null ? Pendiente
+2025-12-10 04:46:47.727 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 04:46:47.729 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:46:47.730 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 04:46:47.747 -06:00 [INF] ?? SLA del Ticket 28:
+2025-12-10 04:46:47.748 -06:00 [INF]    ? Creado: "2025-12-10T04:46:47.7169391-06:00"
+2025-12-10 04:46:47.750 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T05:06:47.7169391-06:00" (20 min)
+2025-12-10 04:46:47.751 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T05:06:47.7169391-06:00" (20 min)
+2025-12-10 04:46:47.753 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 04:46:47.757 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 04:46:47.758 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:46:47.758 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=28, EstadoNuevo=Pendiente
+2025-12-10 04:46:47.761 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=57
+2025-12-10 04:46:47.761 -06:00 [INF] ? Historial creado con ID: 57
+2025-12-10 04:46:47.766 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 04:46:47.766 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 04:47:01.611 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 04:47:01.618 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 04:47:01.620 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:47:01.621 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 04:48:06.480 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 04:48:06.511 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 04:48:06.514 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:48:06.515 -06:00 [INF]  Ticket 26: Estado=Pendiente, CategoriaId=1, UsuarioId=1
+2025-12-10 04:48:06.542 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=26
+2025-12-10 04:48:06.549 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=26
+2025-12-10 04:48:06.575 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 04:48:06.593 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 26: Pendiente ? Asignado
+2025-12-10 04:48:06.593 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 04:48:06.595 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:48:06.595 -06:00 [INF]  Ticket 26: Estado=Asignado, CategoriaId=1, UsuarioId=1
+2025-12-10 04:48:06.598 -06:00 [INF] ?? SLA del Ticket 26:
+2025-12-10 04:48:06.598 -06:00 [INF]    ? Creado: "2025-12-10T04:00:02.8843548"
+2025-12-10 04:48:06.599 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T08:00:02.8843548" (240 min)
+2025-12-10 04:48:06.600 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:00:02.8843548" (1440 min)
+2025-12-10 04:48:06.601 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 04:48:06.602 -06:00 [INF]    ? Fecha: "2025-12-10T04:48:06.5968127-06:00"
+2025-12-10 04:48:06.603 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 04:48:06.604 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=26
+2025-12-10 04:48:06.606 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=26
+2025-12-10 04:48:06.606 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 04:48:06.607 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=26, EstadoNuevo=Asignado
+2025-12-10 04:48:06.611 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=58
+2025-12-10 04:48:06.611 -06:00 [INF] ? Historial creado con ID: 58
+2025-12-10 04:48:06.616 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 04:48:06.623 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 04:48:12.724 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 6
+2025-12-10 04:48:20.788 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 04:48:20.802 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 04:48:20.805 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:48:20.806 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 04:49:39.727 -06:00 [INF] Create POST called for Categoria. Nombre=prueba 2, SlaId=6, Criterio=prioridad_puntaje
+2025-12-10 04:49:39.733 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=7
+2025-12-10 04:49:39.734 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=7
+2025-12-10 04:49:39.735 -06:00 [INF] Categoria created successfully. NewId=7
+2025-12-10 04:50:21.202 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=8 count=1
+2025-12-10 04:50:34.065 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 04:50:34.080 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 04:50:34.083 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 04:50:34.084 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 09:03:44.222 -06:00 [INF] Create POST called for Categoria. Nombre=prueba f, SlaId=7, Criterio=especialista_disponible
+2025-12-10 09:03:44.269 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=8
+2025-12-10 09:03:44.274 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=8
+2025-12-10 09:03:44.276 -06:00 [INF] Categoria created successfully. NewId=8
+2025-12-10 09:04:12.247 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=7 count=1
+2025-12-10 09:05:34.247 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba f
+2025-12-10 09:05:34.314 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=29
+2025-12-10 09:05:34.319 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 29: null ? Pendiente
+2025-12-10 09:05:34.325 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 29
+2025-12-10 09:05:34.331 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:05:34.334 -06:00 [INF]  Ticket 29: Estado=Pendiente, CategoriaId=8, UsuarioId=1
+2025-12-10 09:05:34.391 -06:00 [INF] ?? SLA del Ticket 29:
+2025-12-10 09:05:34.393 -06:00 [INF]    ? Creado: "2025-12-10T09:05:34.2468576-06:00"
+2025-12-10 09:05:34.397 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T09:18:34.2468576-06:00" (13 min)
+2025-12-10 09:05:34.401 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T09:18:34.2468576-06:00" (13 min)
+2025-12-10 09:05:34.403 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=29
+2025-12-10 09:05:34.420 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=29
+2025-12-10 09:05:34.423 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 09:05:34.425 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=29, EstadoNuevo=Pendiente
+2025-12-10 09:05:34.446 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=59
+2025-12-10 09:05:34.448 -06:00 [INF] ? Historial creado con ID: 59
+2025-12-10 09:05:34.546 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 09:05:34.550 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 09:06:13.991 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 09:06:14.028 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 29
+2025-12-10 09:06:14.033 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:06:14.034 -06:00 [INF]  Ticket 29: Estado=Pendiente, CategoriaId=8, UsuarioId=1
+2025-12-10 09:11:47.132 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 8
+2025-12-10 09:11:54.328 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 29, T?cnico: 7
+2025-12-10 09:11:54.396 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 29
+2025-12-10 09:11:54.408 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:11:54.409 -06:00 [INF]  Ticket 29: Estado=Pendiente, CategoriaId=8, UsuarioId=1
+2025-12-10 09:11:54.412 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=29
+2025-12-10 09:11:54.467 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=29
+2025-12-10 09:11:54.563 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 29: Pendiente ? Asignado
+2025-12-10 09:11:54.569 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 29
+2025-12-10 09:11:54.572 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:11:54.574 -06:00 [INF]  Ticket 29: Estado=Asignado, CategoriaId=8, UsuarioId=1
+2025-12-10 09:11:54.581 -06:00 [INF] ?? SLA del Ticket 29:
+2025-12-10 09:11:54.584 -06:00 [INF]    ? Creado: "2025-12-10T09:05:34.2468576"
+2025-12-10 09:11:54.587 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T09:18:34.2468576" (13 min)
+2025-12-10 09:11:54.590 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T09:18:34.2468576" (13 min)
+2025-12-10 09:11:54.593 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 09:11:54.594 -06:00 [INF]    ? Fecha: "2025-12-10T09:11:54.5779770-06:00"
+2025-12-10 09:11:54.596 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 09:11:54.598 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=29
+2025-12-10 09:11:54.602 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=29
+2025-12-10 09:11:54.604 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 09:11:54.605 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=29, EstadoNuevo=Asignado
+2025-12-10 09:11:54.617 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=60
+2025-12-10 09:11:54.619 -06:00 [INF] ? Historial creado con ID: 60
+2025-12-10 09:11:54.628 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 09:11:54.637 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 09:11:54.639 -06:00 [INF] ? Ticket 29 asignado manualmente a t?cnico 7
+2025-12-10 09:13:05.087 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 09:13:05.129 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 09:13:05.136 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:13:05.138 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 09:19:13.416 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=kj
+2025-12-10 09:19:13.559 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=30
+2025-12-10 09:19:13.561 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 30: null ? Pendiente
+2025-12-10 09:19:13.565 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 30
+2025-12-10 09:19:13.571 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:19:13.573 -06:00 [INF]  Ticket 30: Estado=Pendiente, CategoriaId=1, UsuarioId=1
+2025-12-10 09:19:13.616 -06:00 [INF] ?? SLA del Ticket 30:
+2025-12-10 09:19:13.619 -06:00 [INF]    ? Creado: "2025-12-10T09:19:13.4164496-06:00"
+2025-12-10 09:19:13.625 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T13:19:13.4164496-06:00" (240 min)
+2025-12-10 09:19:13.627 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T09:19:13.4164496-06:00" (1440 min)
+2025-12-10 09:19:13.629 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=30
+2025-12-10 09:19:13.643 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=30
+2025-12-10 09:19:13.645 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 09:19:13.646 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=30, EstadoNuevo=Pendiente
+2025-12-10 09:19:13.681 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=61
+2025-12-10 09:19:13.683 -06:00 [INF] ? Historial creado con ID: 61
+2025-12-10 09:19:13.742 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 09:19:13.745 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 09:19:53.274 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 09:19:53.322 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 30
+2025-12-10 09:19:53.328 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:19:53.330 -06:00 [INF]  Ticket 30: Estado=Pendiente, CategoriaId=1, UsuarioId=1
+2025-12-10 09:19:53.403 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=30
+2025-12-10 09:19:53.421 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=30
+2025-12-10 09:19:53.491 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 09:19:53.538 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 30: Pendiente ? Asignado
+2025-12-10 09:19:53.544 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 30
+2025-12-10 09:19:53.550 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 09:19:53.551 -06:00 [INF]  Ticket 30: Estado=Asignado, CategoriaId=1, UsuarioId=1
+2025-12-10 09:19:53.557 -06:00 [INF] ?? SLA del Ticket 30:
+2025-12-10 09:19:53.560 -06:00 [INF]    ? Creado: "2025-12-10T09:19:13.4164496"
+2025-12-10 09:19:53.563 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T13:19:13.4164496" (240 min)
+2025-12-10 09:19:53.567 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T09:19:13.4164496" (1440 min)
+2025-12-10 09:19:53.573 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 09:19:53.577 -06:00 [INF]    ? Fecha: "2025-12-10T09:19:53.5543014-06:00"
+2025-12-10 09:19:53.581 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 09:19:53.586 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=30
+2025-12-10 09:19:53.597 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=30
+2025-12-10 09:19:53.600 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 09:19:53.602 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=30, EstadoNuevo=Asignado
+2025-12-10 09:19:53.617 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=62
+2025-12-10 09:19:53.620 -06:00 [INF] ? Historial creado con ID: 62
+2025-12-10 09:19:53.677 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 09:19:53.705 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 2)
+2025-12-10 11:28:29.417 -06:00 [INF] Create POST called for Categoria. Nombre=prueba fff, SlaId=1, Criterio=menor_carga
+2025-12-10 11:28:29.530 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=9
+2025-12-10 11:28:29.531 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=9
+2025-12-10 11:28:29.581 -06:00 [INF] Asociada Especialidad 1 con Categor?a 9
+2025-12-10 11:28:29.584 -06:00 [INF] Asociada Especialidad 2 con Categor?a 9
+2025-12-10 11:28:29.612 -06:00 [INF] Categoria created successfully. NewId=9
+2025-12-10 11:30:19.972 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=kcmjdcnd
+2025-12-10 11:30:20.110 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=31
+2025-12-10 11:30:20.117 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 31: null ? Pendiente
+2025-12-10 11:30:20.125 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 31
+2025-12-10 11:30:20.135 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:30:20.138 -06:00 [INF]  Ticket 31: Estado=Pendiente, CategoriaId=9, UsuarioId=1
+2025-12-10 11:30:20.288 -06:00 [INF] ?? SLA del Ticket 31:
+2025-12-10 11:30:20.290 -06:00 [INF]    ? Creado: "2025-12-10T11:30:19.9708578-06:00"
+2025-12-10 11:30:20.293 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:30:19.9708578-06:00" (240 min)
+2025-12-10 11:30:20.294 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T11:30:19.9708578-06:00" (1440 min)
+2025-12-10 11:30:20.297 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=31
+2025-12-10 11:30:20.311 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=31
+2025-12-10 11:30:20.313 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 11:30:20.315 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=31, EstadoNuevo=Pendiente
+2025-12-10 11:30:20.352 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=63
+2025-12-10 11:30:20.354 -06:00 [INF] ? Historial creado con ID: 63
+2025-12-10 11:30:20.383 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 11:30:20.384 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 11:31:37.684 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 11:31:37.704 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 31
+2025-12-10 11:31:37.707 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:31:37.708 -06:00 [INF]  Ticket 31: Estado=Pendiente, CategoriaId=9, UsuarioId=1
+2025-12-10 11:31:37.745 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=31
+2025-12-10 11:31:37.762 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=31
+2025-12-10 11:31:37.814 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 11:31:37.896 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 31: Pendiente ? Asignado
+2025-12-10 11:31:37.898 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 31
+2025-12-10 11:31:37.901 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:31:37.902 -06:00 [INF]  Ticket 31: Estado=Asignado, CategoriaId=9, UsuarioId=1
+2025-12-10 11:31:37.921 -06:00 [INF] ?? SLA del Ticket 31:
+2025-12-10 11:31:37.922 -06:00 [INF]    ? Creado: "2025-12-10T11:30:19.9708578"
+2025-12-10 11:31:37.922 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:30:19.9708578" (240 min)
+2025-12-10 11:31:37.923 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T11:30:19.9708578" (1440 min)
+2025-12-10 11:31:37.925 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 11:31:37.925 -06:00 [INF]    ? Fecha: "2025-12-10T11:31:37.9031932-06:00"
+2025-12-10 11:31:37.926 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 11:31:37.927 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=31
+2025-12-10 11:31:37.934 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=31
+2025-12-10 11:31:37.935 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 11:31:37.935 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=31, EstadoNuevo=Asignado
+2025-12-10 11:31:37.940 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=64
+2025-12-10 11:31:37.941 -06:00 [INF] ? Historial creado con ID: 64
+2025-12-10 11:31:37.960 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 11:31:37.994 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 2)
+2025-12-10 11:35:47.961 -06:00 [INF] Create POST called for Categoria. Nombre=prueba, SlaId=6, Criterio=tiempo_restante_sla
+2025-12-10 11:35:48.061 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=6
+2025-12-10 11:35:48.064 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=6
+2025-12-10 11:35:48.119 -06:00 [INF] Asociada Especialidad 11 con Categor?a 6
+2025-12-10 11:35:48.127 -06:00 [INF] Categoria created successfully. NewId=6
+2025-12-10 11:35:57.302 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=8 count=1
+2025-12-10 11:36:30.855 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=kjh
+2025-12-10 11:36:30.932 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=26
+2025-12-10 11:36:30.936 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 26: null ? Pendiente
+2025-12-10 11:36:30.939 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 11:36:30.954 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:36:30.955 -06:00 [INF]  Ticket 26: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 11:36:31.094 -06:00 [INF] ?? SLA del Ticket 26:
+2025-12-10 11:36:31.096 -06:00 [INF]    ? Creado: "2025-12-10T11:36:30.8534824-06:00"
+2025-12-10 11:36:31.097 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T11:46:30.8534824-06:00" (10 min)
+2025-12-10 11:36:31.098 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T11:46:30.8534824-06:00" (10 min)
+2025-12-10 11:36:31.100 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=26
+2025-12-10 11:36:31.112 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=26
+2025-12-10 11:36:31.113 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 11:36:31.116 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=26, EstadoNuevo=Pendiente
+2025-12-10 11:36:31.156 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=52
+2025-12-10 11:36:31.158 -06:00 [INF] ? Historial creado con ID: 52
+2025-12-10 11:36:31.193 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 11:36:31.194 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 11:36:39.194 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 11:36:39.226 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 11:36:39.230 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:36:39.231 -06:00 [INF]  Ticket 26: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 11:36:45.278 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 11:36:45.300 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 11:36:45.306 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:36:45.310 -06:00 [INF]  Ticket 26: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 11:36:48.857 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 6
+2025-12-10 11:37:17.975 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1
+2025-12-10 11:37:25.131 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 11:37:25.167 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 11:37:25.171 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:37:25.173 -06:00 [INF]  Ticket 26: Estado=Pendiente, CategoriaId=6, UsuarioId=1
+2025-12-10 11:37:25.223 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=26
+2025-12-10 11:37:25.235 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=26
+2025-12-10 11:37:25.307 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 11:37:25.441 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 26: Pendiente ? Asignado
+2025-12-10 11:37:25.442 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 26
+2025-12-10 11:37:25.446 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 11:37:25.446 -06:00 [INF]  Ticket 26: Estado=Asignado, CategoriaId=6, UsuarioId=1
+2025-12-10 11:37:25.465 -06:00 [INF] ?? SLA del Ticket 26:
+2025-12-10 11:37:25.466 -06:00 [INF]    ? Creado: "2025-12-10T11:36:30.8534824"
+2025-12-10 11:37:25.467 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T11:46:30.8534824" (10 min)
+2025-12-10 11:37:25.468 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-10T11:46:30.8534824" (10 min)
+2025-12-10 11:37:25.469 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 11:37:25.470 -06:00 [INF]    ? Fecha: "2025-12-10T11:37:25.4483656-06:00"
+2025-12-10 11:37:25.470 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 11:37:25.471 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=26
+2025-12-10 11:37:25.479 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=26
+2025-12-10 11:37:25.479 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 11:37:25.480 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=26, EstadoNuevo=Asignado
+2025-12-10 11:37:25.485 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=53
+2025-12-10 11:37:25.487 -06:00 [INF] ? Historial creado con ID: 53
+2025-12-10 11:37:25.506 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 1)
+2025-12-10 11:37:25.515 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 2)
+2025-12-10 11:55:07.284 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 3
+2025-12-10 12:05:42.319 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prusba cietrre cliente
+2025-12-10 12:05:42.459 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=27
+2025-12-10 12:05:42.472 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: null ? Pendiente
+2025-12-10 12:05:42.479 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 12:05:42.492 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:05:42.494 -06:00 [INF]  Ticket 27: Estado=Pendiente, CategoriaId=4, UsuarioId=10
+2025-12-10 12:05:42.518 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 12:05:42.521 -06:00 [INF]    ? Creado: "2025-12-10T12:05:42.3148655-06:00"
+2025-12-10 12:05:42.524 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T14:05:42.3148655-06:00" (120 min)
+2025-12-10 12:05:42.525 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T00:05:42.3148655-06:00" (720 min)
+2025-12-10 12:05:42.527 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 12:05:42.537 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 12:05:42.538 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:05:42.540 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=Pendiente
+2025-12-10 12:05:42.569 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=54
+2025-12-10 12:05:42.572 -06:00 [INF] ? Historial creado con ID: 54
+2025-12-10 12:05:42.591 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:05:42.595 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 12:06:00.672 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba autoasignado
+2025-12-10 12:06:00.681 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=28
+2025-12-10 12:06:00.685 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 28: null ? Pendiente
+2025-12-10 12:06:00.685 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:06:00.688 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:06:00.689 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=5, UsuarioId=10
+2025-12-10 12:06:00.705 -06:00 [INF] ?? SLA del Ticket 28:
+2025-12-10 12:06:00.705 -06:00 [INF]    ? Creado: "2025-12-10T12:06:00.6721346-06:00"
+2025-12-10 12:06:00.706 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:06:00.6721346-06:00" (180 min)
+2025-12-10 12:06:00.707 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:06:00.6721346-06:00" (960 min)
+2025-12-10 12:06:00.707 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 12:06:00.713 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 12:06:00.714 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:06:00.714 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=28, EstadoNuevo=Pendiente
+2025-12-10 12:06:00.717 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=55
+2025-12-10 12:06:00.718 -06:00 [INF] ? Historial creado con ID: 55
+2025-12-10 12:06:00.722 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:06:00.723 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-10 12:07:22.678 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 4
+2025-12-10 12:07:30.850 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 27, T?cnico: 7
+2025-12-10 12:07:30.952 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 12:07:30.957 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:07:30.958 -06:00 [INF]  Ticket 27: Estado=Pendiente, CategoriaId=4, UsuarioId=10
+2025-12-10 12:07:30.959 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 12:07:30.984 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 12:07:31.146 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: Pendiente ? Asignado
+2025-12-10 12:07:31.148 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 12:07:31.150 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:07:31.151 -06:00 [INF]  Ticket 27: Estado=Asignado, CategoriaId=4, UsuarioId=10
+2025-12-10 12:07:31.155 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 12:07:31.157 -06:00 [INF]    ? Creado: "2025-12-10T12:05:42.3148655"
+2025-12-10 12:07:31.158 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T14:05:42.3148655" (120 min)
+2025-12-10 12:07:31.164 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T00:05:42.3148655" (720 min)
+2025-12-10 12:07:31.166 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 12:07:31.166 -06:00 [INF]    ? Fecha: "2025-12-10T12:07:31.1534410-06:00"
+2025-12-10 12:07:31.167 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 12:07:31.167 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 12:07:31.171 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 12:07:31.172 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:07:31.172 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=Asignado
+2025-12-10 12:07:31.177 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=56
+2025-12-10 12:07:31.178 -06:00 [INF] ? Historial creado con ID: 56
+2025-12-10 12:07:31.182 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:07:31.185 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 12:07:31.185 -06:00 [INF] ? Ticket 27 asignado manualmente a t?cnico 7
+2025-12-10 12:07:38.428 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 12:07:38.456 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:07:38.462 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:07:38.464 -06:00 [INF]  Ticket 28: Estado=Pendiente, CategoriaId=5, UsuarioId=10
+2025-12-10 12:07:38.530 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 12:07:38.551 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 12:07:38.651 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 12:07:38.679 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 28: Pendiente ? Asignado
+2025-12-10 12:07:38.680 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:07:38.681 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:07:38.682 -06:00 [INF]  Ticket 28: Estado=Asignado, CategoriaId=5, UsuarioId=10
+2025-12-10 12:07:38.685 -06:00 [INF] ?? SLA del Ticket 28:
+2025-12-10 12:07:38.686 -06:00 [INF]    ? Creado: "2025-12-10T12:06:00.6721346"
+2025-12-10 12:07:38.687 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:06:00.6721346" (180 min)
+2025-12-10 12:07:38.688 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:06:00.6721346" (960 min)
+2025-12-10 12:07:38.689 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 12:07:38.691 -06:00 [INF]    ? Fecha: "2025-12-10T12:07:38.6836270-06:00"
+2025-12-10 12:07:38.692 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 12:07:38.693 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 12:07:38.696 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 12:07:38.696 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:07:38.697 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=28, EstadoNuevo=Asignado
+2025-12-10 12:07:38.700 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=57
+2025-12-10 12:07:38.701 -06:00 [INF] ? Historial creado con ID: 57
+2025-12-10 12:07:38.705 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:07:38.713 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 7)
+2025-12-10 12:07:49.508 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 12:07:49.530 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:07:49.535 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:07:49.536 -06:00 [INF]  Ticket 28: Estado=Asignado, CategoriaId=5, UsuarioId=10
+2025-12-10 12:11:06.423 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 28: Asignado ? En Proceso
+2025-12-10 12:11:06.425 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:11:06.427 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:11:06.428 -06:00 [INF]  Ticket 28: Estado=Asignado, CategoriaId=5, UsuarioId=10
+2025-12-10 12:11:06.431 -06:00 [INF] ?? SLA del Ticket 28:
+2025-12-10 12:11:06.431 -06:00 [INF]    ? Creado: "2025-12-10T12:06:00.6721346"
+2025-12-10 12:11:06.432 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:06:00.6721346" (180 min)
+2025-12-10 12:11:06.435 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:06:00.6721346" (960 min)
+2025-12-10 12:11:06.436 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 12:11:06.441 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 12:11:06.441 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:11:06.442 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=28, EstadoNuevo=En Proceso
+2025-12-10 12:11:06.445 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=58
+2025-12-10 12:11:06.446 -06:00 [INF] ? Historial creado con ID: 58
+2025-12-10 12:11:06.454 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:11:06.455 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-10 12:11:06.456 -06:00 [INF] RutaArchivo: /uploads/tickets/053d0590-08c2-40e7-89a4-a3d5f7cc4ca6_Cover-3.png
+2025-12-10 12:11:06.456 -06:00 [INF] TicketId: 28
+2025-12-10 12:11:06.457 -06:00 [INF] HistorialEstadoId: 58
+2025-12-10 12:11:06.457 -06:00 [INF]  Imagen asociada a historial 58
+2025-12-10 12:11:06.488 -06:00 [INF] Imagen guardada exitosamente con ID: 1
+2025-12-10 12:11:06.489 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:11:06.489 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 12:11:06.490 -06:00 [INF] RutaArchivo: /uploads/tickets/b9663514-cc71-41dd-b95e-be132b23f049_redes.jpg
+2025-12-10 12:11:06.490 -06:00 [INF] TicketId: 28
+2025-12-10 12:11:06.491 -06:00 [INF] HistorialEstadoId: 58
+2025-12-10 12:11:06.491 -06:00 [INF]  Imagen asociada a historial 58
+2025-12-10 12:11:06.493 -06:00 [INF] Imagen guardada exitosamente con ID: 2
+2025-12-10 12:11:06.494 -06:00 [INF] ? 2 im?genes guardadas exitosamente
+2025-12-10 12:11:06.511 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:11:06.521 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 7)
+2025-12-10 12:11:06.522 -06:00 [INF] ? Cambio de estado completado. Ticket 28: Asignado ? En Proceso
+2025-12-10 12:11:24.309 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 28: En Proceso ? Resuelto
+2025-12-10 12:11:24.313 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:11:24.317 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:11:24.318 -06:00 [INF]  Ticket 28: Estado=En Proceso, CategoriaId=5, UsuarioId=10
+2025-12-10 12:11:24.321 -06:00 [INF] ?? SLA del Ticket 28:
+2025-12-10 12:11:24.321 -06:00 [INF]    ? Creado: "2025-12-10T12:06:00.6721346"
+2025-12-10 12:11:24.323 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:06:00.6721346" (180 min)
+2025-12-10 12:11:24.324 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:06:00.6721346" (960 min)
+2025-12-10 12:11:24.325 -06:00 [INF] ?? Resoluci?n registrada:
+2025-12-10 12:11:24.325 -06:00 [INF]    ? Fecha: "2025-12-10T12:11:24.3193268-06:00"
+2025-12-10 12:11:24.326 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 12:11:24.327 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 12:11:24.338 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 12:11:24.338 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:11:24.339 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=28, EstadoNuevo=Resuelto
+2025-12-10 12:11:24.345 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=59
+2025-12-10 12:11:24.347 -06:00 [INF] ? Historial creado con ID: 59
+2025-12-10 12:11:24.348 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:11:24.349 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 12:11:24.350 -06:00 [INF] RutaArchivo: /uploads/tickets/e12144c3-8f3c-41fc-af8b-b6d6df30601e_redes.jpg
+2025-12-10 12:11:24.351 -06:00 [INF] TicketId: 28
+2025-12-10 12:11:24.351 -06:00 [INF] HistorialEstadoId: 59
+2025-12-10 12:11:24.352 -06:00 [INF]  Imagen asociada a historial 59
+2025-12-10 12:11:24.358 -06:00 [INF] Imagen guardada exitosamente con ID: 3
+2025-12-10 12:11:24.359 -06:00 [INF] ? 1 im?genes guardadas exitosamente
+2025-12-10 12:11:24.367 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:11:24.379 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 7)
+2025-12-10 12:11:24.381 -06:00 [INF] ? Cambio de estado completado. Ticket 28: En Proceso ? Resuelto
+2025-12-10 12:13:47.623 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: Asignado ? En Proceso
+2025-12-10 12:13:47.627 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 12:13:47.630 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:13:47.631 -06:00 [INF]  Ticket 27: Estado=Asignado, CategoriaId=4, UsuarioId=10
+2025-12-10 12:13:47.635 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 12:13:47.636 -06:00 [INF]    ? Creado: "2025-12-10T12:05:42.3148655"
+2025-12-10 12:13:47.637 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T14:05:42.3148655" (120 min)
+2025-12-10 12:13:47.639 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T00:05:42.3148655" (720 min)
+2025-12-10 12:13:47.640 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 12:13:47.646 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 12:13:47.647 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:13:47.648 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=En Proceso
+2025-12-10 12:13:47.654 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=60
+2025-12-10 12:13:47.656 -06:00 [INF] ? Historial creado con ID: 60
+2025-12-10 12:13:47.657 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:13:47.658 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-10 12:13:47.659 -06:00 [INF] RutaArchivo: /uploads/tickets/5d3ea9b8-d4f8-4c6d-bc5c-85286600b36b_Cover-3.png
+2025-12-10 12:13:47.659 -06:00 [INF] TicketId: 27
+2025-12-10 12:13:47.660 -06:00 [INF] HistorialEstadoId: 60
+2025-12-10 12:13:47.660 -06:00 [INF]  Imagen asociada a historial 60
+2025-12-10 12:13:47.663 -06:00 [INF] Imagen guardada exitosamente con ID: 4
+2025-12-10 12:13:47.664 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:13:47.664 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 12:13:47.665 -06:00 [INF] RutaArchivo: /uploads/tickets/fba99bd4-3d3c-4c9f-8611-2c5302a8c469_redes.jpg
+2025-12-10 12:13:47.665 -06:00 [INF] TicketId: 27
+2025-12-10 12:13:47.666 -06:00 [INF] HistorialEstadoId: 60
+2025-12-10 12:13:47.666 -06:00 [INF]  Imagen asociada a historial 60
+2025-12-10 12:13:47.669 -06:00 [INF] Imagen guardada exitosamente con ID: 5
+2025-12-10 12:13:47.670 -06:00 [INF] ? 2 im?genes guardadas exitosamente
+2025-12-10 12:13:47.677 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:13:47.686 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 12:13:47.687 -06:00 [INF] ? Cambio de estado completado. Ticket 27: Asignado ? En Proceso
+2025-12-10 12:14:01.162 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: En Proceso ? Resuelto
+2025-12-10 12:14:01.166 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 12:14:01.171 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:14:01.172 -06:00 [INF]  Ticket 27: Estado=En Proceso, CategoriaId=4, UsuarioId=10
+2025-12-10 12:14:01.176 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 12:14:01.176 -06:00 [INF]    ? Creado: "2025-12-10T12:05:42.3148655"
+2025-12-10 12:14:01.177 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T14:05:42.3148655" (120 min)
+2025-12-10 12:14:01.178 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T00:05:42.3148655" (720 min)
+2025-12-10 12:14:01.179 -06:00 [INF] ?? Resoluci?n registrada:
+2025-12-10 12:14:01.180 -06:00 [INF]    ? Fecha: "2025-12-10T12:14:01.1745122-06:00"
+2025-12-10 12:14:01.180 -06:00 [INF]    ? Cumplimiento: S? ?
+2025-12-10 12:14:01.182 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 12:14:01.187 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 12:14:01.188 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:14:01.189 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=Resuelto
+2025-12-10 12:14:01.192 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=61
+2025-12-10 12:14:01.193 -06:00 [INF] ? Historial creado con ID: 61
+2025-12-10 12:14:01.193 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:14:01.193 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 12:14:01.194 -06:00 [INF] RutaArchivo: /uploads/tickets/52af5898-f554-4eb4-a363-450971442da0_redes.jpg
+2025-12-10 12:14:01.194 -06:00 [INF] TicketId: 27
+2025-12-10 12:14:01.195 -06:00 [INF] HistorialEstadoId: 61
+2025-12-10 12:14:01.195 -06:00 [INF]  Imagen asociada a historial 61
+2025-12-10 12:14:01.199 -06:00 [INF] Imagen guardada exitosamente con ID: 6
+2025-12-10 12:14:01.199 -06:00 [INF] ? 1 im?genes guardadas exitosamente
+2025-12-10 12:14:01.205 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:14:01.212 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 12:14:01.213 -06:00 [INF] ? Cambio de estado completado. Ticket 27: En Proceso ? Resuelto
+2025-12-10 12:15:19.820 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 27: Resuelto ? Cerrado
+2025-12-10 12:15:19.822 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 27
+2025-12-10 12:15:19.824 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:15:19.825 -06:00 [INF]  Ticket 27: Estado=Resuelto, CategoriaId=4, UsuarioId=10
+2025-12-10 12:15:19.843 -06:00 [INF] ?? SLA del Ticket 27:
+2025-12-10 12:15:19.844 -06:00 [INF]    ? Creado: "2025-12-10T12:05:42.3148655"
+2025-12-10 12:15:19.844 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T14:05:42.3148655" (120 min)
+2025-12-10 12:15:19.845 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T00:05:42.3148655" (720 min)
+2025-12-10 12:15:19.848 -06:00 [INF] ?? Ticket cerrado en: "2025-12-10T12:15:19.8263277-06:00"
+2025-12-10 12:15:19.848 -06:00 [INF] ? El ticket ya ten?a fecha de resoluci?n registrada: "2025-12-10T12:14:01.1745122"
+2025-12-10 12:15:19.849 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=27
+2025-12-10 12:15:19.856 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=27
+2025-12-10 12:15:19.856 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:15:19.857 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=27, EstadoNuevo=Cerrado
+2025-12-10 12:15:19.861 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=62
+2025-12-10 12:15:19.861 -06:00 [INF] ? Historial creado con ID: 62
+2025-12-10 12:15:19.862 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:15:19.862 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 12:15:19.863 -06:00 [INF] RutaArchivo: /uploads/tickets/bec67362-68ed-4ed7-83ed-854e7c2fc3a3_redes.jpg
+2025-12-10 12:15:19.863 -06:00 [INF] TicketId: 27
+2025-12-10 12:15:19.863 -06:00 [INF] HistorialEstadoId: 62
+2025-12-10 12:15:19.864 -06:00 [INF]  Imagen asociada a historial 62
+2025-12-10 12:15:19.869 -06:00 [INF] Imagen guardada exitosamente con ID: 7
+2025-12-10 12:15:19.870 -06:00 [INF] ? 1 im?genes guardadas exitosamente
+2025-12-10 12:15:19.876 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:15:19.884 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 12:15:19.885 -06:00 [INF] ? Cambio de estado completado. Ticket 27: Resuelto ? Cerrado
+2025-12-10 12:19:15.603 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 28: Resuelto ? Cerrado
+2025-12-10 12:19:15.609 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 28
+2025-12-10 12:19:15.612 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 12:19:15.612 -06:00 [INF]  Ticket 28: Estado=Resuelto, CategoriaId=5, UsuarioId=10
+2025-12-10 12:19:15.635 -06:00 [INF] ?? SLA del Ticket 28:
+2025-12-10 12:19:15.636 -06:00 [INF]    ? Creado: "2025-12-10T12:06:00.6721346"
+2025-12-10 12:19:15.636 -06:00 [INF]    ? L?mite Respuesta: "2025-12-10T15:06:00.6721346" (180 min)
+2025-12-10 12:19:15.639 -06:00 [INF]    ? L?mite Resoluci?n: "2025-12-11T04:06:00.6721346" (960 min)
+2025-12-10 12:19:15.640 -06:00 [INF] ?? Ticket cerrado en: "2025-12-10T12:19:15.6142435-06:00"
+2025-12-10 12:19:15.641 -06:00 [INF] ? El ticket ya ten?a fecha de resoluci?n registrada: "2025-12-10T12:11:24.3193268"
+2025-12-10 12:19:15.643 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=28
+2025-12-10 12:19:15.656 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=28
+2025-12-10 12:19:15.657 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 12:19:15.658 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=28, EstadoNuevo=Cerrado
+2025-12-10 12:19:15.664 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=63
+2025-12-10 12:19:15.665 -06:00 [INF] ? Historial creado con ID: 63
+2025-12-10 12:19:15.666 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 12:19:15.667 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 12:19:15.667 -06:00 [INF] RutaArchivo: /uploads/tickets/075008d6-0f42-4d70-b6eb-bd23c72bd1c5_redes.jpg
+2025-12-10 12:19:15.668 -06:00 [INF] TicketId: 28
+2025-12-10 12:19:15.668 -06:00 [INF] HistorialEstadoId: 63
+2025-12-10 12:19:15.669 -06:00 [INF]  Imagen asociada a historial 63
+2025-12-10 12:19:15.674 -06:00 [INF] Imagen guardada exitosamente con ID: 8
+2025-12-10 12:19:15.675 -06:00 [INF] ? 1 im?genes guardadas exitosamente
+2025-12-10 12:19:15.694 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 10)
+2025-12-10 12:19:15.712 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 7)
+2025-12-10 12:19:15.713 -06:00 [INF] ? Cambio de estado completado. Ticket 28: Resuelto ? Cerrado
+2025-12-10 13:55:16.351 -06:00 [INF] ?? [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 13:55:16.775 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 25
+2025-12-10 13:55:16.863 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 13:55:16.867 -06:00 [INF]  Ticket 25: Estado=Pendiente, CategoriaId=3, UsuarioId=14
+2025-12-10 13:55:17.604 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=25
+2025-12-10 13:55:17.747 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=25
+2025-12-10 13:55:17.941 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 13:55:18.159 -06:00 [INF] ?? Iniciando cambio de estado para Ticket 25: Pendiente ? Asignado
+2025-12-10 13:55:18.165 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 25
+2025-12-10 13:55:18.170 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 13:55:18.171 -06:00 [INF]  Ticket 25: Estado=Asignado, CategoriaId=3, UsuarioId=14
+2025-12-10 13:55:18.206 -06:00 [INF] ?? SLA del Ticket 25:
+2025-12-10 13:55:18.209 -06:00 [INF]    ? Creado: "2024-10-23T13:00:00.0000000"
+2025-12-10 13:55:18.212 -06:00 [INF]    ? L?mite Respuesta: "2024-10-23T14:00:00.0000000" (60 min)
+2025-12-10 13:55:18.215 -06:00 [INF]    ? L?mite Resoluci?n: "2024-10-23T21:00:00.0000000" (480 min)
+2025-12-10 13:55:18.219 -06:00 [INF] ?? Primera respuesta registrada:
+2025-12-10 13:55:18.220 -06:00 [INF]    ? Fecha: "2025-12-10T13:55:18.1764043-06:00"
+2025-12-10 13:55:18.222 -06:00 [INF]    ? Cumplimiento: NO ?
+2025-12-10 13:55:18.224 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=25
+2025-12-10 13:55:18.242 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=25
+2025-12-10 13:55:18.245 -06:00 [INF] ? Ticket actualizado con nuevo estado y SLA calculado
+2025-12-10 13:55:18.252 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=25, EstadoNuevo=Asignado
+2025-12-10 13:55:18.330 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=64
+2025-12-10 13:55:18.332 -06:00 [INF] ? Historial creado con ID: 64
+2025-12-10 13:55:18.431 -06:00 [INF] ?? Notificaci?n enviada al cliente (Usuario 14)
+2025-12-10 13:55:18.514 -06:00 [INF] ?? Notificaci?n enviada al t?cnico (Usuario 8)
+2025-12-10 14:13:29.234 -06:00 [INF] Edit POST - Iniciando edici?n del ticket 5
+2025-12-10 14:13:29.390 -06:00 [INF] Edit POST - Etiqueta seleccionada: 14 -> Categor?a: 4
+2025-12-10 14:13:29.400 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 5
+2025-12-10 14:13:29.505 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 14:13:29.507 -06:00 [INF]  Ticket 5: Estado=Cerrado, CategoriaId=2, UsuarioId=6
+2025-12-10 14:13:29.516 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=5
+2025-12-10 14:13:29.598 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=5
+2025-12-10 14:13:29.620 -06:00 [INF] Edit POST - Ticket 5 actualizado correctamente
+2025-12-10 16:15:37.374 -06:00 [INF] Create POST called for Categoria. Nombre=prueba fff, SlaId=5, Criterio=tiempo_restante_sla
+2025-12-10 16:15:37.501 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=5
+2025-12-10 16:15:37.504 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=5
+2025-12-10 16:15:37.543 -06:00 [INF] Asociada Especialidad 3 con Categor?a 5
+2025-12-10 16:15:37.554 -06:00 [INF] Asociada Especialidad 5 con Categor?a 5
+2025-12-10 16:15:37.559 -06:00 [INF] Asociada Especialidad 7 con Categor?a 5
+2025-12-10 16:15:37.579 -06:00 [INF] Categoria created successfully. NewId=5
+2025-12-10 16:17:20.244 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=4 count=1
+2025-12-10 16:17:31.823 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=4 count=3
+2025-12-10 16:18:35.566 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba de con todo
+2025-12-10 16:18:35.698 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=10
+2025-12-10 16:18:35.707 -06:00 [INF] Iniciando cambio de estado para ticket 10 de null a Pendiente
+2025-12-10 16:18:35.714 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-10 16:18:35.731 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:18:35.733 -06:00 [INF]  Ticket 10: Estado=Pendiente, CategoriaId=5, UsuarioId=6
+2025-12-10 16:18:35.867 -06:00 [INF] Verificando SLA del ticket 10. Creado: "2025-12-10T16:18:35.5651232-06:00", Limite respuesta: "2025-12-10T16:27:35.5651232-06:00", Limite resolucion: "2025-12-10T16:28:35.5651232-06:00"
+2025-12-10 16:18:35.872 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-10 16:18:35.880 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-10 16:18:35.880 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:18:35.883 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Pendiente
+2025-12-10 16:18:35.945 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=38
+2025-12-10 16:18:35.946 -06:00 [INF] Historial de cambio de estado creado con ID 38
+2025-12-10 16:18:36.029 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:18:36.031 -06:00 [INF] El ticket 10 no tiene tecnico asignado, omitiendo notificacion
+2025-12-10 16:18:58.067 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=lkjhg
+2025-12-10 16:18:58.075 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=11
+2025-12-10 16:18:58.078 -06:00 [INF] Iniciando cambio de estado para ticket 11 de null a Pendiente
+2025-12-10 16:18:58.084 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-10 16:18:58.089 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:18:58.091 -06:00 [INF]  Ticket 11: Estado=Pendiente, CategoriaId=5, UsuarioId=6
+2025-12-10 16:18:58.106 -06:00 [INF] Verificando SLA del ticket 11. Creado: "2025-12-10T16:18:58.0672587-06:00", Limite respuesta: "2025-12-10T16:27:58.0672587-06:00", Limite resolucion: "2025-12-10T16:28:58.0672587-06:00"
+2025-12-10 16:18:58.110 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-10 16:18:58.116 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-10 16:18:58.118 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:18:58.120 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=11, EstadoNuevo=Pendiente
+2025-12-10 16:18:58.128 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=39
+2025-12-10 16:18:58.130 -06:00 [INF] Historial de cambio de estado creado con ID 39
+2025-12-10 16:18:58.140 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:18:58.141 -06:00 [INF] El ticket 11 no tiene tecnico asignado, omitiendo notificacion
+2025-12-10 16:19:24.325 -06:00 [INF]  [CONTROLLER] AsignarAutomatico iniciado
+2025-12-10 16:19:24.345 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-10 16:19:24.349 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:19:24.349 -06:00 [INF]  Ticket 10: Estado=Pendiente, CategoriaId=5, UsuarioId=6
+2025-12-10 16:19:24.359 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-10 16:19:24.367 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-10 16:19:24.425 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-10 16:19:24.545 -06:00 [INF] Iniciando cambio de estado para ticket 10 de Pendiente a Asignado
+2025-12-10 16:19:24.546 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-10 16:19:24.549 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:19:24.550 -06:00 [INF]  Ticket 10: Estado=Asignado, CategoriaId=5, UsuarioId=6
+2025-12-10 16:19:24.556 -06:00 [INF] Verificando SLA del ticket 10. Creado: "2025-12-10T16:18:35.5651232", Limite respuesta: "2025-12-10T16:27:35.5651232", Limite resolucion: "2025-12-10T16:28:35.5651232"
+2025-12-10 16:19:24.557 -06:00 [INF] Primera respuesta registrada para ticket 10 el "2025-12-10T16:19:24.5557894-06:00", dentro del tiempo establecido
+2025-12-10 16:19:24.558 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-10 16:19:24.563 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-10 16:19:24.564 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:19:24.565 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Asignado
+2025-12-10 16:19:24.568 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=40
+2025-12-10 16:19:24.570 -06:00 [INF] Historial de cambio de estado creado con ID 40
+2025-12-10 16:19:24.579 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:19:24.594 -06:00 [INF] Notificacion de cambio de estado enviada al tecnico asignado 5
+2025-12-10 16:19:43.440 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 5
+2025-12-10 16:19:51.991 -06:00 [INF] Asignaci?n manual iniciada. Ticket: 11, T?cnico: 4
+2025-12-10 16:19:52.019 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-10 16:19:52.021 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:19:52.022 -06:00 [INF]  Ticket 11: Estado=Pendiente, CategoriaId=5, UsuarioId=6
+2025-12-10 16:19:52.024 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-10 16:19:52.031 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-10 16:19:52.053 -06:00 [INF] Iniciando cambio de estado para ticket 11 de Pendiente a Asignado
+2025-12-10 16:19:52.054 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-10 16:19:52.057 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:19:52.057 -06:00 [INF]  Ticket 11: Estado=Asignado, CategoriaId=5, UsuarioId=6
+2025-12-10 16:19:52.071 -06:00 [INF] Verificando SLA del ticket 11. Creado: "2025-12-10T16:18:58.0672587", Limite respuesta: "2025-12-10T16:27:58.0672587", Limite resolucion: "2025-12-10T16:28:58.0672587"
+2025-12-10 16:19:52.073 -06:00 [INF] Primera respuesta registrada para ticket 11 el "2025-12-10T16:19:52.0603238-06:00", dentro del tiempo establecido
+2025-12-10 16:19:52.076 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-10 16:19:52.081 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-10 16:19:52.083 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:19:52.084 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=11, EstadoNuevo=Asignado
+2025-12-10 16:19:52.087 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=41
+2025-12-10 16:19:52.088 -06:00 [INF] Historial de cambio de estado creado con ID 41
+2025-12-10 16:19:52.095 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:19:52.102 -06:00 [INF] Notificacion de cambio de estado enviada al tecnico asignado 5
+2025-12-10 16:19:52.104 -06:00 [INF]  Ticket 11 asignado manualmente a t?cnico 4
+2025-12-10 16:22:50.596 -06:00 [INF] Iniciando cambio de estado para ticket 10 de Asignado a En Proceso
+2025-12-10 16:22:50.597 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-10 16:22:50.600 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:22:50.602 -06:00 [INF]  Ticket 10: Estado=Asignado, CategoriaId=5, UsuarioId=6
+2025-12-10 16:22:50.608 -06:00 [INF] Verificando SLA del ticket 10. Creado: "2025-12-10T16:18:35.5651232", Limite respuesta: "2025-12-10T16:27:35.5651232", Limite resolucion: "2025-12-10T16:28:35.5651232"
+2025-12-10 16:22:50.610 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-10 16:22:50.614 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-10 16:22:50.615 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:22:50.615 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=En Proceso
+2025-12-10 16:22:50.618 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=42
+2025-12-10 16:22:50.619 -06:00 [INF] Historial de cambio de estado creado con ID 42
+2025-12-10 16:22:50.626 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 16:22:50.627 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 16:22:50.628 -06:00 [INF] RutaArchivo: /uploads/tickets/3d22c33c-4878-452d-8bd7-b7cef8c2ed90_redes.jpg
+2025-12-10 16:22:50.628 -06:00 [INF] TicketId: 10
+2025-12-10 16:22:50.629 -06:00 [INF] HistorialEstadoId: 42
+2025-12-10 16:22:50.629 -06:00 [INF]  Imagen asociada a historial 42
+2025-12-10 16:22:50.648 -06:00 [INF] Imagen guardada exitosamente con ID: 11
+2025-12-10 16:22:50.649 -06:00 [INF] Se guardaron 1 imagenes asociadas al cambio de estado
+2025-12-10 16:22:50.654 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:22:50.663 -06:00 [INF] Notificacion de cambio de estado enviada al tecnico asignado 5
+2025-12-10 16:22:50.664 -06:00 [INF]  Cambio de estado completado. Ticket 10: Asignado ? En Proceso
+2025-12-10 16:23:06.625 -06:00 [INF] Iniciando cambio de estado para ticket 10 de En Proceso a Resuelto
+2025-12-10 16:23:06.627 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-10 16:23:06.631 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:23:06.632 -06:00 [INF]  Ticket 10: Estado=En Proceso, CategoriaId=5, UsuarioId=6
+2025-12-10 16:23:06.659 -06:00 [INF] Verificando SLA del ticket 10. Creado: "2025-12-10T16:18:35.5651232", Limite respuesta: "2025-12-10T16:27:35.5651232", Limite resolucion: "2025-12-10T16:28:35.5651232"
+2025-12-10 16:23:06.661 -06:00 [INF] Ticket 10 resuelto el "2025-12-10T16:23:06.6368997-06:00", cumpliendo el tiempo de resolucion del SLA
+2025-12-10 16:23:06.662 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-10 16:23:06.671 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-10 16:23:06.672 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:23:06.673 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Resuelto
+2025-12-10 16:23:06.677 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=43
+2025-12-10 16:23:06.678 -06:00 [INF] Historial de cambio de estado creado con ID 43
+2025-12-10 16:23:06.679 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 16:23:06.679 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-10 16:23:06.680 -06:00 [INF] RutaArchivo: /uploads/tickets/c1034b32-4baa-48eb-8933-614913ddb02a_Cover-3.png
+2025-12-10 16:23:06.681 -06:00 [INF] TicketId: 10
+2025-12-10 16:23:06.682 -06:00 [INF] HistorialEstadoId: 43
+2025-12-10 16:23:06.682 -06:00 [INF]  Imagen asociada a historial 43
+2025-12-10 16:23:06.686 -06:00 [INF] Imagen guardada exitosamente con ID: 12
+2025-12-10 16:23:06.687 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 16:23:06.688 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-10 16:23:06.688 -06:00 [INF] RutaArchivo: /uploads/tickets/e1e8fda6-9215-4f04-b69f-8e00bde46153_redes.jpg
+2025-12-10 16:23:06.689 -06:00 [INF] TicketId: 10
+2025-12-10 16:23:06.689 -06:00 [INF] HistorialEstadoId: 43
+2025-12-10 16:23:06.690 -06:00 [INF]  Imagen asociada a historial 43
+2025-12-10 16:23:06.693 -06:00 [INF] Imagen guardada exitosamente con ID: 13
+2025-12-10 16:23:06.693 -06:00 [INF] Se guardaron 2 imagenes asociadas al cambio de estado
+2025-12-10 16:23:06.715 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:23:06.725 -06:00 [INF] Notificacion de cambio de estado enviada al tecnico asignado 5
+2025-12-10 16:23:06.726 -06:00 [INF]  Cambio de estado completado. Ticket 10: En Proceso ? Resuelto
+2025-12-10 16:24:34.523 -06:00 [INF] Iniciando cambio de estado para ticket 10 de Resuelto a Cerrado
+2025-12-10 16:24:34.525 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-10 16:24:34.528 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:24:34.529 -06:00 [INF]  Ticket 10: Estado=Resuelto, CategoriaId=5, UsuarioId=6
+2025-12-10 16:24:34.548 -06:00 [INF] Verificando SLA del ticket 10. Creado: "2025-12-10T16:18:35.5651232", Limite respuesta: "2025-12-10T16:27:35.5651232", Limite resolucion: "2025-12-10T16:28:35.5651232"
+2025-12-10 16:24:34.550 -06:00 [INF] Ticket 10 cerrado el "2025-12-10T16:24:34.5309386-06:00"
+2025-12-10 16:24:34.551 -06:00 [INF] Ticket 10 ya tenia fecha de resolucion previa: "2025-12-10T16:23:06.6368997"
+2025-12-10 16:24:34.551 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-10 16:24:34.557 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-10 16:24:34.558 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:24:34.558 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Cerrado
+2025-12-10 16:24:34.563 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=44
+2025-12-10 16:24:34.563 -06:00 [INF] Historial de cambio de estado creado con ID 44
+2025-12-10 16:24:34.564 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-10 16:24:34.564 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-10 16:24:34.565 -06:00 [INF] RutaArchivo: /uploads/tickets/fd3c9a27-ab47-425e-99e2-3831b447701a_Cover-3.png
+2025-12-10 16:24:34.565 -06:00 [INF] TicketId: 10
+2025-12-10 16:24:34.566 -06:00 [INF] HistorialEstadoId: 44
+2025-12-10 16:24:34.566 -06:00 [INF]  Imagen asociada a historial 44
+2025-12-10 16:24:34.570 -06:00 [INF] Imagen guardada exitosamente con ID: 14
+2025-12-10 16:24:34.571 -06:00 [INF] Se guardaron 1 imagenes asociadas al cambio de estado
+2025-12-10 16:24:34.588 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 6
+2025-12-10 16:24:34.597 -06:00 [INF] Notificacion de cambio de estado enviada al tecnico asignado 5
+2025-12-10 16:24:34.597 -06:00 [INF]  Cambio de estado completado. Ticket 10: Resuelto ? Cerrado
+2025-12-10 16:25:23.635 -06:00 [INF] Edit POST - Iniciando edici?n del ticket 11
+2025-12-10 16:25:23.663 -06:00 [INF] Edit POST - Etiqueta seleccionada: 16 -> Categor?a: 4
+2025-12-10 16:25:23.664 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-10 16:25:23.668 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:25:23.669 -06:00 [INF]  Ticket 11: Estado=Asignado, CategoriaId=5, UsuarioId=6
+2025-12-10 16:25:23.670 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-10 16:25:23.680 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-10 16:25:23.685 -06:00 [INF] Edit POST - Ticket 11 actualizado correctamente
+2025-12-10 16:34:22.807 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=DCDNCJD
+2025-12-10 16:34:22.981 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=12
+2025-12-10 16:34:22.988 -06:00 [INF] Iniciando cambio de estado para ticket 12 de null a Pendiente
+2025-12-10 16:34:22.991 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 12
+2025-12-10 16:34:22.998 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:34:22.999 -06:00 [INF]  Ticket 12: Estado=Pendiente, CategoriaId=2, UsuarioId=1
+2025-12-10 16:34:23.112 -06:00 [INF] Verificando SLA del ticket 12. Creado: "2025-12-10T16:34:22.8012765-06:00", Limite respuesta: "2025-12-10T17:04:22.8012765-06:00", Limite resolucion: "2025-12-10T20:34:22.8012765-06:00"
+2025-12-10 16:34:23.116 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=12
+2025-12-10 16:34:23.128 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=12
+2025-12-10 16:34:23.129 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:34:23.131 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=12, EstadoNuevo=Pendiente
+2025-12-10 16:34:23.155 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=45
+2025-12-10 16:34:23.156 -06:00 [INF] Historial de cambio de estado creado con ID 45
+2025-12-10 16:34:23.178 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 1
+2025-12-10 16:34:23.178 -06:00 [INF] El ticket 12 no tiene tecnico asignado, omitiendo notificacion
+2025-12-10 16:34:26.446 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 2
+2025-12-10 16:34:31.127 -06:00 [INF] Asignaci?n manual iniciada. Ticket: 12, T?cnico: 4
+2025-12-10 16:34:31.226 -06:00 [INF] ? Carga de trabajo incrementada. T?cnico 4
+2025-12-10 16:34:31.230 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 12
+2025-12-10 16:34:31.234 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:34:31.235 -06:00 [INF]  Ticket 12: Estado=Pendiente, CategoriaId=2, UsuarioId=1
+2025-12-10 16:34:31.237 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=12
+2025-12-10 16:34:31.243 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=12
+2025-12-10 16:34:31.248 -06:00 [INF] Iniciando cambio de estado para ticket 12 de Pendiente a Asignado
+2025-12-10 16:34:31.249 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 12
+2025-12-10 16:34:31.251 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:34:31.251 -06:00 [INF]  Ticket 12: Estado=Asignado, CategoriaId=2, UsuarioId=1
+2025-12-10 16:34:31.253 -06:00 [INF] Verificando SLA del ticket 12. Creado: "2025-12-10T16:34:22.8012765", Limite respuesta: "2025-12-10T17:04:22.8012765", Limite resolucion: "2025-12-10T20:34:22.8012765"
+2025-12-10 16:34:31.255 -06:00 [INF] Primera respuesta registrada para ticket 12 el "2025-12-10T16:34:31.2526366-06:00", dentro del tiempo establecido
+2025-12-10 16:34:31.256 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=12
+2025-12-10 16:34:31.259 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=12
+2025-12-10 16:34:31.260 -06:00 [INF] Estado del ticket actualizado, SLA calculado exitosamente
+2025-12-10 16:34:31.261 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=12, EstadoNuevo=Asignado
+2025-12-10 16:34:31.265 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=46
+2025-12-10 16:34:31.266 -06:00 [INF] Historial de cambio de estado creado con ID 46
+2025-12-10 16:34:31.270 -06:00 [INF] Notificacion de cambio de estado enviada al usuario solicitante 1
+2025-12-10 16:34:31.273 -06:00 [INF] Notificacion de cambio de estado enviada al tecnico asignado 5
+2025-12-10 16:34:31.273 -06:00 [INF] ? Ticket 12 asignado manualmente a t?cnico 4
+2025-12-10 16:35:24.772 -06:00 [INF] Edit POST - Iniciando edici?n del ticket 11
+2025-12-10 16:35:24.888 -06:00 [INF] Edit POST - Etiqueta seleccionada: 16 -> Categor?a: 4
+2025-12-10 16:35:24.895 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-10 16:35:24.959 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:35:24.961 -06:00 [INF]  Ticket 11: Estado=Asignado, CategoriaId=4, UsuarioId=6
+2025-12-10 16:35:24.965 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-10 16:35:25.009 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-10 16:35:25.020 -06:00 [INF] Edit POST - Ticket 11 actualizado correctamente
+2025-12-10 16:45:34.288 -06:00 [INF] Edit POST - Iniciando edici?n del ticket 11
+2025-12-10 16:45:34.428 -06:00 [INF] Edit POST - Etiqueta seleccionada: 16 -> Categor?a: 4
+2025-12-10 16:45:34.433 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-10 16:45:34.512 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-10 16:45:34.513 -06:00 [INF]  Ticket 11: Estado=Asignado, CategoriaId=4, UsuarioId=6
+2025-12-10 16:45:34.517 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-10 16:45:34.722 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-10 16:45:34.793 -06:00 [INF] Edit POST - Ticket 11 actualizado correctamente

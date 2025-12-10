@@ -16,25 +16,27 @@ namespace SupportU.Infrastructure.Repository
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<List<Categoria>> ListAsync()
-        {
-            return await _context.Categoria
-                .Include(c => c.Sla)
-                .Include(c => c.Especialidad)
-                .AsNoTracking()
-                .ToListAsync();
-        }
+		public async Task<List<Categoria>> ListAsync()
+		{
+			return await _context.Categoria
+				.Include(c => c.Sla)
+				.Include(c => c.CategoriaEspecialidades)
+					.ThenInclude(ce => ce.Especialidad)
+				.AsNoTracking()
+				.ToListAsync();
+		}
 
-        public async Task<Categoria?> FindByIdAsync(int id)
-        {
-            return await _context.Categoria
-                .Include(c => c.Sla)
-                .Include(c => c.Especialidad)
-                .Include(c => c.Etiqueta)
-                .FirstOrDefaultAsync(c => c.CategoriaId == id);
-        }
+		public async Task<Categoria?> FindByIdAsync(int id)
+		{
+			return await _context.Categoria
+				.Include(c => c.Sla)
+				.Include(c => c.CategoriaEspecialidades)
+					.ThenInclude(ce => ce.Especialidad)
+				.Include(c => c.Etiqueta)
+				.FirstOrDefaultAsync(c => c.CategoriaId == id);
+		}
 
-        public async Task<int> AddAsync(Categoria entity)
+		public async Task<int> AddAsync(Categoria entity)
         {
             await _context.Categoria.AddAsync(entity);
             try

@@ -5,7 +5,6 @@
         var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         return translations.TryGetValue(key, out var v) ? v : key;
     };
-
     ViewData["Title"] = t("Categoria_Create_Title");
 }
 
@@ -13,7 +12,6 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <h4 class="card-title">@t("Categoria_Create_Header")</h4>
-
             <form asp-action="Create" method="post" novalidate>
                 @Html.AntiForgeryToken()
 
@@ -44,6 +42,43 @@
                         <select asp-for="CriterioAsignacion" class="form-select" asp-items="ViewBag.AssignmentTypes"></select>
                         <span asp-validation-for="CriterioAsignacion" class="text-danger"></span>
                         <div class="form-text">@t("Help_CriterioAsignacion")</div>
+                    </div>
+                </div>
+
+                <!-- ✅ SELECTOR DE ESPECIALIDADES -->
+                <div class="mb-3 mt-3">
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-tools me-1"></i>Especialidades Requeridas
+                    </label>
+                    <div class="border rounded p-3" style="max-height: 250px; overflow-y: auto; background-color: #f8f9fa;">
+                        @if (ViewBag.Especialidades != null && ((List<SelectListItem>)ViewBag.Especialidades).Any())
+                        {
+                            foreach (var especialidad in (List<SelectListItem>)ViewBag.Especialidades)
+                            {
+                                <div class="form-check mb-2">
+                                    <input type="checkbox"
+                                           name="especialidadesSeleccionadas"
+                                           value="@especialidad.Value"
+                                           class="form-check-input"
+                                           id="esp_@especialidad.Value"
+                                           @(especialidad.Selected ? "checked" : "") />
+                                    <label class="form-check-label" for="esp_@especialidad.Value">
+                                        <strong>@especialidad.Text</strong>
+                                    </label>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning mb-0" role="alert">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                No hay especialidades disponibles. Cree especialidades primero.
+                            </div>
+                        }
+                    </div>
+                    <div class="form-text">
+                        <i class="bi bi-lightbulb me-1"></i>
+                        Seleccione las especialidades que debe tener un técnico para atender tickets de esta categoría
                     </div>
                 </div>
 

@@ -102,6 +102,10 @@ builder.Services.AddScoped<IServiceValoracion, ServiceValoracion>();
 builder.Services.AddScoped<IServiceAutoTriage, ServiceAutotriage>();
 
 
+
+
+
+
 builder.Services.AddAutoMapper(
     typeof(UsuariosProfile),
     typeof(TecnicosProfiles),

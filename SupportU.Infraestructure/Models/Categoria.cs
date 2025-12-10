@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SupportU.Infraestructure.Models;
 
@@ -23,5 +24,7 @@ public partial class Categoria
 
     public virtual ICollection<Ticket> Ticket { get; set; } = new List<Ticket>();
 
-    public virtual ICollection<Especialidad> Especialidad { get; set; } = new List<Especialidad>();
+	public virtual ICollection<CategoriaEspecialidad> CategoriaEspecialidades { get; set; } = new List<CategoriaEspecialidad>();
+
+	
 }

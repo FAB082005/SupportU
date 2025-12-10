@@ -6,7 +6,7 @@ using SupportU.Application.Services.Interfaces;
 namespace SupportU.Web.Controllers
 {
 	[Authorize(Roles = "Administrador")]
-	public class DashboardController : Controller
+	public class DashboardController : BaseController
 	{
 		private readonly IServiceTicket _serviceTicket;
 		private readonly IServiceValoracion _serviceValoracion;

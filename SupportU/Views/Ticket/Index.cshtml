@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.TicketDTO>
 @{
-    ViewData["Title"] = "Listado de Tickets";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string>
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+
+    ViewData["Title"] = t("Ticket_Index_Title");
     var rolUsuario = ViewBag.RolUsuario as string;
 }
 
@@ -28,16 +35,19 @@
     @Html.AntiForgeryToken()
 
     <div class="text-center mb-4">
-        <h1 class="display-6 fw-bold text-dark">Listado de Tickets</h1>
-        <p class="text-muted">Gestiona y visualiza tus tickets</p>
+        <h1 class="display-6 fw-bold text-dark">@t("Ticket_Index_Title")</h1>
+        <p class="text-muted">@t("Ticket_Index_Subtitle")</p>
     </div>
 
-    <!-- ✅ BOTÓN CREAR TICKET PARA TODOS -->
-    <div class="mb-4 text-end">
-        <a asp-action="Create" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Crear Ticket
-        </a>
-    </div>
+
+    @if (rolUsuario == "Administrador" || rolUsuario == "Cliente")
+    {
+        <div class="mb-4 text-end">
+            <a asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> @t("Btn_CreateTicket")
+            </a>
+        </div>
+    }
 
     <section>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
@@ -46,7 +56,7 @@
                 <div class="col">
                     <div class="card ticket-card shadow-sm h-100">
                         <div class="card-header bg-white border-bottom">
-                            <h6 class="mb-0 text-dark">Ticket #@item.TicketId</h6>
+                            <h6 class="mb-0 text-dark">@t("Label_TicketNumber")@item.TicketId</h6>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title text-dark">@item.Titulo</h5>
@@ -59,10 +69,10 @@
                                 <span class="badge bg-secondary">@item.Prioridad</span>
                             </div>
                             <p class="mb-1 text-muted small">
-                                <strong>Categoría ID:</strong> @item.CategoriaId
+                                <strong>@t("Label_CategoryID")</strong> @item.CategoriaId
                             </p>
                             <p class="mb-0 text-muted small">
-                                <strong>Fecha:</strong> @item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                                <strong>@t("Label_Date")</strong> @item.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
                             </p>
 
                             @* ✅ BOTONES DE ASIGNACIÓN SOLO PARA ADMIN Y TICKETS PENDIENTES *@
@@ -72,11 +82,11 @@
                                 <div class="d-flex gap-2 mt-3">
                                     <button class="btn btn-primary btn-asignar w-50"
                                             onclick="asignarAutomatico(@item.TicketId)">
-                                        <i class="bi bi-magic"></i> Auto
+                                        <i class="bi bi-magic"></i> @t("Btn_AutoAssign")
                                     </button>
                                     <button class="btn btn-outline-primary btn-asignar w-50"
                                             onclick="asignarManual(@item.TicketId, @item.CategoriaId)">
-                                        <i class="bi bi-person-check"></i> Manual
+                                        <i class="bi bi-person-check"></i> @t("Btn_ManualAssign")
                                     </button>
                                 </div>
                             }
@@ -85,7 +95,7 @@
                             <a class="btn btn-outline-primary btn-sm w-100"
                                asp-action="Details"
                                asp-route-id="@item.TicketId">
-                                Ver Detalle
+                                @t("Btn_ViewDetails")
                             </a>
                         </div>
                     </div>
@@ -98,30 +108,30 @@
     {
         <div class="alert alert-warning border mt-4" role="alert">
             <i class="bi bi-exclamation-triangle me-2"></i>
-            No hay tickets disponibles.
+            @t("NoTickets")
         </div>
     }
 </div>
 
-<!-- ✅ MODAL PARA ASIGNACIÓN MANUAL - MEJORADO -->
+
 <div class="modal fade" id="modalAsignacionManual" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">
-                    <i class="bi bi-person-check me-2"></i>Seleccionar Técnico
+                    <i class="bi bi-person-check me-2"></i>@t("Modal_AssignManual_Title")
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <p class="text-muted mb-3">
                     <i class="bi bi-info-circle me-1"></i>
-                    Seleccione el técnico más adecuado según su especialidad y carga de trabajo
+                    @t("Modal_AssignManual_Info")
                 </p>
                 <div id="listaTecnicos" class="list-group">
                     <div class="text-center py-3">
                         <div class="spinner-border text-primary" role="status"></div>
-                        <p class="mt-2 text-muted">Cargando técnicos...</p>
+                        <p class="mt-2 text-muted">@t("Modal_LoadingTechs")</p>
                     </div>
                 </div>
             </div>
@@ -132,165 +142,181 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        let ticketActualId = 0;
+        (function () {
+            window.__i18n = window.__i18n || {};
+            try {
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+            } catch (e) {
+                window.__i18n.translations = {};
+            }
+            window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
 
-        // ✅ ASIGNACIÓN AUTOMÁTICA
-        function asignarAutomatico(ticketId) {
-            console.log('🎯 Iniciando asignación automática para ticket:', ticketId);
+            let ticketActualId = 0;
 
-            Swal.fire({
-                title: 'Asignando técnico...',
-                text: 'Por favor espere',
-                icon: 'info',
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end'
-            });
+           
+            window.asignarAutomatico = function(ticketId) {
+                console.log(' Iniciando asignación automática para ticket:', ticketId);
 
-            setTimeout(() => {
-                const token = document.querySelector('[name="__RequestVerificationToken"]')?.value;
-                console.log('🔑 Token encontrado:', token ? 'Sí' : 'No');
-
-                const url = '@Url.Action("AsignarAutomatico", "Ticket")';
-                console.log('🌐 URL:', url);
-
-                const body = JSON.stringify({ ticketId: ticketId });
-                console.log('📦 Body:', body);
-
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': token || ''
-                    },
-                    body: body
-                })
-                .then(response => {
-                    console.log('📡 Respuesta recibida:', response.status);
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('✅ Data:', data);
-                    if (data.success) {
-                        Swal.fire({
-                            title: '¡Técnico asignado!',
-                            html: `Asignado a: <strong>${data.tecnico}</strong><br>Puede revisar el detalle para más información.`,
-                            icon: 'success',
-                            timer: 4000,
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false
-                        });
-                        setTimeout(() => location.reload(), 2500);
-                    } else {
-                        console.error('❌ Error:', data.message);
-                        Swal.fire('Error', data.message, 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('💥 Error catch:', error);
-                    Swal.fire('Error', 'No se pudo asignar el técnico: ' + error.message, 'error');
+                Swal.fire({
+                    title: window.__i18n.t('Swal_AutoAssign_Title', 'Asignando técnico...'),
+                    text: window.__i18n.t('Swal_AutoAssign_Text', 'Por favor espere'),
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
                 });
-            }, 2000);
-        }
 
-        // ✅ ASIGNACIÓN MANUAL - MEJORADA CON MÁS INFORMACIÓN
-        function asignarManual(ticketId, categoriaId) {
-            ticketActualId = ticketId;
+                setTimeout(() => {
+                    const token = document.querySelector('[name="__RequestVerificationToken"]')?.value;
+                    console.log(' Token encontrado:', token ? 'Sí' : 'No');
 
-            const modal = new bootstrap.Modal(document.getElementById('modalAsignacionManual'));
-            modal.show();
+                    const url = '@Url.Action("AsignarAutomatico", "Ticket")';
+                    console.log(' URL:', url);
 
-            fetch(`@Url.Action("ObtenerTecnicosDisponibles", "Ticket")?categoriaId=${categoriaId}`)
-                .then(response => response.json())
-                .then(tecnicos => {
-                    const lista = document.getElementById('listaTecnicos');
+                    const body = JSON.stringify({ ticketId: ticketId });
+                    console.log(' Body:', body);
 
-                    if (tecnicos.length === 0) {
-                        lista.innerHTML = '<p class="text-center text-warning">No hay técnicos disponibles</p>';
-                        return;
-                    }
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token || ''
+                        },
+                        body: body
+                    })
+                    .then(response => {
+                        console.log('📡 Respuesta recibida:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log(' Data:', data);
+                        if (data.success) {
+                            var successHtml = window.__i18n.t('Swal_AutoAssign_Success_Html', 'Asignado a: <strong>{0}</strong><br>Puede revisar el detalle para más información.');
+                            successHtml = successHtml.replace('{0}', data.tecnico);
 
-                    lista.innerHTML = tecnicos.map(t => `
-                        <div class="list-group-item list-group-item-action"
-                             onclick="confirmarAsignacionManual(${t.id}, '${t.nombre}')"
-                             style="cursor: pointer; transition: all 0.2s;">
-                            <div class="row align-items-center">
-                                <div class="col-md-8">
-                                    <h6 class="mb-1"><strong>${t.nombre}</strong></h6>
-                                    <small class="text-muted">
-                                        <i class="bi bi-envelope me-1"></i>${t.correo}
-                                    </small>
-                                    <br>
-                                    <small class="text-muted">
-                                        <i class="bi bi-tools me-1"></i><strong>Especialidades:</strong> ${t.especialidades}
-                                    </small>
-                                </div>
-                                <div class="col-md-4 text-end">
-                                    <span class="badge bg-success mb-1">${t.estado}</span>
-                                    <br>
-                                    <span class="badge bg-info mb-1">${t.carga} tickets</span>
-                                    <br>
-                                    <small class="text-warning">
-                                        <i class="bi bi-star-fill"></i> ${t.calificacion.toFixed(2)}
-                                    </small>
+                            Swal.fire({
+                                title: window.__i18n.t('Swal_AutoAssign_Success_Title', '¡Técnico asignado!'),
+                                html: successHtml,
+                                icon: 'success',
+                                timer: 4000,
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false
+                            });
+                            setTimeout(() => location.reload(), 2500);
+                        } else {
+                            console.error(' Error:', data.message);
+                            Swal.fire(window.__i18n.t('Swal_Error', 'Error'), data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error(' Error catch:', error);
+                        Swal.fire(window.__i18n.t('Swal_Error', 'Error'), 'No se pudo asignar el técnico: ' + error.message, 'error');
+                    });
+                }, 2000);
+            };
+
+       
+            window.asignarManual = function(ticketId, categoriaId) {
+                ticketActualId = ticketId;
+
+                const modal = new bootstrap.Modal(document.getElementById('modalAsignacionManual'));
+                modal.show();
+
+                fetch(`@Url.Action("ObtenerTecnicosDisponibles", "Ticket")?categoriaId=${categoriaId}`)
+                    .then(response => response.json())
+                    .then(tecnicos => {
+                        const lista = document.getElementById('listaTecnicos');
+
+                        if (tecnicos.length === 0) {
+                            lista.innerHTML = `<p class="text-center text-warning">${window.__i18n.t('Modal_NoTechs', 'No hay técnicos disponibles')}</p>`;
+                            return;
+                        }
+
+                        lista.innerHTML = tecnicos.map(t => `
+                            <div class="list-group-item list-group-item-action"
+                                 onclick="confirmarAsignacionManual(${t.id}, '${t.nombre}')"
+                                 style="cursor: pointer; transition: all 0.2s;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h6 class="mb-1"><strong>${t.nombre}</strong></h6>
+                                        <small class="text-muted">
+                                            <i class="bi bi-envelope me-1"></i>${t.correo}
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-tools me-1"></i><strong>${window.__i18n.t('Modal_Tech_Specialties', 'Especialidades:')}</strong> ${t.especialidades}
+                                        </small>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <span class="badge bg-success mb-1">${t.estado}</span>
+                                        <br>
+                                        <span class="badge bg-info mb-1">${t.carga} ${window.__i18n.t('Modal_Tech_Load', 'tickets')}</span>
+                                        <br>
+                                        <small class="text-warning">
+                                            <i class="bi bi-star-fill"></i> ${t.calificacion.toFixed(2)}
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `).join('');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('listaTecnicos').innerHTML =
-                        '<p class="text-center text-danger">Error al cargar técnicos</p>';
+                        `).join('');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('listaTecnicos').innerHTML =
+                            `<p class="text-center text-danger">${window.__i18n.t('Modal_ErrorLoading', 'Error al cargar técnicos')}</p>`;
+                    });
+            };
+
+            window.confirmarAsignacionManual = function(tecnicoId, nombreTecnico) {
+                bootstrap.Modal.getInstance(document.getElementById('modalAsignacionManual')).hide();
+
+                Swal.fire({
+                    title: window.__i18n.t('Swal_ManualAssign_Title', 'Asignando técnico...'),
+                    text: window.__i18n.t('Swal_ManualAssign_Text', 'Por favor espere'),
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
                 });
-        }
 
-        function confirmarAsignacionManual(tecnicoId, nombreTecnico) {
-            bootstrap.Modal.getInstance(document.getElementById('modalAsignacionManual')).hide();
+                setTimeout(() => {
+                    fetch('@Url.Action("AsignarManual", "Ticket")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]')?.value || ''
+                        },
+                        body: JSON.stringify({ ticketId: ticketActualId, tecnicoId: tecnicoId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            var successHtml = window.__i18n.t('Swal_ManualAssign_Success_Html', 'Asignado a: <strong>{0}</strong><br>Puede revisar el detalle para más información.');
+                            successHtml = successHtml.replace('{0}', nombreTecnico);
 
-            Swal.fire({
-                title: 'Asignando técnico...',
-                text: 'Por favor espere',
-                icon: 'info',
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end'
-            });
-
-            setTimeout(() => {
-                fetch('@Url.Action("AsignarManual", "Ticket")', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]')?.value || ''
-                    },
-                    body: JSON.stringify({ ticketId: ticketActualId, tecnicoId: tecnicoId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            title: '¡Técnico asignado!',
-                            html: `Asignado a: <strong>${nombreTecnico}</strong><br>Puede revisar el detalle para más información.`,
-                            icon: 'success',
-                            timer: 4000,
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false
-                        });
-                        setTimeout(() => location.reload(), 2500);
-                    } else {
-                        Swal.fire('Error', data.message, 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'No se pudo asignar el técnico', 'error');
-                });
-            }, 2000);
-        }
+                            Swal.fire({
+                                title: window.__i18n.t('Swal_ManualAssign_Success_Title', '¡Técnico asignado!'),
+                                html: successHtml,
+                                icon: 'success',
+                                timer: 4000,
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false
+                            });
+                            setTimeout(() => location.reload(), 2500);
+                        } else {
+                            Swal.fire(window.__i18n.t('Swal_Error', 'Error'), data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire(window.__i18n.t('Swal_Error', 'Error'), 'No se pudo asignar el técnico', 'error');
+                    });
+                }, 2000);
+            };
+        })();
     </script>
 }

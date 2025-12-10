@@ -115,7 +115,7 @@
                     @* Asignación fuera del dropdown - visible para Admin y Técnico *@
                     @if (User?.Identity?.IsAuthenticated == true && (User.IsInRole("Administrador") || User.IsInRole("Técnico")))
                     {
-                        <li><a asp-controller=@t("Asignation") asp-action="Index">@t("Nav_Assignment")</a></li>
+                        <li><a asp-controller="Asignacion" asp-action="Index">@t("Nav_Assignment")</a></li>
                     }
 
                     @if (User.IsInRole("Administrador"))
