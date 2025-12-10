@@ -10,6 +10,7 @@ namespace SupportU.Application.Services
         Task<EspecialidadDTO?> FindByIdAsync(int id);
         Task<int> AddAsync(EspecialidadDTO dto);
         Task UpdateAsync(EspecialidadDTO dto);
+
         Task DeleteAsync(int id);
     }
 }

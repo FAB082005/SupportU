@@ -142,22 +142,22 @@ namespace SupportU.Web.Controllers
             {
                 if (!string.IsNullOrEmpty(estadoForm))
                 {
+                    // Interpretar el estado deseado
+                    bool? desiredActiva = null;
+                    if (estadoForm == "1") desiredActiva = false;
+                    else if (estadoForm == "0") desiredActiva = true;
+
                     var dto = await _service.FindByIdAsync(id);
-                    if (dto != null)
+                    if (dto != null && desiredActiva.HasValue)
                     {
-                        if (estadoForm == "1")
-                        {
-                            // Inactivar: usamos DeleteAsync (borrado lógico)
-                            await _service.DeleteAsync(id);
-                            TempData["NotificationMessage"] = $"Swal.fire('{t("Categoria_Delete_Success")}','{t("Categoria_Delete_Success")}','success')";
-                        }
-                        else if (estadoForm == "0")
-                        {
-                            // Reactivar: cargar, cambiar Activa=true y UpdateAsync
-                            dto.Activa = true;
-                            await _service.UpdateAsync(dto);
-                            TempData["NotificationMessage"] = $"Swal.fire('{t("Categoria_Reactivate_Success")}','{t("Categoria_Reactivate_Success")}','success')";
-                        }
+                        // Actualizar el campo Activa y persistir con UpdateAsync (comportamiento igual que Usuario)
+                        dto.Activa = desiredActiva.Value;
+                        await _service.UpdateAsync(dto);
+
+                        if (dto.Activa)
+                            TempData["NotificationMessage"] = "Categoria_Reactivated|success";
+                        else
+                            TempData["NotificationMessage"] = "Categoria_Inactivated|success";
                     }
                 }
 
@@ -170,6 +170,7 @@ namespace SupportU.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
 
         private async Task PopulateSlaAndAssignmentTypes(CategoriaDTO? dto)
         {

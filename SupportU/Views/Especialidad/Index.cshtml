@@ -8,6 +8,7 @@
     };
 
     ViewData["Title"] = t("Especialidad_Index_Title");
+    var notif = ViewBag.Notification as string ?? TempData["NotificationMessage"] as string;
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
@@ -49,18 +50,19 @@
                                 </a>
 
                                 <!-- Botón inline para inactivar -->
-                                <button type="button"
-                                        class="btn btn-sm btn-delete js-delete-specialty"
-                                        data-id="@item.EspecialidadId"
-                                        data-estado="1"
-                                        title="@t("Especialidad_Btn_Inactivate")">
-                                    <i class="bi bi-power"></i>
-                                </button>
-
-                                <!-- Form oculto que será enviado por JS -->
-                                <form id="delete-form-@item.EspecialidadId" asp-action="DeleteConfirmed" asp-route-id="@item.EspecialidadId" method="post" class="d-none">
+                                <form id="delete-form-@item.EspecialidadId"
+                                      asp-action="DeleteConfirmed"
+                                      asp-route-id="@item.EspecialidadId"
+                                      method="post"
+                                      class="d-inline">
                                     @Html.AntiForgeryToken()
-                                    <input type="hidden" name="estado" value="1" />
+                                   <input type="hidden" name="estado" value="@(item.Activa ? "1" : "0")" />
+                                    <button type="button"
+                                            class="btn btn-sm @(item.Activa ? "btn-danger js-delete-specialty" : "btn-success js-delete-specialty")"
+                                            data-id="@item.EspecialidadId"
+                                            title="@(item.Activa ? t("Especialidad_Btn_Inactivate") : t("Especialidad_Btn_Reactivate"))">
+                                        <i class="bi bi-power"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -77,43 +79,63 @@
 
     <script>
         (function () {
-            // Inyectar traducciones al cliente
+             window.__i18n = window.__i18n || {};
             try {
-                window.__i18n = window.__i18n || {};
-                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string,string>()));
-                window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
-            } catch (e) { window.__i18n = window.__i18n || { translations: {} }; }
-
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+            } catch (e) {
+                window.__i18n.translations = {};
+            }
+            window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
             document.addEventListener('click', function (e) {
                 var btn = e.target.closest('.js-delete-specialty');
                 if (!btn) return;
+                e.preventDefault();
 
                 var id = btn.getAttribute('data-id');
                 if (!id) return;
 
-                var estado = btn.getAttribute('data-estado') || "1"; // 1 => inactivar
+                var form = document.getElementById('delete-form-' + id);
+                if (!form) {
+                    console.warn('Form de eliminación no encontrado para id', id);
+                    return;
+                }
+
+                var estadoInput = form.querySelector('input[name="estado"]');
+                var estadoVal = estadoInput ? estadoInput.value : "1";
+                var willInactivate = estadoVal === "1";
+
+                var titleKey = willInactivate ? 'Especialidad_Swal_Inactivate_Title' : 'Especialidad_Swal_Reactivate_Title';
+                var textKey = willInactivate ? 'Especialidad_Swal_Inactivate_Text' : 'Especialidad_Swal_Reactivate_Text';
+                var confirmKey = willInactivate ? 'Especialidad_Swal_Inactivate_Confirm' : 'Especialidad_Swal_Reactivate_Confirm';
+                var cancelKey = willInactivate ? 'Especialidad_Swal_Inactivate_Cancel' : 'Especialidad_Swal_Reactivate_Cancel';
+                var confirmColor = willInactivate ? '#d33' : '#198754';
 
                 Swal.fire({
-                    title: window.__i18n.t('Especialidad_Swal_Inactivate_Title', '¿Inactivar esta especialidad?'),
-                    text: window.__i18n.t('Especialidad_Swal_Inactivate_Text', 'Esta acción marcará la especialidad como inactiva.'),
+                    title: window.__i18n.t(titleKey, willInactivate ? '¿Inactivar esta especialidad?' : '¿Reactivar esta especialidad?'),
+                    text: window.__i18n.t(textKey, willInactivate ? 'Esta acción marcará la especialidad como inactiva.' : 'Esta acción marcará la especialidad como activa nuevamente.'),
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: window.__i18n.t('Especialidad_Swal_Inactivate_Confirm', 'Inactivar'),
-                    cancelButtonText: window.__i18n.t('Especialidad_Swal_Inactivate_Cancel', 'Cancelar'),
-                    confirmButtonColor: '#d33'
+                    confirmButtonText: window.__i18n.t(confirmKey, willInactivate ? 'Inactivar' : 'Reactivar'),
+                    cancelButtonText: window.__i18n.t(cancelKey, 'Cancelar'),
+                    confirmButtonColor: confirmColor
                 }).then(function (result) {
                     if (result.isConfirmed) {
-                        var form = document.getElementById('delete-form-' + id);
-                        if (form) {
-                            var inputEstado = form.querySelector('input[name="estado"]');
-                            if (inputEstado) inputEstado.value = estado;
-                            form.submit();
-                        } else {
-                            console.warn('Form de eliminación no encontrado para id', id);
-                        }
+                        if (estadoInput) estadoInput.value = willInactivate ? "1" : "0";
+                        form.submit();
                     }
                 });
             }, false);
         })();
     </script>
+
+    @if (!string.IsNullOrEmpty(notif))
+    {
+        var parts = notif.Split('|', 2);
+        var key = parts.Length > 0 ? parts[0] : notif;
+        var type = parts.Length > 1 ? parts[1] : "info";
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var title = translations.ContainsKey(key + "_Title") ? translations[key + "_Title"] : translations.GetValueOrDefault(key) ?? key;
+        var text = translations.ContainsKey(key + "_Text") ? translations[key + "_Text"] : "";
+        <script>Swal.fire('@title', '@text', '@type');</script>
+    }
 }

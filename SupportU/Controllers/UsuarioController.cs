@@ -7,14 +7,14 @@ using System.Diagnostics;
 
 namespace SupportU.Web.Controllers
 {
-    public class UsuarioController : Controller
+    public class UsuarioController : BaseController
     {
         private readonly IServiceUsuario _service;
         private static readonly List<string> _roles = new() { "Administrador", "Técnico", "Cliente" };
 
         public UsuarioController(IServiceUsuario service)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _service = service;
         }
 
         // GET: /Usuario
@@ -51,19 +51,22 @@ namespace SupportU.Web.Controllers
 
             ViewBag.Roles = new SelectList(_roles, dto.Rol);
 
+
             if (string.IsNullOrWhiteSpace(dto?.Email))
-                ModelState.AddModelError(nameof(dto.Email), "El correo es obligatorio");
+            {
+                ModelState.AddModelError(nameof(dto.Email), "UsuarioValidation_EmailRequired");
+            }
             else if (!System.Text.RegularExpressions.Regex.IsMatch(dto.Email.Trim(), @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
-                ModelState.AddModelError(nameof(dto.Email), "Formato de correo inválido");
+                ModelState.AddModelError(nameof(dto.Email), "UsuarioValidation_EmailInvalid");
 
             if (string.IsNullOrWhiteSpace(dto?.Nombre))
-                ModelState.AddModelError(nameof(dto.Nombre), "El nombre es obligatorio");
+                ModelState.AddModelError(nameof(dto.Nombre), "UsuarioValidation_NameRequired");
 
             if (string.IsNullOrWhiteSpace(dto?.Apellidos))
-                ModelState.AddModelError(nameof(dto.Apellidos), "Los apellidos son obligatorios");
+                ModelState.AddModelError(nameof(dto.Apellidos), "UsuarioValidation_LastNameRequired");
 
             if (string.IsNullOrWhiteSpace(dto?.PasswordHash))
-                ModelState.AddModelError(nameof(dto.PasswordHash), "La contraseña es obligatoria");
+                ModelState.AddModelError(nameof(dto.PasswordHash), "UsuarioValidation_PasswordRequired");
 
             if (!ModelState.IsValid)
             {
@@ -75,7 +78,7 @@ namespace SupportU.Web.Controllers
 
             var newId = await _service.AddAsync(dto);
 
-            TempData["NotificationMessage"] = "Swal.fire('Éxito','Usuario creado correctamente','success');";
+            TempData["NotificationMessage"] = "Usuario_Created|success";
 
             // Redirigir al Login para que el usuario inicie sesión
             return RedirectToAction("Index", "Login");
@@ -118,7 +121,7 @@ namespace SupportU.Web.Controllers
 
             if (!_roles.Contains(dto.Rol))
             {
-                ModelState.AddModelError(nameof(dto.Rol), "Rol no válido");
+                ModelState.AddModelError(nameof(dto.Rol), "UsuarioValidation_RoleInvalid");
                 return View(dto);
             }
 
@@ -129,12 +132,13 @@ namespace SupportU.Web.Controllers
             try
             {
                 await _service.UpdateAsync(dto);
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Usuario actualizado correctamente','success');";
+
+                TempData["NotificationMessage"] = "Usuario_Updated|success";
                 return RedirectToAction(nameof(Index));
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException dbex)
             {
-                ModelState.AddModelError(string.Empty, "Error BD: " + (dbex.InnerException?.Message ?? dbex.Message));
+                ModelState.AddModelError(string.Empty, "UsuarioError_DB");
                 return View(dto);
             }
             catch (ArgumentException argEx)
@@ -144,7 +148,7 @@ namespace SupportU.Web.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Error inesperado: " + ex.Message);
+                ModelState.AddModelError(string.Empty, "UsuarioError_Unexpected");
                 return View(dto);
             }
         }
@@ -179,9 +183,9 @@ namespace SupportU.Web.Controllers
             await _service.UpdateAsync(dto);
 
             if (dto.Activo)
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Usuario reactivado correctamente','success');";
+                TempData["NotificationMessage"] = "Usuario_Reactivated|success";
             else
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Usuario inactivado correctamente','success');";
+                TempData["NotificationMessage"] = "Usuario_Inactivated|success";
 
             return RedirectToAction(nameof(Index));
         }

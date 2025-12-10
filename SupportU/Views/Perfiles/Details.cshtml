@@ -1,0 +1,160 @@
+﻿@model SupportU.Application.DTOs.UsuarioDTO
+@using System.Globalization
+@{
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as System.Collections.Generic.Dictionary<string, string>
+            ?? new System.Collections.Generic.Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = t("Perfiles_Title_Details");
+    var tickets = ViewBag.Tickets as System.Collections.Generic.IEnumerable<dynamic>;
+}
+
+<section class="section mt-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">@t("Perfiles_Title_Details")</h2>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> @t("Perfiles_Btn_Back")
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left column: perfil y acciones -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="avatar mb-3">
+                            <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center"
+                                 style="width:96px;height:96px;font-size:2rem;">
+                                @if (string.IsNullOrWhiteSpace(Model.Nombre))
+                                {
+                                    <i class="bi bi-person"></i>
+                                }
+                                else
+                                {
+                                    @System.Net.WebUtility.HtmlEncode(Model.Nombre.Substring(0, 1).ToUpper())
+                                }
+                            </div>
+                        </div>
+
+                        <h5 class="card-title mb-1">@($"{Model.Nombre} {Model.Apellidos}")</h5>
+                        <p class="text-muted mb-2">@Model.Rol</p>
+
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-outline-primary" href="mailto:@Model.Email"><i class="bi bi-envelope me-1"></i> @Model.Email</a>
+                            <span class="small text-muted"> @t("Usuario_Label_Creado"): @(Model.FechaCreacion.ToString("g", CultureInfo.CurrentCulture))</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-3 shadow-sm">
+                    <div class="card-header">
+                        <strong>@t("Perfiles_Actions_Title")</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@Model.UsuarioId" asp-route-fromProfile="1" class="btn btn-outline-secondary">
+                                <i class="bi bi-pencil-square me-1"></i> @t("Perfiles_EditProfile_Btn")
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-3 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="mb-2">@t("Perfiles_Stats_Title")</h6>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <div class="p-2 border rounded text-center" style="min-width:110px;">
+                                <div class="h5 mb-0">@((tickets != null) ? tickets.Count() : 0)</div>
+                                <small class="text-muted">@t("Perfiles_Stats_Tickets")</small>
+                            </div>
+                            <div class="p-2 border rounded text-center" style="min-width:110px;">
+                                <div class="h5 mb-0">@((Model.Activo) ? t("Status_Active") : t("Status_Inactive"))</div>
+                                <small class="text-muted">@t("Label_Activo")</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: tickets -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>@t("Perfiles_Tickets_Title")</strong>
+                        <div class="text-muted small">@t("Perfiles_Tickets_Subtitle")</div>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0 align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width:90px;">@t("Ticket_Label_Id")</th>
+                                        <th>@t("Ticket_Label_Asunto")</th>
+                                        <th style="width:140px;">@t("Ticket_Label_Estado")</th>
+                                        <th style="width:160px;">@t("Ticket_Label_Creado")</th>
+                                        <th style="width:120px;" class="text-end">@t("Label_Actions")</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (tickets != null && tickets.Any())
+                                    {
+                                        foreach (var tkt in tickets)
+                                        {
+                                            <tr>
+                                                <td class="fw-bold">#@tkt.TicketId</td>
+                                                <td>
+                                                    <div class="fw-semibold">@tkt.Titulo</div>
+                                                    <div class="small text-muted">@tkt.CategoriaNombre ?? ""</div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge @(tkt.Estado == "Pendiente" ? "bg-warning text-dark" : (tkt.Estado == "Asignado" ? "bg-info text-dark" : (tkt.Estado == "Cerrado" ? "bg-success" : "bg-secondary")) )">
+                                                        @tkt.Estado
+                                                    </span>
+                                                </td>
+                                                <td>@(tkt.FechaCreacion.ToString("g"))</td>
+                                                <td class="text-end">
+                                                    <a asp-controller="Ticket" asp-action="Details" asp-route-id="@tkt.TicketId" class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i> <span class="d-none d-md-inline ms-1">@t("Btn_ViewDetails")</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">@t("Perfiles_Tickets_None")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-muted small">
+                        @t("Perfiles_Tickets_Footer")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    @if (TempData["NotificationMessage"] != null)
+    {
+        <text>
+            <script>
+                @Html.Raw(TempData["NotificationMessage"].ToString())
+            </script>
+        </text>
+    }
+}

@@ -32,8 +32,25 @@
                     {
                         <tr>
                             <td>@item.Nombre</td>
-                            <td>@item.TiempoRespuestaMinutos</td>
-                            <td>@item.TiempoResolucionMinutos</td>
+
+                            <td>
+                                @{
+                                    var tr = System.TimeSpan.FromMinutes(item.TiempoRespuestaMinutos);
+                                    var trH = (int)tr.TotalHours;
+                                    var trM = tr.Minutes;
+                                }
+                                @($"{trH:00}:{trM:00}")
+                            </td>
+
+                            <td>
+                                @{
+                                    var ts = System.TimeSpan.FromMinutes(item.TiempoResolucionMinutos);
+                                    var tsH = (int)ts.TotalHours;
+                                    var tsM = ts.Minutes;
+                                }
+                                @($"{tsH:00}:{tsM:00}")
+                            </td>
+
                             <td>
                                 @if (item.Activo)
                                 {
@@ -46,7 +63,20 @@
                             </td>
                             <td class="text-center">
                                 <a asp-action="Edit" asp-route-id="@item.SlaId" class="btn btn-sm btn-edit"><i class="bi bi-pencil-square"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.SlaId" class="btn btn-sm btn-delete"><i class="bi bi-power"></i></a>
+                                <form id="delete-form-@item.SlaId"
+                                      asp-action="DeleteConfirmed"
+                                      asp-route-id="@item.SlaId"
+                                      method="post"
+                                      class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="estado" value="@(item.Activo ? "1" : "0")" />
+                                    <button type="button"
+                                            class="btn btn-sm js-delete-sla @(item.Activo ? "btn-danger" : "btn-success")"
+                                            data-id="@item.SlaId"
+                                            title="@(item.Activo ? t("Sla_Title_Delete_Inactivate") : t("Sla_Title_Delete_Reactivate"))">
+                                        <i class="bi bi-power"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     }
@@ -55,3 +85,62 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        (function () {
+            window.__i18n = window.__i18n || {};
+            try {
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+            } catch (e) {
+                window.__i18n.translations = {};
+            }
+            window.__i18n.t = function (k, f) { return (window.__i18n.translations && window.__i18n.translations[k]) ? window.__i18n.translations[k] : (f || k); };
+
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.js-delete-sla');
+                if (!btn) return;
+                e.preventDefault();
+
+                var id = btn.getAttribute('data-id');
+                if (!id) return;
+
+                var form = document.getElementById('delete-form-' + id);
+                if (!form) {
+                    console.warn('Form de eliminación no encontrado para id', id);
+                    return;
+                }
+
+                var estadoInput = form.querySelector('input[name="estado"]');
+                var estadoVal = estadoInput ? estadoInput.value : "1";
+                var willInactivate = estadoVal === "1";
+
+                var titleKey = willInactivate ? 'Sla_Title_Delete_Inactivate' : 'Sla_Title_Delete_Reactivate';
+                var textKey = willInactivate ? 'Sla_Swal_Inactivate_Text' : 'Sla_Swal_Reactivate_Text';
+                var confirmKey = willInactivate ? 'Sla_Swal_Inactivate_Confirm' : 'Sla_Swal_Reactivate_Confirm';
+                var cancelKey = willInactivate ? 'Sla_Swal_Inactivate_Cancel' : 'Sla_Swal_Reactivate_Cancel';
+                var confirmColor = willInactivate ? '#d33' : '#198754';
+
+                Swal.fire({
+                    title: window.__i18n.t(titleKey, willInactivate ? '¿Inactivar este SLA?' : '¿Reactivar este SLA?'),
+                    text: window.__i18n.t(textKey, willInactivate ? 'Esta acción marcará el SLA como inactivo.' : 'Esta acción marcará el SLA como activo nuevamente.'),
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: window.__i18n.t(confirmKey, willInactivate ? 'Inactivar' : 'Reactivar'),
+                    cancelButtonText: window.__i18n.t(cancelKey, 'Cancelar'),
+                    confirmButtonColor: confirmColor
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        if (estadoInput) {
+                            estadoInput.value = willInactivate ? "1" : "0";
+                            estadoInput.setAttribute('value', estadoInput.value);
+                        }
+                        form.submit();
+                    }
+                });
+            }, false);
+        })();
+    </script>
+}

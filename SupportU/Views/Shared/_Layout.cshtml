@@ -1,7 +1,6 @@
 ﻿@{
-    // Intentar obtener traducciones desde ViewData (si algún controlador las puso)
     var translations = ViewData["Translations"] as Dictionary<string, string>;
-
+    var userId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
     // Si ViewData no tiene traducciones, cargar directamente el JSON desde disco
     if (translations == null || translations.Count == 0)
     {
@@ -116,7 +115,7 @@
                     @* Asignación fuera del dropdown - visible para Admin y Técnico *@
                     @if (User?.Identity?.IsAuthenticated == true && (User.IsInRole("Administrador") || User.IsInRole("Técnico")))
                     {
-                        <li><a asp-controller="Asignacion" asp-action="Index">@t("Nav_Assignment")</a></li>
+                        <li><a asp-controller=@t("Asignation") asp-action="Index">@t("Nav_Assignment")</a></li>
                     }
 
                     <li class="dropdown">
@@ -147,6 +146,22 @@
                                 <li><a asp-controller="Ticket" asp-action="Index">@t("Nav_Tickets")</a></li>
                             }
                         </ul>
+                    <li class="nav-item ms-3">
+                            @if (!string.IsNullOrEmpty(userId))
+                            {
+                            <a class="nav-link d-flex align-items-center" asp-controller="Perfiles" asp-action="Details" asp-route-id="@userId" title="@t("Nav_MyProfile")">
+                                <i class="bi bi-person-circle" style="font-size:1.35rem; line-height:1"></i>
+                                <span class="d-none d-lg-inline ms-2">@t("Nav_MyProfile")</span>
+                            </a>
+                            }
+                            else
+                            {
+                            <a class="nav-link d-flex align-items-center" asp-controller="Login" asp-action="Index" title="@t("Nav_Login")">
+                                <i class="bi bi-person-circle" style="font-size:1.35rem; line-height:1"></i>
+                                <span class="d-none d-lg-inline ms-2">@t("Nav_Login")</span>
+                            </a>
+                            }
+                    </li>
                     </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -165,12 +180,9 @@
                 </style>
 
                 <script>
-                    // 3 líneas: aplicar estado guardado al cargar
                     (function(){ const s=localStorage.getItem('selectedLang'); if(!s) return; document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===s)); })();
                 </script>
 
-
-                @* Ícono de notificaciones y login/logout *@
                 @if (User?.Identity?.IsAuthenticated == true)
                 {
                     <a asp-controller="Notificaciones" asp-action="Index" class="notification-icon" id="notificationBell" title="@t("Nav_Tickets")">

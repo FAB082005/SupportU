@@ -1,16 +1,33 @@
 ﻿@model SupportU.Application.DTOs.UsuarioDTO
 @{
-    ViewData["Title"] = "Editar Usuario";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = t("Usuario_Edit_Title");
+    var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 }
-
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card shadow-sm">
                     <div class="card-body p-4">
-                        <h2 class="mb-4">Editar Usuario</h2>
-
+                        <h2 class="mb-4">@t("Usuario_Edit_Header")</h2>
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" id="serverErrors">
+                                <ul class="mb-0">
+                                    @foreach (var entry in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                    {
+                                        var key = entry.ErrorMessage;
+                                        var text = translations.ContainsKey(key) ? translations[key] : (translations.ContainsKey(key + "_Text") ? translations[key + "_Text"] : key);
+                                        <li>@text</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
                         <form asp-action="Edit" method="post" novalidate>
                             @Html.AntiForgeryToken()
 
@@ -22,37 +39,53 @@
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
 
+                            @{
+                                var currentUserId = User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                                var isSelf = !string.IsNullOrEmpty(currentUserId) && Model != null && currentUserId == Model.UsuarioId.ToString();
+                            }
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label asp-for="Nombre" class="form-label fw-bold"></label>
+                                    <label class="form-label fw-bold">@t("Label_NombreU")</label>
                                     <input asp-for="Nombre" class="form-control" />
                                     <span asp-validation-for="Nombre" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label asp-for="Apellidos" class="form-label fw-bold"></label>
+                                    <label class="form-label fw-bold">@t("Label_Apellidos")</label>
                                     <input asp-for="Apellidos" class="form-control" />
                                     <span asp-validation-for="Apellidos" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label asp-for="Rol" class="form-label fw-bold"></label>
-                                <select asp-for="Rol" class="form-select" asp-items="ViewBag.Roles">
-                                    <option value="">Seleccione un rol</option>
-                                </select>
+                                <label class="form-label fw-bold">@t("Label_Rol")</label>
+
+                                @if (isSelf)
+                                {
+                                    <input type="text" class="form-control" value="@Model?.Rol" disabled />
+                                    <input type="hidden" asp-for="Rol" />
+                                }
+                                else
+                                {
+                                    <select asp-for="Rol" class="form-select" asp-items="ViewBag.Roles">
+                                        <option value="">@t("Select_PlaceholderU")</option>
+                                    </select>
+                                }
+
                                 <span asp-validation-for="Rol" class="text-danger"></span>
                             </div>
 
+
                             <div class="form-check mb-3">
                                 <input class="form-check-input" type="checkbox" id="changePassword" name="changePassword" />
-                                <label class="form-check-label" for="changePassword">Cambiar contraseña</label>
+                                <label class="form-check-label" for="changePassword">@t("Usuario_Label_ChangePassword")</label>
                             </div>
 
                             <div id="pwdGroup" class="mb-3" style="display:none;">
-                                <label for="PasswordHash" class="form-label fw-bold">Nueva contraseña</label>
+                                <label for="PasswordHash" class="form-label fw-bold">@t("Label_NewPassword")</label>
                                 <div class="input-group">
                                     <input id="PasswordHash" name="PasswordHash" type="password" class="form-control" autocomplete="new-password" />
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleEditPwd" title="Mostrar / Ocultar">
+                                    <button class="btn btn-outline-secondary" type="button" id="toggleEditPwd" title="@t("Btn_ShowPassword")">
                                         <i id="iconToggleEdit" class="bi bi-eye"></i>
                                     </button>
                                 </div>
@@ -60,8 +93,8 @@
                             </div>
 
                             <div class="d-flex gap-2 justify-content-end">
-                                <button type="submit" class="btn btn-success">Actualizar</button>
-                                <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                                <button type="submit" class="btn btn-success">@t("Btn_Update")</button>
+                                <a asp-action="Index" class="btn btn-outline-secondary">@t("Btn_CancelU")</a>
                             </div>
                         </form>
                     </div>
@@ -112,4 +145,110 @@
             }
         })();
     </script>
+    <script>
+        (function () {
+            // Detectar query string ?fromProfile=1
+            function getQueryParam(name) {
+                const params = new URLSearchParams(window.location.search);
+                return params.get(name);
+            }
+
+            const fromProfile = getQueryParam('fromProfile') === '1';
+            if (!fromProfile) return;
+
+            // Elementos del formulario
+            const form = document.querySelector('form[asp-action="Edit"], form[action*="/Usuario/Edit"]') || document.querySelector('form');
+            if (!form) return;
+
+            // Campos Nombre y Apellidos (inputs generados por asp-for)
+            const nombreInput = form.querySelector('input[name="Nombre"]');
+            const apellidosInput = form.querySelector('input[name="Apellidos"]');
+
+            // Si existen, deshabilitarlos y crear hidden clones para enviar sus valores
+            function disableAndKeepHidden(input) {
+                if (!input) return;
+                // Mostrar como disabled (ya visible), y crear hidden para envío
+                input.setAttribute('disabled', 'disabled');
+
+                // Crear hidden solo si no existe
+                const hiddenName = input.getAttribute('name');
+                if (!form.querySelector('input[type="hidden"][name="' + hiddenName + '"]')) {
+                    const hidden = document.createElement('input');
+                    hidden.type = 'hidden';
+                    hidden.name = hiddenName;
+                    hidden.value = input.value || '';
+                    form.appendChild(hidden);
+
+                    // Mantener sincronizado si el valor cambia por JS
+                    input.addEventListener('input', function () {
+                        hidden.value = input.value;
+                    });
+                }
+            }
+
+            disableAndKeepHidden(nombreInput);
+            disableAndKeepHidden(apellidosInput);
+
+            // Cambiar el enlace Cancelar para que vaya a Home/Index
+            const cancelLink = document.querySelector('a[asp-action="Index"], a[href*="Usuario/Index"], a.btn-outline-secondary');
+            if (cancelLink) {
+                cancelLink.setAttribute('href', '/');
+            }
+
+            // Interceptar submit: enviar por AJAX y redirigir a Home si OK
+            form.addEventListener('submit', function (e) {
+                // Solo interceptar si fromProfile
+                e.preventDefault();
+
+                // Obtener token antiforgery si existe
+                const tokenInput = form.querySelector('input[name="__RequestVerificationToken"]');
+                const token = tokenInput ? tokenInput.value : null;
+
+                // Construir FormData (incluye hidden clones)
+                const fd = new FormData(form);
+
+                // Si Nombre/Apellidos estaban disabled y no se enviaron por algún motivo, asegurarlos
+                if (nombreInput && nombreInput.disabled && !fd.has('Nombre')) {
+                    fd.set('Nombre', nombreInput.value || '');
+                }
+                if (apellidosInput && apellidosInput.disabled && !fd.has('Apellidos')) {
+                    fd.set('Apellidos', apellidosInput.value || '');
+                }
+
+                // Enviar por fetch al action del form
+                const action = form.getAttribute('action') || window.location.pathname;
+                const method = (form.getAttribute('method') || 'post').toUpperCase();
+
+                fetch(action, {
+                    method: method,
+                    headers: token ? { 'RequestVerificationToken': token } : {},
+                    body: fd,
+                    credentials: 'same-origin'
+                })
+                .then(async function (resp) {
+                    // Si el servidor redirige con 302, fetch sigue y resp.ok puede ser false.
+                    // Consideramos éxito si status 200-299 o 302/303 (redirección).
+                    if (resp.ok || resp.status === 302 || resp.status === 303) {
+                        // Redirigir al Home
+                        window.location.href = '/';
+                        return;
+                    }
+
+                    // Si hay errores, intentar leer texto/JSON y mostrar
+                    let text = await resp.text();
+                    // Si la respuesta contiene el formulario con errores, reemplazar el body parcial
+                    // Fallback: mostrar alerta con el contenido
+                    alert('Error al guardar. Revisa los datos e intenta de nuevo.');
+                    console.error('Error al guardar perfil (fromProfile):', resp.status, text);
+                })
+                .catch(function (err) {
+                    console.error('Error en fetch Edit usuario:', err);
+                    // Fallback: enviar el formulario de forma normal
+                    form.removeEventListener('submit', arguments.callee);
+                    form.submit();
+                });
+            });
+        })();
+    </script>
+
 }

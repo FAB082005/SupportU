@@ -90,30 +90,40 @@ namespace SupportU.Web.Controllers
         // POST: /Especialidad/DeleteConfirmed/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string estado) // <-- recibir estado por model binding
         {
-            var estadoForm = Request.Form["estado"].FirstOrDefault();
+            _logger.LogInformation("DeleteConfirmed called for id={Id} with estado param='{EstadoParam}'", id, estado);
+
+            var estadoForm = estado ?? Request.Form["estado"].FirstOrDefault();
+            _logger.LogInformation("Resolved estado value: {EstadoForm}", estadoForm);
+
             if (!string.IsNullOrEmpty(estadoForm))
             {
                 var dto = await _service.FindByIdAsync(id);
                 if (dto != null)
                 {
-                    if (estadoForm == "1")
-                    {
-                        dto.Activa = false;
-                        await _service.UpdateAsync(dto);
-                        TempData["NotificationMessage"] = "Swal.fire('Éxito','Especialidad inactivada correctamente','success');";
-                    }
-                    else if (estadoForm == "0")
-                    {
-                        dto.Activa = true;
-                        await _service.UpdateAsync(dto);
-                        TempData["NotificationMessage"] = "Swal.fire('Éxito','Especialidad reactivada correctamente','success');";
-                    }
-                }
-            }
+                    bool? desiredActiva = null;
+                    if (estadoForm == "1") desiredActiva = false;
+                    else if (estadoForm == "0") desiredActiva = true;
 
+                    if (desiredActiva.HasValue)
+                    {
+                        dto.Activa = desiredActiva.Value;
+                        await _service.UpdateAsync(dto);
+
+                        var reloaded = await _service.FindByIdAsync(id);
+                        _logger.LogInformation("After update, Especialidad id={Id} Activa={Activa}", id, reloaded?.Activa);
+
+                        if (dto.Activa)
+                            TempData["NotificationMessage"] = "Especialidad_Reactivated|success";
+                        else
+                            TempData["NotificationMessage"] = "Especialidad_Inactivated|success";
+                    
+                    }
+                  }
+               }
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

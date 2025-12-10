@@ -1,15 +1,20 @@
 ﻿@model IEnumerable<SupportU.Application.DTOs.UsuarioDTO>
 @{
-    ViewData["Title"] = "Gestión Usuarios";
-}
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = t("Usuario_Management");
+    var notif = ViewBag.Notification as string ?? TempData["NotificationMessage"] as string;
 
-<section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
+}
+<section class="section mt-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">Usuarios</h2>
-
+            <h2 class="mb-0">@t("Usuario_Management")</h2>
             <a asp-controller="Usuario" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-person-plus"></i> Crear usuario
+                <i class="bi bi-person-plus"></i> @t("Usuario_Btn_Create")
             </a>
         </div>
 
@@ -17,12 +22,12 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Email</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Rol</th>
-                        <th>Activo</th>
-                        <th class="text-center">Acciones</th>
+                        <th>@t("Label_Email")</th>
+                        <th>@t("Label_NombreU")</th>
+                        <th>@t("Label_Apellidos")</th>
+                        <th>@t("Label_Rol")</th>
+                        <th>@t("Label_Activo")</th>
+                        <th class="text-center">@t("Label_ActionsU")</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,26 +37,37 @@
                             <td>@item.Email</td>
                             <td>@item.Nombre</td>
                             <td>@item.Apellidos</td>
-                            <td>
-                                <span class="badge bg-info">@item.Rol</span>
-                            </td>
+                            <td><span class="badge bg-info">@item.Rol</span></td>
                             <td>
                                 @if (item.Activo)
                                 {
-                                    <span class="badge bg-success">Activo</span>
+                                    <span class="badge bg-success">@t("Status_ActiveU")</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">Inactivo</span>
+                                    <span class="badge bg-secondary">@t("Status_InactiveU")</span>
                                 }
                             </td>
                             <td class="text-center">
-                                <a asp-action="Edit" asp-route-id="@item.UsuarioId" class="btn btn-sm btn-edit">
+                                <a asp-action="Edit" asp-route-id="@item.UsuarioId" class="btn btn-sm btn-edit" title="@t("Usuario_Btn_Edit")">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a asp-action="Delete" asp-route-id="@item.UsuarioId" class="btn btn-sm btn-delete">
+
+                                  <form id="delete-form-@item.UsuarioId"
+                                      asp-controller="Usuario"
+                                      asp-action="Delete"
+                                      asp-route-id="@item.UsuarioId"
+                                      method="post"
+                                      class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="estado" value="@(item.Activo ? "1" : "0")" />
+                                    <button type="button"
+                                        class="btn btn-sm @(item.Activo ? "btn-danger js-delete-user" : "btn-success js-delete-user")"
+                                        data-id="@item.UsuarioId"
+                                        title="@(item.Activo ? t("Usuario_Btn_DeleteR") : t("Usuario_Reactivate_Button"))">
                                     <i class="bi bi-power"></i>
-                                </a>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     }
@@ -60,3 +76,75 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        (function () {
+            // Exponer traducciones al JS
+            window.__i18n = window.__i18n || {};
+            try {
+                window.__i18n.translations = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["Translations"] ?? new Dictionary<string, string>()));
+            } catch (e) {
+                window.__i18n.translations = {};
+            }
+            window.__i18n.t = function (key, fallback) {
+                return (window.__i18n.translations && window.__i18n.translations[key]) ? window.__i18n.translations[key] : (fallback || key);
+            };
+
+            document.addEventListener('click', function (e) {
+                var btn = e.target.closest('.js-delete-user');
+                if (!btn) return;
+
+                var id = btn.getAttribute('data-id');
+                if (!id) return;
+
+                // Buscar el formulario asociado (id delete-form-{id})
+                var form = document.getElementById('delete-form-' + id);
+                if (!form) {
+                    console.warn('Delete form not found for id', id);
+                    return;
+                }
+
+                // Determinar acción según el valor actual del input estado
+                var estadoInput = form.querySelector('input[name="estado"]');
+                var estadoVal = estadoInput ? estadoInput.value : "1"; // por defecto inactivar
+                var willInactivate = estadoVal === "1"; // si envía 1 => inactivar
+
+                // Títulos y textos traducibles
+                var titleKey = willInactivate ? 'Usuario_Swal_Delete_Title' : 'Usuario_Swal_Reactivate_Title';
+                var textKey = willInactivate ? 'Usuario_Swal_Delete_Text' : 'Usuario_Swal_Reactivate_Text';
+                var confirmKey = willInactivate ? 'Usuario_Swal_Delete_Confirm' : 'Usuario_Swal_Reactivate_Confirm';
+                var cancelKey = willInactivate ? 'Usuario_Swal_Delete_Cancel' : 'Usuario_Swal_Reactivate_Cancel';
+                var confirmColor = willInactivate ? '#d33' : '#198754';
+
+                Swal.fire({
+                    title: window.__i18n.t(titleKey, willInactivate ? '¿Inactivar este usuario?' : '¿Reactivar este usuario?'),
+                    text: window.__i18n.t(textKey, willInactivate ? 'Esta acción marcará el usuario como inactivo.' : 'Esta acción marcará el usuario como activo nuevamente.'),
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: window.__i18n.t(confirmKey, willInactivate ? 'Inactivar' : 'Reactivar'),
+                    cancelButtonText: window.__i18n.t(cancelKey, 'Cancelar'),
+                    confirmButtonColor: confirmColor
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }, false);
+        })();
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+    @if (!string.IsNullOrEmpty(notif))
+    {
+        var parts = notif.Split('|', 2);
+        var key = parts.Length > 0 ? parts[0] : notif;
+        var type = parts.Length > 1 ? parts[1] : "info";
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var title = translations.ContainsKey(key + "_Title") ? translations[key + "_Title"] : translations.GetValueOrDefault(key) ?? key;
+        var text = translations.ContainsKey(key + "_Text") ? translations[key + "_Text"] : "";
+        <script>Swal.fire('@title', '@text', '@type');</script>
+    }
+}

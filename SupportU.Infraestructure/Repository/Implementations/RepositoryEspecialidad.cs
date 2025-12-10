@@ -21,11 +21,12 @@ namespace SupportU.Infrastructure.Repository
 			await _context.SaveChangesAsync();
 			return entity.EspecialidadId;
 		}
-		public async Task UpdateAsync()
-		{
-			await _context.SaveChangesAsync();
-		}
-		public async Task DeleteAsync(int id)
+        public async Task UpdateAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
 		{
 			var entity = await _context.Especialidad.FindAsync(id);
 			if (entity == null) return;

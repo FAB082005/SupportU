@@ -12,28 +12,40 @@
 <section class="section mt-5">
     <div class="container">
         <h2>@t("Sla_Title_Edit")</h2>
-        <form asp-action="Edit" method="post" novalidate>
+
+        <form id="sla-form" asp-action="Edit" method="post" novalidate>
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="SlaId" />
+            <input asp-for="Activo" type="hidden" />
+
             <div class="mb-3">
                 <label asp-for="Nombre" class="form-label fw-bold">@t("Sla_Label_Nombre")</label>
                 <input asp-for="Nombre" class="form-control" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
+
             <div class="mb-3">
-                <label asp-for="TiempoRespuestaMinutos" class="form-label fw-bold">@t("Sla_Label_TiempoRespuesta")</label>
-                <input asp-for="TiempoRespuestaMinutos" class="form-control" />
+                <label class="form-label fw-bold">@t("Sla_Label_TiempoRespuesta")</label>
+                <div class="d-flex align-items-center gap-2">
+                    <input id="resp-hours" type="number" min="0" step="1" class="form-control" style="width:90px" />
+                    <div style="font-size:1.25rem">:</div>
+                    <input id="resp-mins" type="number" min="1" max="59" step="1" class="form-control" style="width:90px" />
+                    <input asp-for="TiempoRespuestaMinutos" id="TiempoRespuestaMinutos" type="hidden" />
+                </div>
                 <span asp-validation-for="TiempoRespuestaMinutos" class="text-danger"></span>
             </div>
+
             <div class="mb-3">
-                <label asp-for="TiempoResolucionMinutos" class="form-label fw-bold">@t("Sla_Label_TiempoResolucion")</label>
-                <input asp-for="TiempoResolucionMinutos" class="form-control" />
+                <label class="form-label fw-bold">@t("Sla_Label_TiempoResolucion")</label>
+                <div class="d-flex align-items-center gap-2">
+                    <input id="res-hours" type="number" min="0" step="1" class="form-control" style="width:90px" />
+                    <div style="font-size:1.25rem">:</div>
+                    <input id="res-mins" type="number" min="1" max="59" step="1" class="form-control" style="width:90px" />
+                    <input asp-for="TiempoResolucionMinutos" id="TiempoResolucionMinutos" type="hidden" />
+                </div>
                 <span asp-validation-for="TiempoResolucionMinutos" class="text-danger"></span>
             </div>
-            <div class="form-check mb-3">
-                <input asp-for="Activo" class="form-check-input" />
-                <label asp-for="Activo" class="form-check-label">@t("Sla_Label_Activo")</label>
-            </div>
+
             <div class="d-flex gap-2 justify-content-end">
                 <button type="submit" class="btn btn-success">@t("Sla_Btn_Update")</button>
                 <a asp-action="Index" class="btn btn-outline-secondary">@t("Sla_Btn_Cancel")</a>
@@ -44,4 +56,62 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function hmsToMinutes(h, m) {
+                var secs = (Number(h) || 0) * 3600 + (Number(m) || 0) * 60;
+                return Math.round(secs / 60);
+            }
+            function minutesToHms(totalMin) {
+                var totalSec = Math.round((Number(totalMin) || 0) * 60);
+                var h = Math.floor(totalSec / 3600);
+                var m = Math.floor((totalSec % 3600) / 60);
+                return { h: h, m: m };
+            }
+
+            var form = document.getElementById('sla-form');
+            var respHours = document.getElementById('resp-hours');
+            var respMins = document.getElementById('resp-mins');
+            var resHours = document.getElementById('res-hours');
+            var resMins = document.getElementById('res-mins');
+            var hiddenResp = document.getElementById('TiempoRespuestaMinutos');
+            var hiddenRes = document.getElementById('TiempoResolucionMinutos');
+            try {
+                if (hiddenResp && respHours && respMins) {
+                    var tr = minutesToHms(hiddenResp.value || 0);
+                    respHours.value = tr.h;
+                    respMins.value = Math.max(1, tr.m || 1);
+                }
+                if (hiddenRes && resHours && resMins) {
+                    var ts = minutesToHms(hiddenRes.value || 0);
+                    resHours.value = ts.h;
+                    resMins.value = Math.max(1, ts.m || 1);
+                }
+            } catch (e) {
+                console.warn('SLA init error', e);
+            }
+
+            [respMins, resMins].forEach(function (el) {
+                if (!el) return;
+                el.setAttribute('min', '1');
+                el.addEventListener('input', function () {
+                    if (el.value === '' || Number(el.value) < 1) el.value = 1;
+                    if (Number(el.value) > 59) el.value = 59;
+                });
+            });
+
+            if (form) {
+                form.addEventListener('submit', function () {
+                    var rh = respHours ? respHours.value : 0;
+                    var rm = respMins ? Math.max(1, respMins.value || 1) : 1;
+                    var sh = resHours ? resHours.value : 0;
+                    var sm = resMins ? Math.max(1, resMins.value || 1) : 1;
+
+                    if (hiddenResp) hiddenResp.value = hmsToMinutes(rh, rm);
+                    if (hiddenRes) hiddenRes.value = hmsToMinutes(sh, sm);
+                });
+            }
+        });
+    </script>
 }

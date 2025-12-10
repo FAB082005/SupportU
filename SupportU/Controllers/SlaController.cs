@@ -124,7 +124,8 @@ namespace SupportU.Web.Controllers
             return View(dto);
         }
 
-        [HttpPost, ActionName("Delete")]
+        // POST: /Sla/DeleteConfirmed/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -160,5 +161,7 @@ namespace SupportU.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+
     }
 }
+

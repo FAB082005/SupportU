@@ -29,15 +29,15 @@ namespace SupportU.Application.Services
 			var entity = _mapper.Map<Especialidad>(dto);
 			return await _repo.AddAsync(entity);
 		}
-		public async Task UpdateAsync(EspecialidadDTO dto)
-		{
-			var entity = await _repo.FindByIdAsync(dto.EspecialidadId);
-			if (entity == null) throw new System.ArgumentException("Especialidad no encontrada");
-			entity.Nombre = dto.Nombre;
-			entity.Activa = dto.Activa;
-			await _repo.UpdateAsync();
-		}
-		public async Task DeleteAsync(int id)
+        public async Task UpdateAsync(EspecialidadDTO dto)
+        {
+            var entity = await _repo.FindByIdAsync(dto.EspecialidadId);
+            if (entity == null) throw new System.ArgumentException("Especialidad no encontrada");
+            entity.Nombre = dto.Nombre;
+            entity.Activa = dto.Activa;
+            await _repo.UpdateAsync();
+        }
+        public async Task DeleteAsync(int id)
 		{
 			await _repo.DeleteAsync(id);
 		}

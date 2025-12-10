@@ -1,0 +1,38 @@
+2025-12-09 19:46:48.451 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-09 19:46:48.651 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-12-09 19:46:48.738 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=3
+2025-12-09 19:46:48.739 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=3
+2025-12-09 19:46:53.328 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-09 19:46:53.336 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-12-09 19:46:53.340 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=3
+2025-12-09 19:46:53.341 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=3
+2025-12-09 19:49:58.331 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-09 19:49:58.506 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-12-09 19:49:58.620 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=3
+2025-12-09 19:49:58.621 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=3
+2025-12-09 19:50:01.894 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-09 19:50:01.902 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-12-09 19:50:01.907 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=3
+2025-12-09 19:50:01.908 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=3
+2025-12-09 19:57:25.281 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=4
+2025-12-09 19:57:25.458 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=4
+2025-12-09 19:57:25.554 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=4
+2025-12-09 19:57:25.555 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=4
+2025-12-09 20:00:34.610 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-09 20:00:34.755 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-12-09 20:00:34.784 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=3
+2025-12-09 20:00:34.785 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=3
+2025-12-09 20:14:23.313 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=3 count=1
+2025-12-09 20:17:29.554 -06:00 [INF] DeleteConfirmed POST called for CategoriaId=3
+2025-12-09 20:17:29.655 -06:00 [INF] RepositoryCategoria.UpdateAsync called. Id=3
+2025-12-09 20:17:29.750 -06:00 [INF] RepositoryCategoria.UpdateAsync completed. Id=3
+2025-12-09 20:17:29.751 -06:00 [INF] ServiceCategoria.UpdateAsync updated CategoriaId=3
+2025-12-09 20:54:14.035 -06:00 [INF] DeleteConfirmed called for id=4 with estado param='1'
+2025-12-09 20:54:14.070 -06:00 [INF] Resolved estado value: 1
+2025-12-09 20:54:14.183 -06:00 [INF] After update, Especialidad id=4 Activa=false
+2025-12-09 20:54:25.330 -06:00 [INF] DeleteConfirmed called for id=4 with estado param='0'
+2025-12-09 20:54:25.332 -06:00 [INF] Resolved estado value: 0
+2025-12-09 20:54:25.347 -06:00 [INF] After update, Especialidad id=4 Activa=true
+2025-12-09 20:54:29.235 -06:00 [INF] DeleteConfirmed called for id=4 with estado param='1'
+2025-12-09 20:54:29.237 -06:00 [INF] Resolved estado value: 1
+2025-12-09 20:54:29.246 -06:00 [INF] After update, Especialidad id=4 Activa=false

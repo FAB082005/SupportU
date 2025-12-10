@@ -87,14 +87,16 @@ namespace SupportU.Web.Controllers
             var dto = await _serviceTecnico.FindByIdAsync(id);
             if (dto == null)
             {
-                TempData["NotificationMessage"] = "Swal.fire('Atención','Técnico no encontrado','warning')";
+                TempData["Notification"] = "Tecnico_NotFound|warning";
                 return RedirectToAction(nameof(Index));
             }
+             var allEspecialidades = (await _serviceEspecialidad.ListAsync())
+                                     .Where(e => e.Activa)
+                                     .ToList();
 
-            var allEspecialidades = await _serviceEspecialidad.ListAsync();
             ViewBag.AllEspecialidades = allEspecialidades;
-            ViewBag.SelectedEspecialidades = dto.Especialidades?.Select(e => e.EspecialidadId).ToList() ?? new System.Collections.Generic.List<int>();
-
+            ViewBag.SelectedEspecialidades = dto.Especialidades?.Select(e => e.EspecialidadId).ToList()
+                                           ?? new System.Collections.Generic.List<int>();
             return View(dto);
         }
 
@@ -105,7 +107,7 @@ namespace SupportU.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var allEspecialidades = await _serviceEspecialidad.ListAsync();
+                var allEspecialidades = (await _serviceEspecialidad.ListAsync()).Where(e => e.Activa).ToList();
                 ViewBag.AllEspecialidades = allEspecialidades;
                 ViewBag.SelectedEspecialidades = especialidades?.ToList() ?? new System.Collections.Generic.List<int>();
                 return View(dto);
@@ -116,14 +118,14 @@ namespace SupportU.Web.Controllers
                 var ids = (especialidades ?? Array.Empty<int>()).ToList();
                 await _serviceTecnico.UpdateEspecialidadesAsync(dto.TecnicoId, ids);
 
-                TempData["NotificationMessage"] = "Swal.fire('Éxito','Técnico actualizado correctamente','success')";
+                TempData["Notification"] = "Tecnico_Updated|success";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating tecnico Id={Id}", dto?.TecnicoId);
                 ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
-                var allEspecialidades = await _serviceEspecialidad.ListAsync();
+                var allEspecialidades = (await _serviceEspecialidad.ListAsync()).Where(e => e.Activa).ToList();
                 ViewBag.AllEspecialidades = allEspecialidades;
                 ViewBag.SelectedEspecialidades = especialidades?.ToList() ?? new System.Collections.Generic.List<int>();
                 return View(dto);

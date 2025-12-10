@@ -1,6 +1,11 @@
 ﻿@model SupportU.Application.DTOs.UsuarioDTO
 @{
-    ViewData["Title"] = Model.Activo ? "Inactivar Usuario" : "Reactivar Usuario";
+    Func<string, string> t = key =>
+    {
+        var translations = ViewData["Translations"] as Dictionary<string, string> ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        return translations.TryGetValue(key, out var val) ? val : key;
+    };
+    ViewData["Title"] = Model.Activo ? t("Usuario_Delete_Inactivate_Title") : t("Usuario_Delete_Reactivate_Title");
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
@@ -28,7 +33,7 @@
                                 <input type="hidden" name="estado" value="1" /> @* 1 => inactivar *@
                                 <div class="d-flex gap-2 justify-content-end">
                                     <button type="submit" class="btn btn-danger">Inactivar</button>
-                                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                                    <a asp-action="Index" class="btn btn-outline-secondary">@t("Btn_CancelU")</a>
                                 </div>
                             </form>
                         }
@@ -39,7 +44,7 @@
                                 <input type="hidden" name="estado" value="0" /> @* 0 => reactivar *@
                                 <div class="d-flex gap-2 justify-content-end">
                                     <button type="submit" class="btn btn-success">Reactivar</button>
-                                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                                    <a asp-action="Index" class="btn btn-outline-secondary">@t("Btn_CancelU")</a>
                                 </div>
                             </form>
                         }

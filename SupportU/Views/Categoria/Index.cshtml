@@ -56,22 +56,20 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
-                                <button type="button"
-                                        class="btn btn-sm btn-delete js-delete-category"
-                                        data-id="@item.CategoriaId"
-                                        title="@t("Btn_Delete")">
-                                    <i class="bi bi-power"></i>
-                                </button>
-
-                                @* Formulario oculto que postea a la acción Delete (ActionName("Delete")) *@
                                 <form id="delete-form-@item.CategoriaId"
                                       asp-controller="Categoria"
                                       asp-action="Delete"
                                       asp-route-id="@item.CategoriaId"
                                       method="post"
-                                      class="d-none">
+                                      class="d-inline">
                                     @Html.AntiForgeryToken()
-                                    <input type="hidden" name="estado" value="1" /> @* 1 => inactivar *@
+                                    <input type="hidden" name="estado" value="@(item.Activa ? "1" : "0")" />
+                                    <button type="button"
+                                            class="btn btn-sm @(item.Activa ? "btn-danger js-delete-category" : "btn-success js-delete-category")"
+                                            data-id="@item.CategoriaId"
+                                            title="@(item.Activa ? t("Btn_Delete") : t("Btn_NewCategory"))">
+                                        <i class="bi bi-power"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -81,7 +79,6 @@
         </div>
     </div>
 </section>
-
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
@@ -102,20 +99,33 @@
                 var btn = e.target.closest('.js-delete-category');
                 if (!btn) return;
 
+                e.preventDefault();
+
                 var id = btn.getAttribute('data-id');
                 if (!id) return;
 
+                var form = document.getElementById('delete-form-' + id);
+                var estadoInput = form ? form.querySelector('input[name="estado"]') : null;
+                var estadoVal = estadoInput ? estadoInput.value : "1"; // por defecto inactivar
+                var willInactivate = estadoVal === "1";
+
+                // Seleccionar claves/textos según acción (inactivar vs reactivar)
+                var titleKey = willInactivate ? 'Swal_Delete_Title' : 'Categoria_Swal_Reactivate_Title';
+                var textKey = willInactivate ? 'Swal_Delete_Text' : 'Categoria_Swal_Reactivate_Text';
+                var confirmKey = willInactivate ? 'Swal_Delete_Confirm' : 'Categoria_Swal_Reactivate_Confirm';
+                var cancelKey = willInactivate ? 'Swal_Delete_Cancel' : 'Categoria_Swal_Reactivate_Cancel';
+                var confirmColor = willInactivate ? '#d33' : '#198754';
+
                 Swal.fire({
-                    title: window.__i18n.t('Swal_Delete_Title', 'Delete this category?'),
-                    text: window.__i18n.t('Swal_Delete_Text', 'This action will mark the category as inactive.'),
+                    title: window.__i18n.t(titleKey, willInactivate ? 'Delete this category?' : 'Reactivate this category?'),
+                    text: window.__i18n.t(textKey, willInactivate ? 'This action will mark the category as inactive.' : 'This action will mark the category as active again.'),
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: window.__i18n.t('Swal_Delete_Confirm', 'Delete'),
-                    cancelButtonText: window.__i18n.t('Swal_Delete_Cancel', 'Cancel'),
-                    confirmButtonColor: '#d33'
+                    confirmButtonText: window.__i18n.t(confirmKey, willInactivate ? 'Delete' : 'Reactivate'),
+                    cancelButtonText: window.__i18n.t(cancelKey, 'Cancel'),
+                    confirmButtonColor: confirmColor
                 }).then(function (result) {
                     if (result.isConfirmed) {
-                        var form = document.getElementById('delete-form-' + id);
                         if (form) {
                             form.submit();
                         } else {

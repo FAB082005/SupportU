@@ -37,6 +37,7 @@
                 <select name="especialidades" class="form-select" multiple size="8">
                     @foreach (var esp in allEspecialidades)
                     {
+                        if (!esp.Activa) continue;
                         var isSelected = (firstSelected != 0 && esp.EspecialidadId == firstSelected);
                         <option value="@esp.EspecialidadId" selected="@(isSelected ? "selected" : null)">
                             @esp.Nombre
