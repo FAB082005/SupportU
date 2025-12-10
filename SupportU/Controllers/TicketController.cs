@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SupportU.Application.DTOs;
 using SupportU.Application.Services;
+using SupportU.Application.Services.Implementations;
 using SupportU.Application.Services.Interfaces;
 using System.Security.Claims;
 
@@ -16,6 +17,7 @@ namespace SupportU.Web.Controllers
 		private readonly IServiceCategoria _serviceCategoria;
 		private readonly IServiceAutoTriage _serviceAutotriage;
 		private readonly IServiceHistorialEstados _serviceHistorial;
+		private readonly IServiceAsignacion _serviceAsignacion;
 		private readonly ILogger<TicketController> _logger;
 
 		public TicketController(
@@ -25,6 +27,7 @@ namespace SupportU.Web.Controllers
 			IServiceCategoria serviceCategoria,
 			IServiceAutoTriage serviceAutotriage,
 			 IServiceHistorialEstados serviceHistorial,
+			 IServiceAsignacion serviceAsignacion,
 			ILogger<TicketController> logger)
 		{
 			_serviceTicket = serviceTicket;
@@ -33,6 +36,7 @@ namespace SupportU.Web.Controllers
 			_serviceCategoria = serviceCategoria;
 			_serviceAutotriage = serviceAutotriage;
 			_serviceHistorial = serviceHistorial;
+			_serviceAsignacion = serviceAsignacion;
 			_logger = logger;
 		}
 
@@ -73,12 +77,24 @@ namespace SupportU.Web.Controllers
 
 		public async Task<IActionResult> Details(int id)
 		{
-			var ticket = await _serviceTicket.FindByIdAsync(id);
-			if (ticket == null) return NotFound();
+			try
+			{
+				var ticket = await _serviceTicket.FindByIdAsync(id);
+				if (ticket == null) return NotFound();
 
-			ViewBag.UsuarioId = GetCurrentUserId();
-			ViewBag.RolUsuario = User.FindFirstValue(ClaimTypes.Role);
-			return View(ticket);
+				// IMPORTANTE: Cargar la valoración si existe
+				// Agregar esto si no lo tienes en tu servicio
+				ViewBag.UsuarioId = GetCurrentUserId();
+				ViewBag.RolUsuario = User.FindFirstValue(ClaimTypes.Role);
+
+				return View(ticket);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error al obtener detalles del ticket {TicketId}", id);
+				TempData["Error"] = "Error al cargar el ticket";
+				return RedirectToAction(nameof(Index));
+			}
 		}
 
 		public async Task<IActionResult> Create()
@@ -146,70 +162,6 @@ namespace SupportU.Web.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "Administrador")]
-		public async Task<IActionResult> AsignarAutomatico([FromBody] AsignarTicketRequest request)
-		{
-			try
-			{
-				_logger.LogInformation(" [CONTROLLER] AsignarAutomatico iniciado");
-
-				if (request == null || request.ticketId <= 0)
-				{
-					return Json(new { success = false, message = "ID de ticket inválido" });
-				}
-
-				var ticketId = request.ticketId;
-
-				var ticket = await _serviceTicket.FindByIdAsync(ticketId);
-				if (ticket == null)
-				{
-					return Json(new { success = false, message = "Ticket no encontrado" });
-				}
-				var resultado = await _serviceAutotriage.AsignarTicketAutomaticoAsync(ticketId);
-
-				if (resultado.Exitoso)
-				{
-				
-					var historialAsignacion = new HistorialEstadosDTO
-					{
-						TicketId = ticketId,
-						EstadoAnterior = "Pendiente",
-						EstadoNuevo = "Asignado",
-						UsuarioId = GetCurrentUserId(), // Admin que ejecutó
-						Observaciones = $"Asignado automáticamente por autotriage al técnico {resultado.NombreTecnico}. Justificación: {resultado.Justificacion}",
-						FechaCambio = DateTime.Now,
-						Imagenes = new List<ImagenDTO>() // Sin imágenes en asignación auto
-					};
-
-					await _serviceHistorial.AddAsync(historialAsignacion);
-
-					return Json(new
-					{
-						success = true,
-						message = $"Técnico asignado: {resultado.NombreTecnico}",
-						tecnico = resultado.NombreTecnico
-					});
-				}
-				else
-				{
-					return Json(new { success = false, message = resultado.MensajeError });
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "💥 [CONTROLLER] Error en AsignarAutomatico");
-				return Json(new { success = false, message = $"Error: {ex.Message}" });
-			}
-		}
-
-
-		public class AsignarTicketRequest
-		{
-			public int ticketId { get; set; }
-		}
-
-
-		[HttpPost]
-		[Authorize(Roles = "Administrador")]
 		public async Task<IActionResult> AsignarManual([FromBody] AsignarManualRequest request)
 		{
 			try
@@ -245,16 +197,43 @@ namespace SupportU.Web.Controllers
 				ticket.Estado = "Asignado";
 				await _serviceTicket.UpdateAsync(ticket);
 
-				//  CREAR HISTORIAL DE ASIGNACIÓN MANUAL
+				// ✅ ACTUALIZAR O CREAR ASIGNACIÓN CON EL TÉCNICO ASIGNADO
+				var todasAsignaciones = await _serviceAsignacion.ListAsync();
+				var asignacionExistente = todasAsignaciones.FirstOrDefault(a => a.TicketId == request.ticketId);
+
+				if (asignacionExistente != null)
+				{
+					// Si ya existe una asignación, actualizarla
+					asignacionExistente.TecnicoId = request.tecnicoId;
+					asignacionExistente.MetodoAsignacion = "Manual";
+					asignacionExistente.FechaAsignacion = DateTime.Now;
+					asignacionExistente.UsuarioAsignadorId = GetCurrentUserId();
+				}
+				else
+				{
+					// Si no existe, crear nueva asignación
+					var nuevaAsignacion = new AsignacionDTO
+					{
+						TicketId = request.ticketId,
+						TecnicoId = request.tecnicoId,
+						MetodoAsignacion = "Manual",
+						FechaAsignacion = DateTime.Now,
+						UsuarioAsignadorId = GetCurrentUserId()
+					};
+
+					await _serviceAsignacion.AddAsync(nuevaAsignacion);
+				}
+
+				// Crear historial de asignación manual
 				var historialAsignacion = new HistorialEstadosDTO
 				{
 					TicketId = request.ticketId,
 					EstadoAnterior = "Pendiente",
 					EstadoNuevo = "Asignado",
-					UsuarioId = GetCurrentUserId(), // Admin que asignó
+					UsuarioId = GetCurrentUserId(),
 					Observaciones = $"Asignado manualmente al técnico {tecnico.NombreUsuario} por el administrador",
 					FechaCambio = DateTime.Now,
-					Imagenes = new List<ImagenDTO>() // Sin imágenes en asignación manual
+					Imagenes = new List<ImagenDTO>()
 				};
 
 				await _serviceHistorial.AddAsync(historialAsignacion);
@@ -272,6 +251,97 @@ namespace SupportU.Web.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error en asignación manual");
+				return Json(new { success = false, message = $"Error: {ex.Message}" });
+			}
+		}
+
+		public class AsignarTicketRequest
+		{
+			public int ticketId { get; set; }
+		}
+
+
+		[HttpPost]
+		[Authorize(Roles = "Administrador")]
+		public async Task<IActionResult> AsignarAutomatico([FromBody] AsignarTicketRequest request)
+		{
+			try
+			{
+				_logger.LogInformation("🤖 [CONTROLLER] AsignarAutomatico iniciado");
+
+				if (request == null || request.ticketId <= 0)
+				{
+					return Json(new { success = false, message = "ID de ticket inválido" });
+				}
+
+				var ticketId = request.ticketId;
+
+				var ticket = await _serviceTicket.FindByIdAsync(ticketId);
+				if (ticket == null)
+				{
+					return Json(new { success = false, message = "Ticket no encontrado" });
+				}
+
+				var resultado = await _serviceAutotriage.AsignarTicketAutomaticoAsync(ticketId);
+
+				if (resultado.Exitoso)
+				{
+					// ✅ ACTUALIZAR O CREAR ASIGNACIÓN CON EL TÉCNICO ASIGNADO
+					var todasAsignaciones = await _serviceAsignacion.ListAsync();
+					var asignacionExistente = todasAsignaciones.FirstOrDefault(a => a.TicketId == ticketId);
+
+					if (asignacionExistente != null)
+					{
+						// Si ya existe una asignación, actualizarla
+						asignacionExistente.TecnicoId = resultado.TecnicoId;
+						asignacionExistente.MetodoAsignacion = "Automatico";
+						asignacionExistente.FechaAsignacion = DateTime.Now;
+						asignacionExistente.UsuarioAsignadorId = GetCurrentUserId();
+					}
+					else
+					{
+						// Si no existe, crear nueva asignación
+						var nuevaAsignacion = new AsignacionDTO
+						{
+							TicketId = ticketId,
+							TecnicoId = resultado.TecnicoId,
+							MetodoAsignacion = "Automatico",
+							FechaAsignacion = DateTime.Now,
+							UsuarioAsignadorId = GetCurrentUserId()
+						};
+
+						await _serviceAsignacion.AddAsync(nuevaAsignacion);
+					}
+
+					// Crear historial
+					var historialAsignacion = new HistorialEstadosDTO
+					{
+						TicketId = ticketId,
+						EstadoAnterior = "Pendiente",
+						EstadoNuevo = "Asignado",
+						UsuarioId = GetCurrentUserId(),
+						Observaciones = $"Asignado automáticamente por autotriage al técnico {resultado.NombreTecnico}. Justificación: {resultado.Justificacion}",
+						FechaCambio = DateTime.Now,
+						Imagenes = new List<ImagenDTO>()
+					};
+
+					await _serviceHistorial.AddAsync(historialAsignacion);
+
+					return Json(new
+					{
+						success = true,
+						message = $"Técnico asignado: {resultado.NombreTecnico}",
+						tecnico = resultado.NombreTecnico
+					});
+				}
+				else
+				{
+					return Json(new { success = false, message = resultado.MensajeError });
+				}
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "💥 [CONTROLLER] Error en AsignarAutomatico");
 				return Json(new { success = false, message = $"Error: {ex.Message}" });
 			}
 		}
@@ -318,53 +388,155 @@ namespace SupportU.Web.Controllers
 			}
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> Edit(int id)
 		{
-			var ticket = await _serviceTicket.FindByIdAsync(id);
-			if (ticket == null) return NotFound();
+			try
+			{
+				var ticket = await _serviceTicket.FindByIdAsync(id);
+				if (ticket == null)
+				{
+					TempData["Error"] = "Ticket no encontrado";
+					return RedirectToAction(nameof(Index));
+				}
 
-			var usuarioId = GetCurrentUserId();
-			await LoadViewBagData(usuarioId);
+				var usuarioId = GetCurrentUserId();
+				var rolUsuario = User.FindFirstValue(ClaimTypes.Role);
 
-			return View(ticket);
+				// Solo permitir edición si es admin, el dueño o técnico asignado
+				if (rolUsuario != "Administrador" &&
+					ticket.UsuarioSolicitanteId != usuarioId &&
+					ticket.TecnicoAsignadoId != usuarioId)
+				{
+					TempData["Error"] = "No tiene permisos para editar este ticket";
+					return RedirectToAction(nameof(Index));
+				}
+
+				await LoadViewBagData(usuarioId);
+
+				// Obtener la etiqueta actual basada en la categoría del ticket
+				if (ticket.CategoriaId > 0)
+				{
+					// Buscar etiquetas que pertenecen a esta categoría
+					var etiquetas = await _serviceEtiqueta.ListAsync();
+					var etiquetasDeCategoria = etiquetas.Where(e => e.CategoriaId == ticket.CategoriaId).ToList();
+
+					if (etiquetasDeCategoria.Any())
+					{
+						// Si solo hay una etiqueta para esta categoría, seleccionarla
+						if (etiquetasDeCategoria.Count == 1)
+						{
+							ViewBag.EtiquetaSeleccionada = etiquetasDeCategoria.First().EtiquetaId;
+						}
+						// Si hay múltiples, necesitarías lógica adicional para determinar cuál es la correcta
+					}
+				}
+
+				return View(ticket);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error al cargar ticket para editar. Id: {Id}", id);
+				TempData["Error"] = "Error al cargar el ticket";
+				return RedirectToAction(nameof(Index));
+			}
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(
-			TicketDTO dto,
-			string metodoAsignacion,
-			int? tecnicoSeleccionadoId,
-			int? etiquetaSeleccionadaId)
+		public async Task<IActionResult> Edit(TicketDTO dto, int etiquetaSeleccionadaId)
 		{
-			var usuarioId = GetCurrentUserId();
-
-			if (!ValidarDatosTicket(etiquetaSeleccionadaId, metodoAsignacion, tecnicoSeleccionadoId))
-			{
-				await LoadViewBagData(usuarioId);
-				return View(dto);
-			}
-
-			if (!ModelState.IsValid)
-			{
-				await LoadViewBagData(usuarioId);
-				return View(dto);
-			}
-
 			try
 			{
-				ActualizarAsignacionTecnico(dto, metodoAsignacion, tecnicoSeleccionadoId);
+				_logger.LogInformation("Edit POST - Iniciando edición del ticket {TicketId}", dto.TicketId);
+
+				// Validar que el ticket existe
+				var ticketExistente = await _serviceTicket.FindByIdAsync(dto.TicketId);
+				if (ticketExistente == null)
+				{
+					TempData["Error"] = "Ticket no encontrado";
+					return RedirectToAction(nameof(Index));
+				}
+
+				// Verificar permisos
+				var usuarioId = GetCurrentUserId();
+				var rolUsuario = User.FindFirstValue(ClaimTypes.Role);
+
+				if (rolUsuario != "Administrador" &&
+					ticketExistente.UsuarioSolicitanteId != usuarioId &&
+					ticketExistente.TecnicoAsignadoId != usuarioId)
+				{
+					TempData["Error"] = "No tiene permisos para editar este ticket";
+					return RedirectToAction(nameof(Index));
+				}
+
+				// Validar datos requeridos
+				if (etiquetaSeleccionadaId <= 0)
+				{
+					ModelState.AddModelError("", "Debe seleccionar una etiqueta");
+					await LoadViewBagData(usuarioId);
+					return View(ticketExistente);
+				}
+
+				// Obtener la etiqueta seleccionada para determinar la categoría
+				var etiquetas = await _serviceEtiqueta.ListAsync();
+				var etiquetaSeleccionada = etiquetas.FirstOrDefault(e => e.EtiquetaId == etiquetaSeleccionadaId);
+
+				if (etiquetaSeleccionada == null)
+				{
+					ModelState.AddModelError("", "Etiqueta seleccionada no válida");
+					await LoadViewBagData(usuarioId);
+					return View(ticketExistente);
+				}
+
+				// Asignar la nueva categoría basada en la etiqueta seleccionada
+				dto.CategoriaId = etiquetaSeleccionada.CategoriaId;
+
+				_logger.LogInformation("Edit POST - Etiqueta seleccionada: {EtiquetaId} -> Categoría: {CategoriaId}",
+					etiquetaSeleccionadaId, dto.CategoriaId);
+
+				// Mantener campos que no se editan directamente en el formulario
+				dto.UsuarioSolicitanteId = ticketExistente.UsuarioSolicitanteId;
+				dto.FechaCreacion = ticketExistente.FechaCreacion;
+				dto.Estado = ticketExistente.Estado;
+				dto.FechaCierre = ticketExistente.FechaCierre;
+				dto.CumplimientoRespuesta = ticketExistente.CumplimientoRespuesta;
+				dto.CumplimientoResolucion = ticketExistente.CumplimientoResolucion;
+				dto.fecha_primera_respuesta = ticketExistente.fecha_primera_respuesta;
+				dto.fecha_resolucion = ticketExistente.fecha_resolucion;
+				dto.TecnicoAsignadoId = ticketExistente.TecnicoAsignadoId;
+
+				// Validar ModelState
+				if (!ModelState.IsValid)
+				{
+					_logger.LogWarning("Edit POST - ModelState inválido. Errores:");
+					foreach (var key in ModelState.Keys)
+					{
+						var state = ModelState[key];
+						if (state.Errors.Count > 0)
+						{
+							_logger.LogWarning("  {Key}: {Error}", key,
+								string.Join(", ", state.Errors.Select(e => e.ErrorMessage)));
+						}
+					}
+
+					await LoadViewBagData(usuarioId);
+					return View(ticketExistente);
+				}
+
+				// Actualizar el ticket
 				await _serviceTicket.UpdateAsync(dto);
+				_logger.LogInformation("Edit POST - Ticket {TicketId} actualizado correctamente", dto.TicketId);
 
-				_logger.LogInformation("Ticket actualizado. Id={Id}", dto.TicketId);
-				TempData["NotificationMessage"] = "Swal.fire('Éxito','Ticket actualizado correctamente','success')";
-
-				return RedirectToAction(nameof(Index));
+				TempData["Success"] = "Ticket actualizado correctamente";
+				return RedirectToAction(nameof(Details), new { id = dto.TicketId });
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error al actualizar ticket Id={Id}", dto?.TicketId);
-				ModelState.AddModelError(string.Empty, $"Error al actualizar el ticket: {ex.Message}");
+				_logger.LogError(ex, "Error al actualizar ticket Id={TicketId}", dto?.TicketId);
+				TempData["Error"] = $"Error al actualizar el ticket: {ex.Message}";
+
+				var usuarioId = GetCurrentUserId();
 				await LoadViewBagData(usuarioId);
 				return View(dto);
 			}

@@ -1,0 +1,104 @@
+﻿@model SupportU.Application.DTOs.EtiquetaDTO
+@{
+    ViewData["Title"] = "Nueva Etiqueta";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-tag"></i> Nueva Etiqueta
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-3">
+                            <label asp-for="Nombre" class="form-label">Nombre *</label>
+                            <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre de la etiqueta" />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CategoriaId" class="form-label">Categoría *</label>
+                            <select asp-for="CategoriaId"
+                                    class="form-select"
+                                    asp-items="ViewBag.Categorias">
+                                <option value="0">-- Seleccione una categoría --</option>
+                            </select>
+                            <span asp-validation-for="CategoriaId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input asp-for="Activa" class="form-check-input" type="checkbox" />
+                            <label asp-for="Activa" class="form-check-label">
+                                Activa
+                            </label>
+                        </div>
+
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""]?.Errors.Count > 0)
+                        {
+                            <div class="alert alert-danger">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                @foreach (var error in ViewData.ModelState[""].Errors)
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            </div>
+                        }
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- DEBUG DATA (solo para desarrollo) -->
+                    @if (Model != null)
+                    {
+                        <div class="alert alert-warning mt-4">
+                            <h5><strong>DEBUG – Datos recibidos en POST</strong></h5>
+
+                            <p><strong>Nombre:</strong> @Model.Nombre</p>
+                            <p><strong>CategoriaId:</strong> @Model.CategoriaId</p>
+                            <p><strong>Activa:</strong> @Model.Activa</p>
+
+                            <h6 class="mt-3"><strong>ModelState:</strong></h6>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <ul>
+                                    @foreach (var kvp in ViewData.ModelState)
+                                    {
+                                        foreach (var err in kvp.Value.Errors)
+                                        {
+                                            <li><strong>@kvp.Key:</strong> @err.ErrorMessage</li>
+                                        }
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>ModelState válido ✔</p>
+                            }
+                        </div>
+                    }
+                    <!-- FIN DEBUG -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

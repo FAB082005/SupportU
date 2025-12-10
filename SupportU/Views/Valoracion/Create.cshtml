@@ -1,0 +1,255 @@
+﻿@model SupportU.Application.DTOs.ValoracionDTO
+@{
+    ViewData["Title"] = "Crear Valoración";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-star-fill"></i> Crear Nueva Valoración
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        @* Si viene info del ticket desde Details, mostrarla *@
+                        @if (ViewBag.TicketInfo != null)
+                        {
+                            var ticketInfo = ViewBag.TicketInfo as SupportU.Application.DTOs.TicketDTO;
+                            <input type="hidden" name="returnToTicket" value="true" />
+
+                            <div class="alert alert-info mb-3">
+                                <h6 class="alert-heading">
+                                    <i class="bi bi-ticket-detailed"></i> Ticket #@ticketInfo.TicketId
+                                </h6>
+                                <p class="mb-1"><strong>Título:</strong> @ticketInfo.Titulo</p>
+                                <p class="mb-0">
+                                    <strong>Estado:</strong>
+                                    <span class="badge bg-secondary">@ticketInfo.Estado</span>
+                                </p>
+                            </div>
+                        }
+
+                        <!-- Campo Ticket -->
+                        <div class="mb-3">
+                            <label asp-for="TicketId" class="form-label">
+                                Ticket <span class="text-danger">*</span>
+                            </label>
+
+                            @if (ViewBag.TicketInfo != null)
+                            {
+                                <!-- Si viene desde Details, bloquear el select -->
+                                <input type="hidden" asp-for="TicketId" />
+                                <input type="text"
+                                       class="form-control"
+                                       value="Ticket #@Model.TicketId"
+                                       disabled />
+                            }
+                            else
+                            {
+                                <!-- Si viene desde el menú normal, permitir seleccionar -->
+                                <select asp-for="TicketId"
+                                        class="form-select"
+                                        asp-items="ViewBag.Tickets"
+                                        id="ticketSelect">
+                                    <option value="">-- Seleccione un ticket --</option>
+                                </select>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle"></i> Solo se muestran tickets cerrados o resueltos sin valoración
+                                </div>
+                            }
+
+                            <span asp-validation-for="TicketId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Campo Puntaje con Estrellas -->
+                        <div class="mb-3">
+                            <label asp-for="Puntaje" class="form-label">
+                                Puntaje <span class="text-danger">*</span>
+                            </label>
+                            <div class="star-rating mb-2" id="starRating">
+                                <i class="bi bi-star star" data-value="1"></i>
+                                <i class="bi bi-star star" data-value="2"></i>
+                                <i class="bi bi-star star" data-value="3"></i>
+                                <i class="bi bi-star star" data-value="4"></i>
+                                <i class="bi bi-star star" data-value="5"></i>
+                            </div>
+                            <input type="hidden" asp-for="Puntaje" id="puntajeInput" />
+                            <div id="puntajeDisplay" class="badge bg-secondary">
+                                Puntaje: <span id="puntajeValue">3</span>/5
+                            </div>
+                            <span asp-validation-for="Puntaje" class="text-danger d-block"></span>
+                        </div>
+
+                        <!-- Campo Comentario -->
+                        <div class="mb-3">
+                            <label asp-for="Comentario" class="form-label">
+                                Comentario (Opcional)
+                            </label>
+                            <textarea asp-for="Comentario"
+                                      class="form-control"
+                                      rows="4"
+                                      maxlength="500"
+                                      placeholder="Escriba sus comentarios sobre el servicio recibido..."></textarea>
+                            <span asp-validation-for="Comentario" class="text-danger"></span>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i>
+                                <span id="comentarioCounter">0</span>/500 caracteres
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-end gap-2">
+                            @if (ViewBag.TicketInfo != null)
+                            {
+                                <!-- Si viene desde Details, regresar allí -->
+                                <a asp-controller="Ticket"
+                                   asp-action="Details"
+                                   asp-route-id="@Model.TicketId"
+                                   class="btn btn-secondary">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </a>
+                            }
+                            else
+                            {
+                                <!-- Si viene desde el menú, ir a Index -->
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </a>
+                            }
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar Valoración
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Información adicional -->
+            <div class="alert alert-info mt-3">
+                <i class="bi bi-lightbulb-fill"></i>
+                <strong>Nota:</strong> Las valoraciones no pueden ser editadas o eliminadas una vez creadas.
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <style>
+        .star-rating {
+            font-size: 2rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+            .star-rating .star {
+                color: #ddd;
+                transition: color 0.2s;
+            }
+
+                .star-rating .star:hover,
+                .star-rating .star.active {
+                    color: #ffc107;
+                }
+
+                .star-rating .star.bi-star-fill {
+                    color: #ffc107;
+                }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sistema de calificación con estrellas
+            const stars = document.querySelectorAll('.star');
+            const puntajeInput = document.getElementById('puntajeInput');
+            const puntajeValue = document.getElementById('puntajeValue');
+            let currentRating = parseInt(puntajeInput.value) || 3;
+
+            // Inicializar estrellas
+            updateStars(currentRating);
+
+            // Click en estrella
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    currentRating = parseInt(this.getAttribute('data-value'));
+                    puntajeInput.value = currentRating;
+                    puntajeValue.textContent = currentRating;
+                    updateStars(currentRating);
+                });
+
+                // Hover en estrella
+                star.addEventListener('mouseenter', function() {
+                    const hoverValue = parseInt(this.getAttribute('data-value'));
+                    updateStars(hoverValue);
+                });
+            });
+
+            // Restaurar al salir del hover
+            document.getElementById('starRating').addEventListener('mouseleave', function() {
+                updateStars(currentRating);
+            });
+
+            function updateStars(rating) {
+                stars.forEach(star => {
+                    const starValue = parseInt(star.getAttribute('data-value'));
+                    if (starValue <= rating) {
+                        star.classList.remove('bi-star');
+                        star.classList.add('bi-star-fill');
+                    } else {
+                        star.classList.remove('bi-star-fill');
+                        star.classList.add('bi-star');
+                    }
+                });
+            }
+
+            // Contador de caracteres para comentario
+            const comentarioTextarea = document.querySelector('textarea[name="Comentario"]');
+            const comentarioCounter = document.getElementById('comentarioCounter');
+
+            if (comentarioTextarea) {
+                comentarioTextarea.addEventListener('input', function() {
+                    const length = this.value.length;
+                    comentarioCounter.textContent = length;
+
+                    if (length > 450) {
+                        comentarioCounter.classList.add('text-warning');
+                    } else {
+                        comentarioCounter.classList.remove('text-warning');
+                    }
+                });
+            }
+
+            // Verificar si el ticket seleccionado puede ser valorado
+            const ticketSelect = document.getElementById('ticketSelect');
+            if (ticketSelect) {
+                ticketSelect.addEventListener('change', async function() {
+                    const ticketId = this.value;
+                    if (ticketId) {
+                        try {
+                            const response = await fetch(`/Valoracion/CanCreateValoracion?ticketId=${ticketId}`);
+                            const data = await response.json();
+
+                            if (!data.canCreate) {
+                                alert('Este ticket ya tiene una valoración');
+                                this.value = '';
+                            }
+                        } catch (error) {
+                            console.error('Error al verificar ticket:', error);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

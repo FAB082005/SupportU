@@ -1,0 +1,151 @@
+2025-12-08 00:00:29.653 -06:00 [INF] Create POST called for Categoria. Nombre=Prueba total, SlaId=5, Criterio=prioridad_puntaje
+2025-12-08 00:00:29.777 -06:00 [INF] RepositoryCategoria.AddAsync completed. Id=5
+2025-12-08 00:00:29.780 -06:00 [INF] ServiceCategoria.AddAsync created CategoriaId=5
+2025-12-08 00:00:29.782 -06:00 [INF] Categoria created successfully. NewId=5
+2025-12-08 12:10:51.210 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=prueba etiqueta
+2025-12-08 12:10:51.333 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=10
+2025-12-08 12:10:51.341 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Pendiente
+2025-12-08 12:10:51.374 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=38
+2025-12-08 12:10:51.533 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 12:10:51.536 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-08 12:10:55.143 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 1
+2025-12-08 12:11:23.790 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 1
+2025-12-08 12:11:27.610 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 10, T?cnico: 0
+2025-12-08 15:49:33.061 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=8, EstadoNuevo=En Proceso
+2025-12-08 15:49:33.177 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=39
+2025-12-08 15:49:33.185 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 15:49:33.186 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-08 15:49:33.189 -06:00 [INF] RutaArchivo: /uploads/tickets/d8601c6c-8706-422e-b3e8-8980f6c2b1fe_Cover-3.png
+2025-12-08 15:49:33.192 -06:00 [INF] TicketId: 8
+2025-12-08 15:49:33.193 -06:00 [INF] HistorialEstadoId: 39
+2025-12-08 15:49:33.194 -06:00 [INF]  Imagen asociada a historial 39
+2025-12-08 15:49:33.244 -06:00 [INF] Imagen guardada exitosamente con ID: 11
+2025-12-08 15:49:33.247 -06:00 [INF] Todas las im?genes guardadas exitosamente
+2025-12-08 15:49:33.260 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 5)
+2025-12-08 15:49:33.365 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 3)
+2025-12-08 15:49:33.369 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 8
+2025-12-08 15:49:33.410 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 15:49:33.410 -06:00 [INF]  Ticket 8: Estado=Asignado, CategoriaId=4, UsuarioId=5
+2025-12-08 15:49:33.414 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=8
+2025-12-08 15:49:33.465 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=8
+2025-12-08 15:49:59.911 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=8, EstadoNuevo=Resuelto
+2025-12-08 15:49:59.921 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=40
+2025-12-08 15:49:59.923 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 15:49:59.923 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-08 15:49:59.924 -06:00 [INF] RutaArchivo: /uploads/tickets/edd0e79f-b913-4c20-af33-fe3682dd3838_Cover-3.png
+2025-12-08 15:49:59.924 -06:00 [INF] TicketId: 8
+2025-12-08 15:49:59.925 -06:00 [INF] HistorialEstadoId: 40
+2025-12-08 15:49:59.926 -06:00 [INF]  Imagen asociada a historial 40
+2025-12-08 15:49:59.930 -06:00 [INF] Imagen guardada exitosamente con ID: 12
+2025-12-08 15:49:59.931 -06:00 [INF] Todas las im?genes guardadas exitosamente
+2025-12-08 15:49:59.955 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 5)
+2025-12-08 15:49:59.968 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 3)
+2025-12-08 15:49:59.969 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 8
+2025-12-08 15:49:59.973 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 15:49:59.973 -06:00 [INF]  Ticket 8: Estado=En Proceso, CategoriaId=4, UsuarioId=5
+2025-12-08 15:49:59.974 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=8
+2025-12-08 15:49:59.979 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=8
+2025-12-08 15:50:22.739 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=8, EstadoNuevo=Cerrado
+2025-12-08 15:50:22.755 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=41
+2025-12-08 15:50:22.756 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 15:50:22.757 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-08 15:50:22.758 -06:00 [INF] RutaArchivo: /uploads/tickets/ef089744-d5ec-4c16-ab97-319cb4d60576_Cover-3.png
+2025-12-08 15:50:22.759 -06:00 [INF] TicketId: 8
+2025-12-08 15:50:22.760 -06:00 [INF] HistorialEstadoId: 41
+2025-12-08 15:50:22.760 -06:00 [INF]  Imagen asociada a historial 41
+2025-12-08 15:50:22.772 -06:00 [INF] Imagen guardada exitosamente con ID: 13
+2025-12-08 15:50:22.773 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 15:50:22.773 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-08 15:50:22.774 -06:00 [INF] RutaArchivo: /uploads/tickets/6762e71c-686a-48d8-8ce0-647df57064ee_redes.jpg
+2025-12-08 15:50:22.775 -06:00 [INF] TicketId: 8
+2025-12-08 15:50:22.775 -06:00 [INF] HistorialEstadoId: 41
+2025-12-08 15:50:22.776 -06:00 [INF]  Imagen asociada a historial 41
+2025-12-08 15:50:22.783 -06:00 [INF] Imagen guardada exitosamente con ID: 14
+2025-12-08 15:50:22.786 -06:00 [INF] Todas las im?genes guardadas exitosamente
+2025-12-08 15:50:22.815 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 5)
+2025-12-08 15:50:22.822 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 3)
+2025-12-08 15:50:22.822 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 8
+2025-12-08 15:50:22.825 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 15:50:22.825 -06:00 [INF]  Ticket 8: Estado=Resuelto, CategoriaId=4, UsuarioId=5
+2025-12-08 15:50:22.826 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=8
+2025-12-08 15:50:22.831 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=8
+2025-12-08 16:00:16.267 -06:00 [INF] RepositoryTicket.AddAsync called. Titulo=kk
+2025-12-08 16:00:16.436 -06:00 [INF] RepositoryTicket.AddAsync completed. Id=11
+2025-12-08 16:00:16.444 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=11, EstadoNuevo=Pendiente
+2025-12-08 16:00:16.471 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=42
+2025-12-08 16:00:16.507 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 16:00:16.508 -06:00 [INF] El ticket no tiene t?cnico asignado, no se env?a notificaci?n a t?cnico
+2025-12-08 16:01:39.492 -06:00 [INF]  [CONTROLLER] AsignarAutomatico iniciado
+2025-12-08 16:01:39.522 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-08 16:01:39.540 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 16:01:39.541 -06:00 [INF]  Ticket 10: Estado=Pendiente, CategoriaId=1, UsuarioId=1
+2025-12-08 16:01:39.585 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-08 16:01:39.616 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-08 16:01:39.797 -06:00 [INF]  Autotriage completado exitosamente
+2025-12-08 16:01:39.799 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Asignado
+2025-12-08 16:01:39.808 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=43
+2025-12-08 16:01:39.821 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 16:01:39.871 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 4)
+2025-12-08 16:02:03.017 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=En Proceso
+2025-12-08 16:02:03.020 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=44
+2025-12-08 16:02:03.027 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 16:02:03.028 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-08 16:02:03.029 -06:00 [INF] RutaArchivo: /uploads/tickets/4ee7252c-2832-4366-976b-30ba116d2abc_redes.jpg
+2025-12-08 16:02:03.030 -06:00 [INF] TicketId: 10
+2025-12-08 16:02:03.030 -06:00 [INF] HistorialEstadoId: 44
+2025-12-08 16:02:03.031 -06:00 [INF]  Imagen asociada a historial 44
+2025-12-08 16:02:03.051 -06:00 [INF] Imagen guardada exitosamente con ID: 15
+2025-12-08 16:02:03.052 -06:00 [INF] Todas las im?genes guardadas exitosamente
+2025-12-08 16:02:03.056 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 16:02:03.061 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 4)
+2025-12-08 16:02:03.063 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-08 16:02:03.065 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 16:02:03.066 -06:00 [INF]  Ticket 10: Estado=Asignado, CategoriaId=1, UsuarioId=1
+2025-12-08 16:02:03.066 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-08 16:02:03.069 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-08 16:02:23.352 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Resuelto
+2025-12-08 16:02:23.360 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=45
+2025-12-08 16:02:23.362 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 16:02:23.362 -06:00 [INF] NombreArchivo: redes.jpg
+2025-12-08 16:02:23.363 -06:00 [INF] RutaArchivo: /uploads/tickets/6ce7a706-ad5a-4e0f-ac4b-cdf45914a1ed_redes.jpg
+2025-12-08 16:02:23.363 -06:00 [INF] TicketId: 10
+2025-12-08 16:02:23.364 -06:00 [INF] HistorialEstadoId: 45
+2025-12-08 16:02:23.365 -06:00 [INF]  Imagen asociada a historial 45
+2025-12-08 16:02:23.369 -06:00 [INF] Imagen guardada exitosamente con ID: 16
+2025-12-08 16:02:23.369 -06:00 [INF] Todas las im?genes guardadas exitosamente
+2025-12-08 16:02:23.405 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 16:02:23.417 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 4)
+2025-12-08 16:02:23.418 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-08 16:02:23.422 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 16:02:23.423 -06:00 [INF]  Ticket 10: Estado=En Proceso, CategoriaId=1, UsuarioId=1
+2025-12-08 16:02:23.425 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-08 16:02:23.431 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-08 16:02:43.192 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=10, EstadoNuevo=Cerrado
+2025-12-08 16:02:43.198 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=46
+2025-12-08 16:02:43.199 -06:00 [INF] === RepositoryImagen.AddAsync ===
+2025-12-08 16:02:43.200 -06:00 [INF] NombreArchivo: Cover-3.png
+2025-12-08 16:02:43.201 -06:00 [INF] RutaArchivo: /uploads/tickets/c49ba5f2-ff0d-4b3a-adea-20da4dc14694_Cover-3.png
+2025-12-08 16:02:43.202 -06:00 [INF] TicketId: 10
+2025-12-08 16:02:43.203 -06:00 [INF] HistorialEstadoId: 46
+2025-12-08 16:02:43.204 -06:00 [INF]  Imagen asociada a historial 46
+2025-12-08 16:02:43.207 -06:00 [INF] Imagen guardada exitosamente con ID: 17
+2025-12-08 16:02:43.207 -06:00 [INF] Todas las im?genes guardadas exitosamente
+2025-12-08 16:02:43.214 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 16:02:43.222 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 4)
+2025-12-08 16:02:43.223 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 10
+2025-12-08 16:02:43.225 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 16:02:43.225 -06:00 [INF]  Ticket 10: Estado=Resuelto, CategoriaId=1, UsuarioId=1
+2025-12-08 16:02:43.227 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=10
+2025-12-08 16:02:43.231 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=10
+2025-12-08 16:03:28.420 -06:00 [INF] Obteniendo t?cnicos disponibles para categor?a 3
+2025-12-08 16:03:32.968 -06:00 [INF] ?? Asignaci?n manual iniciada. Ticket: 11, T?cnico: 2
+2025-12-08 16:03:33.019 -06:00 [INF]  RepositoryTicket.FindByIdAsyncForUpdate - Buscando ticket 11
+2025-12-08 16:03:33.024 -06:00 [INF]  Resultado: ENCONTRADO
+2025-12-08 16:03:33.027 -06:00 [INF]  Ticket 11: Estado=Pendiente, CategoriaId=3, UsuarioId=1
+2025-12-08 16:03:33.030 -06:00 [INF] RepositoryTicket.UpdateAsync called. Id=11
+2025-12-08 16:03:33.037 -06:00 [INF] RepositoryTicket.UpdateAsync completed. Id=11
+2025-12-08 16:03:33.058 -06:00 [INF] RepositoryHistorialEstados.AddAsync called. TicketId=11, EstadoNuevo=Asignado
+2025-12-08 16:03:33.063 -06:00 [INF] RepositoryHistorialEstados.AddAsync completed. Id=47
+2025-12-08 16:03:33.066 -06:00 [INF]  Notificaci?n enviada al cliente (Usuario 1)
+2025-12-08 16:03:33.068 -06:00 [INF]  Notificaci?n enviada al t?cnico (Usuario 3)
+2025-12-08 16:03:33.069 -06:00 [INF] ? Ticket 11 asignado manualmente a t?cnico 2

@@ -1,0 +1,12 @@
+2025-12-08 11:56:46.705 -06:00 [WRN] DEBUG POST Create => Nombre: kmkm, CategoriaId: 3, Activa: True
+2025-12-08 11:56:52.539 -06:00 [WRN] DEBUG POST Create => Nombre: kmkm, CategoriaId: 3, Activa: True
+2025-12-08 12:08:22.677 -06:00 [WRN] DEBUG POST Create => Nombre: ddkd, CategoriaId: 1, Activa: True
+2025-12-08 12:08:22.748 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-08 12:08:49.819 -06:00 [WRN] DEBUG POST Create => Nombre: prueba caaaat, CategoriaId: 5, Activa: True
+2025-12-08 12:08:49.820 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
+2025-12-08 12:10:51.377 -06:00 [WRN] No se recibieron im?genes para guardar
+2025-12-08 16:00:16.472 -06:00 [WRN] No se recibieron im?genes para guardar
+2025-12-08 16:01:39.811 -06:00 [WRN] No se recibieron im?genes para guardar
+2025-12-08 16:03:33.063 -06:00 [WRN] No se recibieron im?genes para guardar
+2025-12-08 23:32:01.621 -06:00 [WRN] DEBUG POST Create => Nombre: prueba programm, CategoriaId: 1, Activa: True
+2025-12-08 23:32:01.688 -06:00 [WRN] DEBUG => ModelState v?lido. Ejecutando CreateAsync
