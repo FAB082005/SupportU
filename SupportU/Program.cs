@@ -46,7 +46,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         new AcceptLanguageHeaderRequestCultureProvider()
     };
 });
-// -----------------------------------
+
 
 //Configurar D.I.
 //Usuario
@@ -93,10 +93,15 @@ builder.Services.AddScoped<IServiceImagen, ServiceImagen>();
 builder.Services.AddScoped<IRepositoryNotificacion, RepositoryNotificacion>();
 builder.Services.AddScoped<IServiceNotificacion, ServiceNotificacion>();
 
+//Notificacion
+builder.Services.AddScoped<IRepositoryValoracion, RepositoryValoracion>();
+builder.Services.AddScoped<IServiceValoracion, ServiceValoracion>();
+
+
 //Autoasignado
 builder.Services.AddScoped<IServiceAutoTriage, ServiceAutotriage>();
 
-// ✅ CONFIGURAR AUTOMAPPER - UNA SOLA VEZ
+
 builder.Services.AddAutoMapper(
     typeof(UsuariosProfile),
     typeof(TecnicosProfiles),
@@ -108,7 +113,8 @@ builder.Services.AddAutoMapper(
     typeof(EtiquetaProfile),
     typeof(HistorialEstadosProfile),
     typeof(ImagenProfile),
-    typeof(NotificacionProfile)
+    typeof(NotificacionProfile),
+	typeof(ValoracionProfile)
 );
 
 //Configurar Conexión a la Base de Datos SQL
@@ -152,7 +158,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -168,10 +174,10 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-// --- IMPORTANT: RequestLocalization debe ejecutarse ANTES de UseRouting ---
+
 var locOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>();
 app.UseRequestLocalization(locOptions.Value);
-// -----------------------------------------------------------------------
+
 
 app.UseRouting();
 
@@ -181,8 +187,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-// Si tienes un middleware antiforgery personalizado, mantenlo; de lo contrario revisa su uso
-// app.UseAntiforgery(); // si lo usas, asegúrate de que exista
+
 
 app.MapControllerRoute(
     name: "default",

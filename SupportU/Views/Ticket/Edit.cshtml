@@ -4,41 +4,39 @@
     var tecnicos = ViewBag.Tecnicos as List<SupportU.Application.DTOs.TecnicoDTO>;
     var etiquetas = ViewBag.Etiquetas as List<SupportU.Application.DTOs.EtiquetaDTO>;
     var categorias = ViewBag.Categorias as List<SupportU.Application.DTOs.CategoriaDTO>;
-    var metodoAsignacionActual = Model.TecnicoAsignadoId.HasValue ? "Manual" : "Automatico";
+
+    // Agrupar etiquetas por categoría para el dropdown
+    var etiquetasPorCategoria = etiquetas?
+        .Where(e => e.Activa)
+        .GroupBy(e => e.CategoriaId)
+        .ToDictionary(g => g.Key, g => g.ToList());
 }
 
 <section class="section mt-5 mt-lg-7 pt-4 pt-lg-5">
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h4 class="card-title mb-1">Editar Ticket #@Model.TicketId</h4>
-                    <small class="text-muted">
-                        <i class="bi bi-calendar me-1"></i>
-                        Creado el @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
-                    </small>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-@(Model.Estado == "Pendiente" ? "warning" : Model.Estado == "Asignado" ? "info" : Model.Estado == "En Proceso" ? "primary" : Model.Estado == "Resuelto" ? "success" : "secondary") fs-6">
-                        @Model.Estado
-                    </span>
-
-                    @if (Model.Estado == "Asignado" || Model.Estado == "En Proceso" || Model.Estado == "Resuelto")
-                    {
-                        <button type="button"
-                                class="btn btn-sm btn-primary"
-                                onclick="abrirModalCambioEstado(@Model.TicketId)">
-                            <i class="bi bi-arrow-right-circle"></i> Cambiar Estado
-                        </button>
-                    }
-                </div>
+                <!-- ... código existente ... -->
             </div>
 
             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-            <form asp-action="Edit" method="post">
+            <form asp-action="Edit" method="post" id="editForm">
                 @Html.AntiForgeryToken()
                 <input asp-for="TicketId" type="hidden" />
+                <input asp-for="UsuarioSolicitanteId" type="hidden" />
+                <input asp-for="FechaCreacion" type="hidden" />
+                <input asp-for="Estado" type="hidden" />
+                <input asp-for="FechaCierre" type="hidden" />
+                <input asp-for="CumplimientoRespuesta" type="hidden" />
+                <input asp-for="CumplimientoResolucion" type="hidden" />
+                <input asp-for="fecha_primera_respuesta" type="hidden" />
+                <input asp-for="fecha_resolucion" type="hidden" />
+                <input asp-for="TecnicoAsignadoId" type="hidden" />
+                <input asp-for="CategoriaId" type="hidden" id="categoriaIdHidden" value="@Model.CategoriaId" />
+
+                <!-- Campo oculto para la etiqueta seleccionada -->
+                <input type="hidden" name="etiquetaSeleccionadaId" id="etiquetaSeleccionadaIdInput" />
 
                 <div class="mb-3">
                     <label asp-for="Titulo" class="form-label fw-bold">Título *</label>
@@ -67,22 +65,50 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="etiquetaSeleccionadaId" class="form-label fw-bold">Etiqueta *</label>
-                        <select id="etiquetaSeleccionadaId" name="etiquetaSeleccionadaId" class="form-select" required>
+                        <label class="form-label fw-bold">Etiqueta *</label>
+                        <select id="etiquetaSelect" class="form-select" required>
                             <option value="">-- Seleccione una etiqueta --</option>
                             @if (etiquetas != null && etiquetas.Any())
                             {
-                                @foreach (var etiqueta in etiquetas)
+                                // Primero mostrar etiquetas de la categoría actual
+                                var etiquetasCategoriaActual = etiquetas
+                                .Where(e => e.CategoriaId == Model.CategoriaId)
+                                .OrderBy(e => e.Nombre);
+
+                                @if (etiquetasCategoriaActual.Any())
                                 {
-                                    var isSelected = etiqueta.CategoriaId == Model.CategoriaId;
-                                    <option value="@etiqueta.EtiquetaId"
-                                            data-categoria-id="@etiqueta.CategoriaId"
-                                            selected="@isSelected">
-                                        @etiqueta.Nombre
-                                    </option>
+                                    <optgroup label="Etiquetas de la categoría actual">
+                                        @foreach (var etiqueta in etiquetasCategoriaActual)
+                                        {
+                                            <option value="@etiqueta.EtiquetaId"
+                                                    data-categoria-id="@etiqueta.CategoriaId">
+                                                @etiqueta.Nombre
+                                            </option>
+                                        }
+                                    </optgroup>
+                                }
+
+                                // Luego mostrar todas las demás etiquetas agrupadas por categoría
+                                var otrasEtiquetas = etiquetas
+                                .Where(e => e.CategoriaId != Model.CategoriaId)
+                                .GroupBy(e => e.CategoriaId);
+
+                                @foreach (var grupo in otrasEtiquetas)
+                                {
+                                    var categoria = categorias?.FirstOrDefault(c => c.CategoriaId == grupo.Key);
+                                    <optgroup label="@(categoria?.Nombre ?? "Categoría " + grupo.Key)">
+                                        @foreach (var etiqueta in grupo.OrderBy(e => e.Nombre))
+                                        {
+                                            <option value="@etiqueta.EtiquetaId"
+                                                    data-categoria-id="@etiqueta.CategoriaId">
+                                                @etiqueta.Nombre
+                                            </option>
+                                        }
+                                    </optgroup>
                                 }
                             }
                         </select>
+                        <small class="text-muted">Al cambiar la etiqueta, se actualizará la categoría automáticamente</small>
                     </div>
                 </div>
 
@@ -90,43 +116,18 @@
                     <label for="categoriaNombre" class="form-label fw-bold">Categoría Asignada</label>
                     <input type="text" id="categoriaNombre" class="form-control"
                            value="@Model.Categoria?.Nombre" readonly />
-                    <input asp-for="CategoriaId" type="hidden" id="categoriaIdHidden" />
                 </div>
 
-                <input asp-for="UsuarioSolicitanteId" type="hidden" />
-                <input asp-for="FechaCreacion" type="hidden" />
-                <input asp-for="Estado" type="hidden" />
-                <input asp-for="FechaCierre" type="hidden" />
-                <input asp-for="CumplimientoRespuesta" type="hidden" />
-                <input asp-for="CumplimientoResolucion" type="hidden" />
-                <input asp-for="fecha_primera_respuesta" type="hidden" />
-                <input asp-for="fecha_resolucion" type="hidden" />
-                <input asp-for="TecnicoAsignadoId" type="hidden" />
-
                 <div class="alert alert-light border mt-3">
-                    <small class="text-muted">
-                        <strong>Usuario:</strong>
-                        @if (Model.UsuarioSolicitante != null)
-                        {
-                            @Model.UsuarioSolicitante.Nombre @Model.UsuarioSolicitante.Apellidos
-                        }
-                        else
-                        {
-                            <span>ID @Model.UsuarioSolicitanteId</span>
-                        }
-                        | <strong>Fecha:</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
-                    </small>
+                    <!-- ... código existente ... -->
                 </div>
 
                 <div class="mt-4 d-flex gap-2">
                     <button type="submit" class="btn btn-success" id="btnSubmit">
-                        <i class="bi bi-save"></i> Guardar Cambios Básicos
+                        <i class="bi bi-save"></i> Guardar Cambios
                     </button>
                     <a asp-action="Details" asp-route-id="@Model.TicketId" class="btn btn-outline-secondary">
                         <i class="bi bi-x-circle"></i> Cancelar
-                    </a>
-                    <a asp-action="Details" asp-route-id="@Model.TicketId" class="btn btn-outline-info ms-auto">
-                        <i class="bi bi-eye"></i> Ver Historial Completo
                     </a>
                 </div>
             </form>
@@ -134,424 +135,95 @@
     </div>
 </section>
 
-<div class="modal fade" id="modalCambioEstado" tabindex="-1" aria-labelledby="modalCambioEstadoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalCambioEstadoLabel">
-                    <i class="bi bi-arrow-right-circle me-2"></i>Cambiar Estado del Ticket
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalCambioEstadoBody">
-                <div class="text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                    <p class="mt-3">Cargando formulario...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        const categoriaMap = new Map();
-        @if (categorias != null)
-        {
+        document.addEventListener('DOMContentLoaded', function () {
+            const etiquetaSelect = document.getElementById('etiquetaSelect');
+            const etiquetaInput = document.getElementById('etiquetaSeleccionadaIdInput');
+            const categoriaIdHidden = document.getElementById('categoriaIdHidden');
+            const categoriaNombre = document.getElementById('categoriaNombre');
+            const form = document.getElementById('editForm');
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            // Mapa de categorías para búsqueda rápida
+            const categoriaMap = new Map();
+            @if (categorias != null)
+            {
                     foreach (var cat in categorias)
                     {
-                                @:categoriaMap.set(@cat.CategoriaId, '@cat.Nombre');
+                            @:categoriaMap.set(@cat.CategoriaId, '@Html.Raw(cat.Nombre)');
                     }
-        }
+            }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            configurarFormularioPrincipal();
-        });
-
-        function configurarFormularioPrincipal() {
-            const form = document.querySelector('form[method="post"]');
-            const btnSubmit = document.getElementById('btnSubmit');
-            const selectEtiqueta = document.getElementById('etiquetaSeleccionadaId');
-            const inputCategoriaNombre = document.getElementById('categoriaNombre');
-            const inputCategoriaId = document.getElementById('categoriaIdHidden');
-
-            selectEtiqueta.addEventListener('change', function () {
+            // Configurar evento de cambio en etiqueta
+            etiquetaSelect.addEventListener('change', function () {
                 const selectedOption = this.options[this.selectedIndex];
+                const etiquetaId = this.value;
                 const categoriaId = selectedOption.getAttribute('data-categoria-id');
 
-                if (categoriaId) {
-                    inputCategoriaId.value = categoriaId;
-                    const categoriaNombre = categoriaMap.get(parseInt(categoriaId)) || 'Categoría no encontrada';
-                    inputCategoriaNombre.value = categoriaNombre;
+                if (etiquetaId && categoriaId) {
+                    // Actualizar campos
+                    etiquetaInput.value = etiquetaId;
+                    categoriaIdHidden.value = categoriaId;
+                    categoriaNombre.value = categoriaMap.get(parseInt(categoriaId)) || 'Categoría ' + categoriaId;
                 } else {
-                    inputCategoriaId.value = '';
-                    inputCategoriaNombre.value = 'Se asigna automáticamente...';
+                    etiquetaInput.value = '';
+                    categoriaIdHidden.value = '';
+                    categoriaNombre.value = '';
                 }
             });
 
-            form.addEventListener('submit', function (e) {
-                const etiquetaId = selectEtiqueta.value;
-                const categoriaId = inputCategoriaId.value;
+            // Configurar valores iniciales
+            function inicializarEtiquetaSeleccionada() {
+                const categoriaActualId = @Model.CategoriaId;
 
+                // Buscar una etiqueta que pertenezca a la categoría actual
+                const opciones = etiquetaSelect.options;
+                for (let i = 0; i < opciones.length; i++) {
+                    const option = opciones[i];
+                    const optionCategoriaId = option.getAttribute('data-categoria-id');
+
+                    if (optionCategoriaId && parseInt(optionCategoriaId) === categoriaActualId) {
+                        // Seleccionar la primera etiqueta de esta categoría
+                        etiquetaSelect.value = option.value;
+                        etiquetaInput.value = option.value;
+                        categoriaNombre.value = categoriaMap.get(categoriaActualId) || 'Categoría ' + categoriaActualId;
+                        break;
+                    }
+                }
+            }
+
+            inicializarEtiquetaSeleccionada();
+
+            // Manejar envío del formulario
+            form.addEventListener('submit', function (e) {
+                const etiquetaId = etiquetaSelect.value;
+                const categoriaId = categoriaIdHidden.value;
+
+                // Validaciones
                 if (!etiquetaId || etiquetaId === '') {
                     e.preventDefault();
-                    alert(' Debe seleccionar una etiqueta');
-                    selectEtiqueta.focus();
+                    alert('Debe seleccionar una etiqueta');
+                    etiquetaSelect.focus();
                     return false;
                 }
 
                 if (!categoriaId || categoriaId === '') {
                     e.preventDefault();
-                    alert(' Error: No se pudo determinar la categoría');
+                    alert('Error: No se pudo determinar la categoría');
                     return false;
                 }
 
-                if (btnSubmit) {
-                    btnSubmit.disabled = true;
-                    btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
-                }
-            });
-
-            const categoriaActualId = parseInt('@Model.CategoriaId');
-            if (categoriaActualId && categoriaMap.has(categoriaActualId)) {
-                inputCategoriaNombre.value = categoriaMap.get(categoriaActualId);
-            }
-        }
-
-        async function abrirModalCambioEstado(ticketId) {
-            const modal = new bootstrap.Modal(document.getElementById('modalCambioEstado'));
-            const modalBody = document.getElementById('modalCambioEstadoBody');
-
-            modal.show();
-
-            try {
-                const response = await fetch(`/HistorialEstados/CambiarEstadoPartial?ticketId=${ticketId}`);
-
-                if (!response.ok) {
-                    throw new Error('Error al cargar el formulario');
-                }
-
-                const html = await response.text();
-                modalBody.innerHTML = html;
-
-                configurarFormularioModal();
-            } catch (error) {
-                console.error('Error al cargar formulario:', error);
-                modalBody.innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        Error al cargar el formulario. Por favor, intente nuevamente.
-                    </div>
-                `;
-            }
-        }
-
-        function configurarFormularioModal() {
-            const form = document.querySelector('#modalCambioEstado form');
-            if (!form) {
-                console.error('No se encontró el formulario en el modal');
-                return;
-            }
-
-            inicializarPreviewImagenes();
-
-            form.addEventListener('submit', async function (e) {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-                const btnSubmit = form.querySelector('button[type="submit"]');
-
-                const headers = {
-                    'X-Requested-With': 'XMLHttpRequest'
-                };
-
-                const imagenesInput = form.querySelector('input[name="imagenes"]');
-                if (!imagenesInput || !imagenesInput.files || imagenesInput.files.length === 0) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Atención',
-                        text: 'Debe adjuntar al menos una imagen como evidencia'
-                    });
-                    return;
-                }
-
-                const observaciones = formData.get('observaciones');
-                if (!observaciones || observaciones.trim() === '') {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Atención',
-                        text: 'Las observaciones son obligatorias'
-                    });
-                    return;
-                }
-
+                // Deshabilitar botón y mostrar indicador de carga
                 if (btnSubmit) {
                     btnSubmit.disabled = true;
                     btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
                 }
 
-                console.log('Enviando formulario');
-                console.log('URL:', form.action);
-                console.log('Cantidad de imágenes:', imagenesInput.files.length);
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: headers
-                    });
-
-                    console.log('Response status:', response.status);
-
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        console.error('Error del servidor:', errorText);
-                        throw new Error(`Error ${response.status}: ${response.statusText}`);
-                    }
-
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        const htmlResponse = await response.text();
-                        console.error('Respuesta HTML recibida:', htmlResponse.substring(0, 500));
-                        throw new Error('El servidor no devolvió JSON.');
-                    }
-
-                    const result = await response.json();
-                    console.log('Resultado:', result);
-
-                    if (result.success) {
-                        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('modalCambioEstado'));
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        }
-
-                        await Swal.fire({
-                            icon: 'success',
-                            title: '¡Estado actualizado!',
-                            html: `<p><strong>${result.message}</strong></p>
-                                   <p class="text-muted">El ticket ahora está en estado: <strong>${result.nuevoEstado}</strong></p>
-                                   <small>Redirigiendo...</small>`,
-                            timer: 2500,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-
-                        window.location.href = `/Ticket/Details/${formData.get('ticketId')}`;
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: result.message || 'No se pudo cambiar el estado'
-                        });
-
-                        if (btnSubmit) {
-                            btnSubmit.disabled = false;
-                            btnSubmit.innerHTML = '<i class="bi bi-save"></i> Guardar Cambio';
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error al procesar solicitud:', error);
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        html: `<p>Ocurrió un error al procesar la solicitud</p>
-                               <small class="text-muted">${error.message}</small>`
-                    });
-
-                    if (btnSubmit) {
-                        btnSubmit.disabled = false;
-                        btnSubmit.innerHTML = '<i class="bi bi-save"></i> Guardar Cambio';
-                    }
-                }
+                return true;
             });
-        }
-
-        function inicializarPreviewImagenes() {
-            console.log('Inicializando preview de imágenes');
-
-            let selectedFiles = [];
-
-            const imageInput = document.getElementById('imagenes');
-            const previewContainer = document.getElementById('imagenesPreview');
-            const selectEstado = document.getElementById('nuevoEstado');
-            const previewEstado = document.getElementById('estadoNuevoPreview');
-
-            console.log('Elementos encontrados:', {
-                imageInput: !!imageInput,
-                previewContainer: !!previewContainer,
-                selectEstado: !!selectEstado,
-                previewEstado: !!previewEstado
-            });
-
-            if (!imageInput || !previewContainer) {
-                console.error('No se encontraron los elementos necesarios');
-                return;
-            }
-
-            imageInput.addEventListener('change', function(e) {
-                console.log('Evento change disparado');
-                console.log('Archivos seleccionados:', e.target.files.length);
-
-                const newFiles = Array.from(e.target.files);
-
-                if (newFiles.length === 0) {
-                    console.log('No hay archivos nuevos');
-                    return;
-                }
-
-                selectedFiles = [...selectedFiles, ...newFiles];
-                console.log('Total de archivos:', selectedFiles.length);
-
-                mostrarPreview();
-
-                const dataTransfer = new DataTransfer();
-                selectedFiles.forEach(file => dataTransfer.items.add(file));
-                imageInput.files = dataTransfer.files;
-            });
-
-            function mostrarPreview() {
-                console.log('Mostrando preview de', selectedFiles.length, 'imágenes');
-
-                previewContainer.innerHTML = '';
-
-                if (selectedFiles.length === 0) {
-                    previewContainer.innerHTML = '<div class="col-12"><small class="text-muted">No hay imágenes seleccionadas</small></div>';
-                    return;
-                }
-
-                selectedFiles.forEach((file, index) => {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        const col = document.createElement('div');
-                        col.className = 'col-md-3 col-sm-6';
-                        col.innerHTML = `
-                            <div class="preview-card">
-                                <div class="preview-img-container">
-                                    <img src="${e.target.result}" alt="${file.name}">
-                                    <button type="button"
-                                            class="btn btn-danger btn-sm btn-remove-img"
-                                            data-index="${index}"
-                                            title="Eliminar">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </div>
-                                <div class="preview-info">
-                                    <small class="d-block text-truncate text-muted" title="${file.name}">
-                                        <i class="bi bi-file-image me-1"></i>${file.name}
-                                    </small>
-                                    <small class="text-muted">
-                                        ${(file.size / 1024).toFixed(1)} KB
-                                    </small>
-                                </div>
-                            </div>
-                        `;
-                        previewContainer.appendChild(col);
-                        console.log(`Preview agregado para: ${file.name}`);
-
-                        const btnEliminar = col.querySelector('.btn-remove-img');
-                        btnEliminar.addEventListener('click', function() {
-                            eliminarImagen(parseInt(this.dataset.index));
-                        });
-                    };
-
-                    reader.onerror = function(error) {
-                        console.error('Error al leer archivo:', error);
-                    };
-
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            function eliminarImagen(index) {
-                console.log('Eliminando imagen en índice:', index);
-                selectedFiles.splice(index, 1);
-
-                const dataTransfer = new DataTransfer();
-                selectedFiles.forEach(file => dataTransfer.items.add(file));
-                imageInput.files = dataTransfer.files;
-
-                mostrarPreview();
-            }
-
-            if (selectEstado && previewEstado) {
-                selectEstado.addEventListener('change', function() {
-                    const valor = this.value;
-                    previewEstado.textContent = valor || 'Seleccione estado';
-
-                    const colorClasses = {
-                        'Asignado': 'bg-info',
-                        'En Proceso': 'bg-primary',
-                        'Resuelto': 'bg-success',
-                        'Cerrado': 'bg-secondary'
-                    };
-
-                    previewEstado.className = 'badge fs-6 ' + (colorClasses[valor] || 'bg-primary');
-                });
-            }
-
-            console.log('Preview inicializado correctamente');
-        }
+        });
     </script>
-
-    <style>
-        .modal-lg {
-            max-width: 800px;
-        }
-
-        #categoriaNombre {
-            background-color: #f8f9fa;
-        }
-
-        .preview-card {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            overflow: hidden;
-            background: white;
-            transition: transform 0.2s;
-        }
-
-            .preview-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            }
-
-        .preview-img-container {
-            position: relative;
-            width: 100%;
-            height: 180px;
-            background: #f8f9fa;
-        }
-
-            .preview-img-container img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-        .btn-remove-img {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            z-index: 10;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .preview-info {
-            padding: 8px;
-            background: white;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .badge.fs-6 {
-            font-size: 1rem !important;
-            padding: 0.5rem 0.75rem;
-        }
-    </style>
 }

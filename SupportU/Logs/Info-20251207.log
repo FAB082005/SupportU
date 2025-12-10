@@ -21,6 +21,11 @@
 2025-12-07 14:19:24.537 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1
 2025-12-07 14:19:31.019 -06:00 [INF] RepositoryTecnico.UpdateEspecialidadesAsync updated tecnicoId=1 count=1
 2025-12-07 14:19:31.020 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1
+<<<<<<< HEAD
 2025-12-07 20:24:31.907 -06:00 [INF] RepositoryTecnico.UpdateEspecialidadesAsync updated tecnicoId=1 count=1
 2025-12-07 20:24:31.959 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1
 2025-12-07 21:44:57.013 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=5 count=1
+=======
+2025-12-07 20:25:37.299 -06:00 [INF] RepositoryTecnico.UpdateEspecialidadesAsync updated tecnicoId=1 count=1
+2025-12-07 20:25:37.402 -06:00 [INF] ServiceTecnico.UpdateEspecialidadesAsync tecnicoId=1 count=1
+>>>>>>> fabricio

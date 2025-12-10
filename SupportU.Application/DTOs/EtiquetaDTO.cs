@@ -17,6 +17,7 @@ namespace SupportU.Application.DTOs
 
         public bool Activa { get; set; }
 
-        public virtual Categoria Categoria { get; set; } = null!;
+       // public virtual Categoria Categoria { get; set; } = null!;
+
     }
 }

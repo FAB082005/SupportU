@@ -15,20 +15,23 @@ namespace SupportU.Application.Services.Implementations
 		private readonly IRepositoryTicket _repository;
 		private readonly IRepositoryCategoria _repositoryCategoria;
 		private readonly IServiceHistorialEstados _serviceHistorial;
-		private readonly IServiceNotificacion _serviceNotificacion; 
+		private readonly IServiceNotificacion _serviceNotificacion;
+		private readonly IServiceAsignacion _serviceAsignacion; // ✅ AGREGADO
 		private readonly IMapper _mapper;
 
 		public ServiceTicket(
 			IRepositoryTicket repository,
 			IRepositoryCategoria repositoryCategoria,
 			IServiceHistorialEstados serviceHistorial,
-			IServiceNotificacion serviceNotificacion, 
+			IServiceNotificacion serviceNotificacion,
+			IServiceAsignacion serviceAsignacion, // ✅ AGREGADO
 			IMapper mapper)
 		{
 			_repository = repository;
 			_repositoryCategoria = repositoryCategoria;
 			_serviceHistorial = serviceHistorial;
-			_serviceNotificacion = serviceNotificacion; 
+			_serviceNotificacion = serviceNotificacion;
+			_serviceAsignacion = serviceAsignacion; // ✅ AGREGADO
 			_mapper = mapper;
 		}
 
@@ -74,7 +77,7 @@ namespace SupportU.Application.Services.Implementations
 			// Guardar el ticket
 			var ticketId = await _repository.AddAsync(entity);
 
-
+			// Crear historial de creación
 			var historialCreacion = new HistorialEstadosDTO
 			{
 				TicketId = ticketId,
@@ -83,11 +86,30 @@ namespace SupportU.Application.Services.Implementations
 				UsuarioId = dto.UsuarioSolicitanteId,
 				Observaciones = "Ticket creado por el usuario",
 				FechaCambio = DateTime.Now
-	
 			};
 
 			await _serviceHistorial.AddAsync(historialCreacion);
 
+			// ✅ CREAR ASIGNACIÓN AUTOMÁTICA (sin técnico asignado aún)
+			try
+			{
+				var asignacionDTO = new AsignacionDTO
+				{
+					TicketId = ticketId,
+					TecnicoId = 0, // Temporal, se actualizará cuando se asigne
+					MetodoAsignacion = "Pendiente", // Indica que aún no ha sido asignado
+					FechaAsignacion = DateTime.Now,
+					UsuarioAsignadorId = dto.UsuarioSolicitanteId
+				};
+
+				await _serviceAsignacion.AddAsync(asignacionDTO);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error al crear asignación inicial: {ex.Message}");
+			}
+
+			// Crear notificación
 			try
 			{
 				await _serviceNotificacion.CreateNotificationAsync(
@@ -99,7 +121,6 @@ namespace SupportU.Application.Services.Implementations
 			}
 			catch (Exception ex)
 			{
-
 				Console.WriteLine($"Error al crear notificación: {ex.Message}");
 			}
 
@@ -137,7 +158,6 @@ namespace SupportU.Application.Services.Implementations
 			}
 			catch (Exception ex)
 			{
-
 				Console.WriteLine($"Error al crear notificación: {ex.Message}");
 			}
 		}
@@ -145,6 +165,40 @@ namespace SupportU.Application.Services.Implementations
 		public async Task DeleteAsync(int id)
 		{
 			// Implementar si es necesario
+		}
+
+		public async Task ActualizarCumplimientoSLAAsync(int ticketId)
+		{
+			var ticket = await _repository.FindByIdAsyncForUpdate(ticketId);
+			if (ticket == null) return;
+
+			var categoria = await _repositoryCategoria.FindByIdAsync(ticket.CategoriaId);
+			if (categoria?.Sla == null) return;
+
+			var tiempoRespuestaMinutos = categoria.Sla.TiempoRespuestaMinutos;
+			var tiempoResolucionMinutos = categoria.Sla.TiempoResolucionMinutos;
+
+			// 1. Calcular cumplimiento de respuesta
+			if (ticket.fecha_primera_respuesta.HasValue)
+			{
+				var fechaLimiteRespuesta = ticket.FechaCreacion.AddMinutes(tiempoRespuestaMinutos);
+				ticket.CumplimientoRespuesta = ticket.fecha_primera_respuesta <= fechaLimiteRespuesta;
+			}
+
+			// 2. Calcular cumplimiento de resolución
+			if (ticket.fecha_resolucion.HasValue)
+			{
+				var fechaLimiteResolucion = ticket.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
+				ticket.CumplimientoResolucion = ticket.fecha_resolucion <= fechaLimiteResolucion;
+			}
+			else if (ticket.FechaCierre.HasValue)
+			{
+				// Si no hay fecha_resolucion pero sí fecha_cierre, usar esta
+				var fechaLimiteResolucion = ticket.FechaCreacion.AddMinutes(tiempoResolucionMinutos);
+				ticket.CumplimientoResolucion = ticket.FechaCierre <= fechaLimiteResolucion;
+			}
+
+			await _repository.UpdateAsync(ticket);
 		}
 	}
 }

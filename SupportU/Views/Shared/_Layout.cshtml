@@ -118,6 +118,15 @@
                         <li><a asp-controller=@t("Asignation") asp-action="Index">@t("Nav_Assignment")</a></li>
                     }
 
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <li>
+                            <a asp-controller="Dashboard" asp-action="Index">
+                                <i class="bi bi-graph-up"></i> @t("Nav_Dashboard")
+                            </a>
+                        </li>
+                    }
+
                     <li class="dropdown">
                         <a href="#">
                             <span>@t("Nav_Maintenance")</span>
